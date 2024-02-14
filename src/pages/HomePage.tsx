@@ -1,14 +1,14 @@
 import Footer from "../components/footer/Footer";
 import Header from "../components/header/Header";
-import ProductsFetchData from "../components/products/ProductsFetchData";
+import ProductList from "../components/products/ProductList";
 
 const Home = () => {
   return (
-    <div>
+    <>
       <Header />
-      <ProductsFetchData />
+      <ProductList />
       <Footer />
-    </div>
+    </>
   );
 };
 
