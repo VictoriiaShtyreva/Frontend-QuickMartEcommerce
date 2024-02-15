@@ -1,20 +1,21 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Box, Grid, Pagination } from "@mui/material";
 
-import { AppState, RootState } from "../../misc/types/type";
+import { AppState, RootState } from "../../types/type";
 import { useAppDispatch } from "../../hooks/useAppDispach";
 import {
   fetchAllProducts,
   selectPagination,
   setPagination,
 } from "../../redux/slices/productSlice";
-import { Product } from "../../misc/types/Product";
+import { Product } from "../../types/Product";
 import ProductCard from "./ProductCard";
 
 const ProductList = () => {
   const dispatch = useAppDispatch();
   const products = useSelector((state: AppState) => state.products.products);
+  //Logic for pagination
   const pagination = useSelector((state: RootState) => selectPagination(state));
 
   //use fetchAllProducts
@@ -22,14 +23,15 @@ const ProductList = () => {
     dispatch(fetchAllProducts(pagination));
   }, [dispatch, pagination]);
 
-  const handlePaginationChange = (
-    event: React.ChangeEvent<unknown>,
-    page: number
-  ) => {
-    dispatch(
-      setPagination({ ...pagination, offset: (page - 1) * pagination.limit })
-    );
-  };
+  //Wrap to useCallback for memoizes function
+  const handlePaginationChange = useCallback(
+    (event: React.ChangeEvent<unknown>, page: number) => {
+      dispatch(
+        setPagination({ ...pagination, offset: (page - 1) * pagination.limit })
+      );
+    },
+    [dispatch, pagination]
+  );
 
   return (
     <>

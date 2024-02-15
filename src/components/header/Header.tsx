@@ -183,7 +183,10 @@ const Header = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              <MenuItem onClick={handleCloseNavMenu}>
+              <MenuItem
+                onClick={handleCloseNavMenu}
+                sx={{ display: { xs: "flex", md: "none" } }}
+              >
                 <Link to="/shopping-cart">
                   <Typography sx={{ color: "primary.contrastText" }}>
                     Shopping Cart
@@ -197,7 +200,7 @@ const Header = () => {
               </MenuItem>
               <MenuItem onClick={handleCloseNavMenu}>
                 <Link to="/">
-                  <div> Sign in / Create Account / Logout </div>
+                  <div> Login / Create Account </div>
                 </Link>
               </MenuItem>
             </Menu>

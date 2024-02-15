@@ -8,9 +8,9 @@ import {
   ProductDataForUpdate,
   ProductState,
   UpdateProduct,
-} from "../../misc/types/Product";
+} from "../../types/Product";
 import uploadFilesService from "../../utils/uploadFilesService";
-import { RootState } from "../../misc/types/type";
+import { RootState } from "../../types/type";
 
 const initialState: ProductState = {
   products: [],

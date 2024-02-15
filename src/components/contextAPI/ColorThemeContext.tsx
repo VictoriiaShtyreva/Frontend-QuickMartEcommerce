@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import { ColorThemeChange } from "../../misc/types/ColorThemeChange";
+import { ColorThemeChange } from "../../types/ColorThemeChange";
 
 const ColorThemeContext = createContext<ColorThemeChange | null>(null);
 

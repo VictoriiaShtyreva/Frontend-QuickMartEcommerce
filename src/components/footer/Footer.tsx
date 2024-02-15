@@ -1,9 +1,10 @@
-import React from "react";
+import ScrollToTopButton from "./ScrollToTopButton";
 
 const Footer = () => {
   return (
     <footer>
-      <p>Footer</p>
+      <p>Footer content here</p>
+      <ScrollToTopButton />
     </footer>
   );
 };

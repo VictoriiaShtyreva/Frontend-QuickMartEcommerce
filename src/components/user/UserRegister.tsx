@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { UserRegister } from "../../misc/types/User";
+import { UserRegister } from "../../types/User";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";

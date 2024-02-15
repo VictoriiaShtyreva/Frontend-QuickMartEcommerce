@@ -36,7 +36,7 @@ const App = () => {
   return (
     <ColorThemeContext.Provider value={colorThemeMode}>
       <ThemeProvider theme={theme}>
-        <Paper sx={{ backgroundColor: "bacground.paper", boxShadow: "none" }}>
+        <Paper sx={{ boxShadow: "none" }}>
           <RouterProvider router={router} />
         </Paper>
       </ThemeProvider>

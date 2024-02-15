@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { AppState } from "../misc/types/type";
+import { AppState } from "../types/type";
 import axios from "axios";
 
 const UserPage = () => {

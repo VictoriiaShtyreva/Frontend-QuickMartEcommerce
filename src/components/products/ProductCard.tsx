@@ -4,7 +4,7 @@
 // import Typography from "@mui/material/Typography";
 // import { CardActionArea } from "@mui/material";
 
-import { Product } from "../../misc/types/Product";
+import { Product } from "../../types/Product";
 
 // interface ProductCardProps {
 //   product: Product;
