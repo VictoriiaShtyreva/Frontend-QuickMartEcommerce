@@ -2,6 +2,8 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { AppState } from "../types/type";
 import axios from "axios";
+import Header from "../components/header/Header";
+import Footer from "../components/footer/Footer";
 
 const UserPage = () => {
   // const [userForm, setUserForm] = useState();
@@ -36,7 +38,7 @@ const UserPage = () => {
 
   return (
     <div>
-      <p>UserPage</p>
+      <div>User Page</div>
       {/* <p>Name: {user.name}</p> */}
     </div>
   );

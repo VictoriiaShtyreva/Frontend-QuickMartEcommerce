@@ -34,26 +34,23 @@ const ProductList = () => {
   );
 
   return (
-    <>
-      <h3>Product List</h3>
-      <Box sx={{ p: 1 }}>
-        <Grid container justifyContent="center" spacing={2}>
-          {products.map((product: Product) => (
-            <Grid item key={product.id} xs={12} sm={6} md={4} lg={3}>
-              <ProductCard product={product} />
-            </Grid>
-          ))}
-        </Grid>
-        <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
-          <Pagination
-            variant="outlined"
-            count={8}
-            page={pagination.offset / pagination.limit + 1}
-            onChange={handlePaginationChange}
-          />
-        </Box>
+    <Box sx={{ p: 1 }}>
+      <Grid container justifyContent="center" spacing={2}>
+        {products.map((product: Product) => (
+          <Grid item key={product.id} xs={12} sm={6} md={4} lg={3}>
+            <ProductCard product={product} />
+          </Grid>
+        ))}
+      </Grid>
+      <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
+        <Pagination
+          variant="outlined"
+          count={8}
+          page={pagination.offset / pagination.limit + 1}
+          onChange={handlePaginationChange}
+        />
       </Box>
-    </>
+    </Box>
   );
 };
 

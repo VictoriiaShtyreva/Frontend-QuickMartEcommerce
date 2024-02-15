@@ -60,6 +60,7 @@ const Header = () => {
               noWrap
               sx={{
                 display: { xs: "none", md: "flex" },
+                mr: 1,
                 fontFamily: "monospace",
                 fontWeight: 700,
                 letterSpacing: ".3rem",
