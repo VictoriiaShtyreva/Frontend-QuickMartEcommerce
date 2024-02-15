@@ -36,7 +36,7 @@ const customTheme = (mode: PaletteMode) => ({
             contrastText: "#fff", // Text color for dark secondary
           },
           info: {
-            main: "#335555", // Dark info color
+            main: "#c5c6cd", // Dark info color
             contrastText: "#fff", // Text color for dark info
           },
           text: {
@@ -45,7 +45,7 @@ const customTheme = (mode: PaletteMode) => ({
           },
           background: {
             default: "#121212", // Dark background color
-            paper: "#bdbdbd", // Dark paper background color
+            paper: "#23272f", // Dark paper background color
           },
         }),
   },

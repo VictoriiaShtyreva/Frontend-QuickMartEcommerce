@@ -1,5 +1,5 @@
 import axios, { AxiosError } from "axios";
-import { UploadFile } from "../../misc/types/File";
+import { UploadFile } from "../misc/types/File";
 
 const uploadFile = async (fileData: { file: File }) => {
   try {

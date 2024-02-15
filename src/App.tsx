@@ -8,17 +8,19 @@ import UserPage from "./pages/UserPage";
 import AdminPage from "./pages/AdminPage";
 import ColorThemeContext from "./components/contextAPI/ColorThemeContext";
 import { useMemo, useState } from "react";
-import { createTheme, PaletteMode, ThemeProvider } from "@mui/material";
+import { createTheme, PaletteMode, Paper, ThemeProvider } from "@mui/material";
 import customTheme from "./components/contextAPI/theme/customTheme";
+import Header from "./components/header/Header";
+import AboutUs from "./pages/AboutUs";
 
 //Define the routes using createBrowserRouter
 const router = createBrowserRouter([
   { path: "/", element: <HomePage /> },
-  { path: "/products", element: <ProductsPage /> },
+  { path: "/about-us", element: <AboutUs /> },
   { path: "/products/:id", element: <SingleProductPage /> },
-  { path: "shopping-cart", element: <CartPage /> },
-  { path: "user-profile", element: <UserPage /> },
-  { path: "admin-dashboard", element: <AdminPage /> },
+  { path: "/shopping-cart", element: <CartPage /> },
+  { path: "/user-profile", element: <UserPage /> },
+  { path: "/admin-dashboard", element: <AdminPage /> },
 ]);
 
 const App = () => {
@@ -34,7 +36,9 @@ const App = () => {
   return (
     <ColorThemeContext.Provider value={colorThemeMode}>
       <ThemeProvider theme={theme}>
-        <RouterProvider router={router} />
+        <Paper sx={{ backgroundColor: "bacground.paper", boxShadow: "none" }}>
+          <RouterProvider router={router} />
+        </Paper>
       </ThemeProvider>
     </ColorThemeContext.Provider>
   );

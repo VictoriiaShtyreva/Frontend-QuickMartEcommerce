@@ -51,16 +51,14 @@ const Header = () => {
   };
 
   return (
-    <AppBar position="static" style={headerStyle}>
+    <AppBar position="sticky" style={headerStyle}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Link to="/">
             <Typography
               variant="h6"
               noWrap
-              component="a"
               sx={{
-                mr: 2,
                 display: { xs: "none", md: "flex" },
                 fontFamily: "monospace",
                 fontWeight: 700,
@@ -106,7 +104,7 @@ const Header = () => {
                 <Link to="/">Home</Link>
               </MenuItem>
               <MenuItem onClick={handleCloseNavMenu}>
-                <Link to="/products">Products</Link>
+                <Link to="/about-us">About Us</Link>
               </MenuItem>
             </Menu>
           </Box>
@@ -114,9 +112,7 @@ const Header = () => {
           <Typography
             variant="h5"
             noWrap
-            component="a"
             sx={{
-              mr: 2,
               display: { xs: "flex", md: "none" },
               flexGrow: 1,
               fontFamily: "monospace",
@@ -138,9 +134,9 @@ const Header = () => {
               </Link>
             </Button>
             <Button color="inherit" sx={{ mr: 2 }}>
-              <Link to="/products">
+              <Link to="/about-us">
                 <Typography sx={{ color: "primary.contrastText" }}>
-                  Products
+                  About Us
                 </Typography>
               </Link>
             </Button>
@@ -187,8 +183,12 @@ const Header = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              <MenuItem onClick={handleCloseUserMenu}>
-                <Link to="/shopping-cart">Shopping Cart</Link>
+              <MenuItem onClick={handleCloseNavMenu}>
+                <Link to="/shopping-cart">
+                  <Typography sx={{ color: "primary.contrastText" }}>
+                    Shopping Cart
+                  </Typography>
+                </Link>
               </MenuItem>
               <MenuItem onClick={handleCloseNavMenu}>
                 <Link to="/user-profile">

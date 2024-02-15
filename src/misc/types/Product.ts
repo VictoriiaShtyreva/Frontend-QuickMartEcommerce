@@ -12,11 +12,18 @@ export type Product = {
   updatedAt?: string;
 };
 
+//Define types for pagination parameters
+export type PaginationParams = {
+  offset: number;
+  limit: number;
+};
+
 //Define initial state for products
 export type ProductState = {
   products: Product[];
   loading: boolean;
   error: string | null;
+  pagination: PaginationParams;
 };
 
 //Define type for new product
