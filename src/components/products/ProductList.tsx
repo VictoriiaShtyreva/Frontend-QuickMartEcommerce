@@ -1,55 +1,54 @@
-import { useCallback, useEffect } from "react";
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { Box, Grid, Pagination } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 
-import { AppState, RootState } from "../../types/type";
+import { AppState } from "../../types/type";
 import { useAppDispatch } from "../../hooks/useAppDispach";
 import {
   fetchAllProducts,
-  selectPagination,
-  setPagination,
+  sortProductsByPrice,
 } from "../../redux/slices/productSlice";
 import { Product } from "../../types/Product";
 import ProductCard from "./ProductCard";
 
-const ProductList = () => {
+const ProductList = ({
+  selectedCategory,
+  pagination,
+}: {
+  selectedCategory: number | string;
+  pagination: { page: number; limit: number };
+}) => {
   const dispatch = useAppDispatch();
   const products = useSelector((state: AppState) => state.products.products);
-  //Logic for pagination
-  const pagination = useSelector((state: RootState) => selectPagination(state));
 
-  //use fetchAllProducts
+  // Filter products based on the selected category
+  const filteredProducts =
+    selectedCategory === "all"
+      ? products
+      : products.filter((product) => product.category.id === selectedCategory);
+
+  //fetchAllProducts
   useEffect(() => {
-    dispatch(fetchAllProducts(pagination));
-  }, [dispatch, pagination]);
+    dispatch(fetchAllProducts());
+    dispatch(sortProductsByPrice("asc"));
+  }, [dispatch]);
 
-  //Wrap to useCallback for memoizes function
-  const handlePaginationChange = useCallback(
-    (event: React.ChangeEvent<unknown>, page: number) => {
-      dispatch(
-        setPagination({ ...pagination, offset: (page - 1) * pagination.limit })
-      );
-    },
-    [dispatch, pagination]
-  );
+  //Calculate start and end indexes based on pagination
+  const startIndex = (pagination.page - 1) * pagination.limit;
+  const endIndex = pagination.page * pagination.limit;
 
   return (
     <Box sx={{ p: 1 }}>
-      <Grid container justifyContent="center" spacing={2}>
-        {products.map((product: Product) => (
-          <Grid item key={product.id} xs={12} sm={6} md={4} lg={3}>
-            <ProductCard product={product} />
-          </Grid>
-        ))}
+      <Grid container justifyContent={"center"} spacing={2}>
+        {/* Slice the filteredProducts array based on pagination */}
+        {filteredProducts
+          .slice(startIndex, endIndex)
+          .map((product: Product) => (
+            <Grid item key={product.id} xs={11} sm={6} md={4} lg={3}>
+              <ProductCard product={product} />
+            </Grid>
+          ))}
       </Grid>
-      <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
-        <Pagination
-          variant="outlined"
-          count={8}
-          page={pagination.offset / pagination.limit + 1}
-          onChange={handlePaginationChange}
-        />
-      </Box>
     </Box>
   );
 };

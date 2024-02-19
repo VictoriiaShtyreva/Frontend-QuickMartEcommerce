@@ -3,7 +3,7 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 
 import {
   NewProduct,
-  PaginationParams,
+  // PaginationParams,
   Product,
   ProductDataForUpdate,
   ProductState,
@@ -16,10 +16,6 @@ const initialState: ProductState = {
   products: [],
   loading: false,
   error: "",
-  pagination: {
-    offset: 0,
-    limit: 20,
-  },
 };
 
 //Fetch data
@@ -28,11 +24,9 @@ const URL = "https://api.escuelajs.co/api/v1/products";
 //Define thunk for fetching all products
 export const fetchAllProducts = createAsyncThunk(
   "fetchAllProducts",
-  async (paginationParams: PaginationParams) => {
+  async () => {
     try {
-      const response: AxiosResponse<Product[]> = await axios.get(URL, {
-        params: paginationParams,
-      });
+      const response: AxiosResponse<Product[]> = await axios.get(URL);
       return response.data;
     } catch (e) {
       const error = e as AxiosError;
@@ -132,9 +126,9 @@ const productSlice = createSlice({
       if (action.payload === "asc")
         state.products.sort((a, b) => a.price - b.price);
     },
-    setPagination: (state, action: PayloadAction<PaginationParams>) => {
-      state.pagination = action.payload;
-    },
+    // setPagination: (state, action: PayloadAction<PaginationParams>) => {
+    //   state.pagination = action.payload;
+    // },
   },
   extraReducers(builder) {
     //Fetch All Products
@@ -271,8 +265,8 @@ const productSlice = createSlice({
   },
 });
 
-export const selectPagination = (state: RootState) => state.products.pagination;
+// export const selectPagination = (state: RootState) => state.products.pagination;
 
 const productReducer = productSlice.reducer;
-export const { sortProductsByPrice, setPagination } = productSlice.actions;
+export const { sortProductsByPrice } = productSlice.actions;
 export default productReducer;
