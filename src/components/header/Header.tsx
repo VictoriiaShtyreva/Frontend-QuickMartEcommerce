@@ -20,6 +20,7 @@ import LightModeIcon from "@mui/icons-material/LightMode";
 
 import UserPage from "../../pages/UserPage";
 import ColorThemeContext from "../contextAPI/ColorThemeContext";
+import LoginPage from "../../pages/LoginPage";
 
 const Header = () => {
   const colorContext = useContext(ColorThemeContext);
@@ -141,13 +142,6 @@ const Header = () => {
                 </Typography>
               </Link>
             </Button>
-            <Button color="inherit" sx={{ mr: 2 }}>
-              <Link to="/shopping-cart">
-                <Typography sx={{ color: "primary.contrastText" }}>
-                  Shopping Cart
-                </Typography>
-              </Link>
-            </Button>
           </Box>
 
           <IconButton
@@ -196,12 +190,16 @@ const Header = () => {
               </MenuItem>
               <MenuItem onClick={handleCloseNavMenu}>
                 <Link to="/user-profile">
-                  <UserPage />
+                  <Typography sx={{ color: "primary.contrastText" }}>
+                    User Page
+                  </Typography>
                 </Link>
               </MenuItem>
               <MenuItem onClick={handleCloseNavMenu}>
-                <Link to="/">
-                  <div> Login / Create Account </div>
+                <Link to="/login">
+                  <Typography sx={{ color: "primary.contrastText" }}>
+                    Login
+                  </Typography>
                 </Link>
               </MenuItem>
             </Menu>

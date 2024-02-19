@@ -8,4 +8,13 @@ export type UserRegister = {
 export type User = UserRegister & {
   role: "admin" | "customer";
   id: number;
+  creationAt?: string;
+  updatedAt?: string;
+};
+
+export type UserInitialState = {
+  user: User | null;
+  users: User[];
+  loading: boolean;
+  error: string | null;
 };

@@ -13,7 +13,7 @@ import uploadFilesService from "../../utils/uploadFilesService";
 const initialState: ProductState = {
   products: [],
   loading: false,
-  error: "",
+  error: null,
 };
 
 //Fetch data
@@ -37,7 +37,7 @@ export const fetchProductById = createAsyncThunk(
   "fetchProductById",
   async (id: number, { rejectWithValue }) => {
     try {
-      const response: AxiosResponse = await axios.get(`${URL}/${id}`);
+      const response: AxiosResponse<Product> = await axios.get(`${URL}/${id}`);
       return { data: response.data, id };
     } catch (e) {
       return rejectWithValue(e);
@@ -50,7 +50,10 @@ export const createProduct = createAsyncThunk(
   "createProduct",
   async (newProduct: NewProduct) => {
     try {
-      const response: AxiosResponse = await axios.post(URL, newProduct);
+      const response: AxiosResponse<Product[]> = await axios.post(
+        URL,
+        newProduct
+      );
       return response.data;
     } catch (e) {
       const error = e as AxiosError;
@@ -95,7 +98,9 @@ export const deleteProduct = createAsyncThunk(
   "deleteProduct",
   async (id: number) => {
     try {
-      const response: AxiosResponse = await axios.delete(`${URL}/${id}`);
+      const response: AxiosResponse<Product> = await axios.delete(
+        `${URL}/${id}`
+      );
       return { data: response.data, id };
     } catch (e) {
       let error = e as AxiosError;

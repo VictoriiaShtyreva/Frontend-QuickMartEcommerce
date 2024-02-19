@@ -14,6 +14,7 @@ import Header from "./components/header/Header";
 import AboutUs from "./pages/AboutUs";
 import Footer from "./components/footer/Footer";
 import store from "./redux/store";
+import LoginPage from "./pages/LoginPage";
 
 const App = () => {
   const [themeMode, setThemeMode] = useState<PaletteMode>("light");
@@ -37,8 +38,9 @@ const App = () => {
                 <Route path="/" element={<HomePage />} />
                 <Route path="/about-us" element={<AboutUs />} />
                 <Route path="/products/:id" element={<SingleProductPage />} />
-                <Route path="/shopping-cart" element={<CartPage />} />
+                <Route path="/login" element={<LoginPage />} />
                 <Route path="/user-profile" element={<UserPage />} />
+                <Route path="/shopping-cart" element={<CartPage />} />
                 <Route path="/admin-dashboard" element={<AdminPage />} />
               </Routes>
               <Footer />

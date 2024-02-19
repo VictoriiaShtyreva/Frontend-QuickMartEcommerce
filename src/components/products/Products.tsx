@@ -56,19 +56,28 @@ const Products = () => {
         Products Page
       </Typography>
       <Grid container spacing={2} flexDirection={"column"}>
-        <Grid item xs={12} sm={6} md={4} lg={3}>
-          <CategorySelection
-            categories={categories}
-            selectedCategory={selectedCategory}
-            onChange={handleCategoryChange}
-          />
-        </Grid>
-        <Grid item xs={12} sm={6} md={4} lg={3}>
-          <SortingFilter
-            sortPrice={sortPrice}
-            onChange={handleSortPriceChange}
-          />
-        </Grid>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            flexDirection: { xs: "column", sm: "row" },
+            p: 2,
+          }}
+        >
+          <Grid item xs={12} sm={6} md={4} lg={3}>
+            <CategorySelection
+              categories={categories}
+              selectedCategory={selectedCategory}
+              onChange={handleCategoryChange}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6} md={4} lg={3}>
+            <SortingFilter
+              sortPrice={sortPrice}
+              onChange={handleSortPriceChange}
+            />
+          </Grid>
+        </Box>
         <ProductList
           selectedCategory={selectedCategory}
           pagination={pagination}
