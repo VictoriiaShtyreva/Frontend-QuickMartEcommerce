@@ -16,8 +16,10 @@ import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../hooks/useAppDispach";
 import { AppState } from "../types/type";
 import { Authentication } from "../types/Authentication";
-import { loginUser } from "../redux/slices/usersSlice";
+import { loginUser, registerUser } from "../redux/slices/usersSlice";
 import { useState } from "react";
+import { UserRegister } from "../types/User";
+import RegistrationModal from "../components/user/RegisterUserModal";
 
 const LoginPage = () => {
   const {
@@ -31,8 +33,9 @@ const LoginPage = () => {
   );
   const navigate = useNavigate();
   const [agreeToTerms, setAgreeToTerms] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
-  // Submit form for sign in
+  //Submit form for sign in
   const onSubmit: SubmitHandler<Authentication> = async ({
     email,
     password,
@@ -47,7 +50,27 @@ const LoginPage = () => {
           navigate("/user-profile");
         }
       }
-    } catch (err) {
+    } catch (e) {
+      toast.error(error, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
+
+  //Handle register for create account
+  const handleRegister = async (data: UserRegister) => {
+    try {
+      await dispatch(registerUser(data));
+      setShowModal(false);
+      navigate("/user-profile");
+    } catch (e) {
       toast.error(error, {
         position: "top-right",
         autoClose: 5000,
@@ -119,9 +142,19 @@ const LoginPage = () => {
               {loading ? <CircularProgress size={24} /> : "Sign in"}
             </Button>
           </Grid>
+          <Grid item xs={12}>
+            <Button variant="contained" onClick={() => setShowModal(true)}>
+              Create Account
+            </Button>
+          </Grid>
         </Grid>
       </form>
       <ToastContainer />
+      <RegistrationModal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        onRegister={handleRegister}
+      />
     </Container>
   );
 };
