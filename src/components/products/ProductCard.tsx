@@ -1,43 +1,3 @@
-// import Card from "@mui/material/Card";
-// import CardContent from "@mui/material/CardContent";
-// import CardMedia from "@mui/material/CardMedia";
-// import Typography from "@mui/material/Typography";
-// import { CardActionArea } from "@mui/material";
-
-import { Product } from "../../types/Product";
-
-// interface ProductCardProps {
-//   product: Product;
-// }
-
-// const ProductCard = ({ product }: ProductCardProps) => {
-//   return (
-//     <Card sx={{ maxWidth: 345 }}>
-//       <CardActionArea>
-//         <CardMedia
-//           component="img"
-//           height="140"
-//           image={product.images[0]} // Assuming the first image in the array is used
-//           alt={product.title}
-//         />
-//         <CardContent>
-//           <Typography gutterBottom variant="h5" component="div">
-//             {product.title}
-//           </Typography>
-//           <Typography variant="body2" color="primary.contrastText">
-//             {product.description}
-//           </Typography>
-//           <Typography variant="body2" color="primary.contrastText">
-//             Price: ${product.price}
-//           </Typography>
-//         </CardContent>
-//       </CardActionArea>
-//     </Card>
-//   );
-// };
-
-// export default ProductCard;
-
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardActionArea from "@mui/material/CardActionArea";
@@ -45,6 +5,8 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { Link } from "react-router-dom";
+
+import { Product } from "../../types/Product";
 
 interface ProductCardProps {
   product: Product;

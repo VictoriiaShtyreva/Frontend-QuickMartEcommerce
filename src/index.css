@@ -25,6 +25,6 @@ img {
   height: auto;
 }
 
-.footer {
+footer {
   flex-shrink: 0;
 }

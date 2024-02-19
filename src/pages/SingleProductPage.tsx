@@ -1,12 +1,11 @@
-import React from "react";
-
-import Footer from "../components/footer/Footer";
-import Header from "../components/header/Header";
+import { useParams } from "react-router-dom";
+import ProductDetails from "../components/products/ProductDetails";
 
 const SingleProductPage = () => {
+  const { id } = useParams<{ id: string }>();
   return (
     <div>
-      <div>Single Product Page</div>
+      <ProductDetails id={Number(id)} />
     </div>
   );
 };

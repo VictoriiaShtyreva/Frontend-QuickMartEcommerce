@@ -3,7 +3,7 @@ import ScrollToTopButton from "./ScrollToTopButton";
 const Footer = () => {
   return (
     <footer>
-      <p>Footer content here</p>
+      <div>Footer content here</div>
       <ScrollToTopButton />
     </footer>
   );

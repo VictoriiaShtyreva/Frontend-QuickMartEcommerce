@@ -3,14 +3,12 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 
 import {
   NewProduct,
-  // PaginationParams,
   Product,
   ProductDataForUpdate,
   ProductState,
   UpdateProduct,
 } from "../../types/Product";
 import uploadFilesService from "../../utils/uploadFilesService";
-import { RootState } from "../../types/type";
 
 const initialState: ProductState = {
   products: [],
@@ -24,13 +22,12 @@ const URL = "https://api.escuelajs.co/api/v1/products";
 //Define thunk for fetching all products
 export const fetchAllProducts = createAsyncThunk(
   "fetchAllProducts",
-  async () => {
+  async (_, { rejectWithValue }) => {
     try {
       const response: AxiosResponse<Product[]> = await axios.get(URL);
       return response.data;
     } catch (e) {
-      const error = e as AxiosError;
-      return error;
+      return rejectWithValue(e);
     }
   }
 );
@@ -38,15 +35,12 @@ export const fetchAllProducts = createAsyncThunk(
 //Define thunk for fetching single product
 export const fetchProductById = createAsyncThunk(
   "fetchProductById",
-  async (id: number) => {
+  async (id: number, { rejectWithValue }) => {
     try {
-      const response: AxiosResponse<Product[]> = await axios.get(
-        `${URL}/${id}`
-      );
+      const response: AxiosResponse = await axios.get(`${URL}/${id}`);
       return { data: response.data, id };
     } catch (e) {
-      const error = e as AxiosError;
-      return error;
+      return rejectWithValue(e);
     }
   }
 );
@@ -56,10 +50,7 @@ export const createProduct = createAsyncThunk(
   "createProduct",
   async (newProduct: NewProduct) => {
     try {
-      const response: AxiosResponse<Product[]> = await axios.post(
-        URL,
-        newProduct
-      );
+      const response: AxiosResponse = await axios.post(URL, newProduct);
       return response.data;
     } catch (e) {
       const error = e as AxiosError;
@@ -104,9 +95,7 @@ export const deleteProduct = createAsyncThunk(
   "deleteProduct",
   async (id: number) => {
     try {
-      const response: AxiosResponse<Product[]> = await axios.delete(
-        `${URL}/${id}`
-      );
+      const response: AxiosResponse = await axios.delete(`${URL}/${id}`);
       return { data: response.data, id };
     } catch (e) {
       let error = e as AxiosError;
@@ -126,9 +115,6 @@ const productSlice = createSlice({
       if (action.payload === "asc")
         state.products.sort((a, b) => a.price - b.price);
     },
-    // setPagination: (state, action: PayloadAction<PaginationParams>) => {
-    //   state.pagination = action.payload;
-    // },
   },
   extraReducers(builder) {
     //Fetch All Products
@@ -151,13 +137,11 @@ const productSlice = createSlice({
     });
     //error
     builder.addCase(fetchAllProducts.rejected, (state, action) => {
-      if (action.payload instanceof AxiosError) {
-        return {
-          ...state,
-          loading: false,
-          error: action.payload.message,
-        };
-      }
+      return {
+        ...state,
+        loading: false,
+        error: action.error.message ?? "error",
+      };
     });
     //Fetch Product by ID
     builder.addCase(fetchProductById.fulfilled, (state, action) => {
@@ -177,10 +161,8 @@ const productSlice = createSlice({
       };
     });
     builder.addCase(fetchProductById.rejected, (state, action) => {
-      if (action.payload instanceof AxiosError) {
-        state.loading = false;
-        state.error = action.payload.message;
-      }
+      state.loading = false;
+      state.error = action.error.message ?? "error";
     });
     //Create Product
     builder.addCase(createProduct.fulfilled, (state, action) => {
@@ -264,8 +246,6 @@ const productSlice = createSlice({
     });
   },
 });
-
-// export const selectPagination = (state: RootState) => state.products.pagination;
 
 const productReducer = productSlice.reducer;
 export const { sortProductsByPrice } = productSlice.actions;
