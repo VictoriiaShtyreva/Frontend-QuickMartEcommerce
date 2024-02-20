@@ -44,10 +44,10 @@ const LoginPage = () => {
   // Redirect to the appropriate page when user is logged in
   useEffect(() => {
     if (user) {
-      if (user.role === "admin") {
-        navigate("/admin-dashboard");
+      if (user.role === "customer") {
+        navigate(`/user-profile/${user.id}`);
       } else {
-        navigate("/user-profile");
+        navigate("/admin-dashboard");
       }
     }
   }, [user, navigate]);
@@ -56,7 +56,6 @@ const LoginPage = () => {
   const handleRegister = async (data: UserRegister) => {
     await dispatch(registerUser(data));
     setShowModal(false);
-    navigate("/user-profile");
   };
 
   return (

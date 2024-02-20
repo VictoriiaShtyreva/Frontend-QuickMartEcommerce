@@ -6,7 +6,6 @@ import {
   Authentication,
   AuthenticationToken,
 } from "../../types/Authentication";
-import { error } from "console";
 
 const initialState: UserInitialState = {
   user: null,
@@ -33,15 +32,47 @@ export const getAllUsers = createAsyncThunk(
   }
 );
 
+//Define thunk for fetching single user
+export const fetchUserById = createAsyncThunk(
+  "fetchUserById",
+  async (id: number, { rejectWithValue }) => {
+    try {
+      const response: AxiosResponse<User> = await axios.get(`${URL}/${id}`);
+      return { data: response.data, id };
+    } catch (e) {
+      return rejectWithValue(e);
+    }
+  }
+);
+
+// Define thunk for update user
+export const updateUser = createAsyncThunk(
+  "updateUser",
+  async ({ id, ...updatedProps }: User, { rejectWithValue, dispatch }) => {
+    try {
+      const response: AxiosResponse<User> = await axios.put(
+        `${URL}/${id}`,
+        updatedProps
+      );
+      const updatedUser = response.data;
+      dispatch(saveUserInformation(updatedUser));
+      return updatedUser;
+    } catch (e) {
+      rejectWithValue(e);
+    }
+  }
+);
+
 //Define thunk for register new user
 export const registerUser = createAsyncThunk(
   "registerUser",
-  async (newUser: UserRegister, { rejectWithValue }) => {
+  async (newUser: UserRegister, { rejectWithValue, dispatch }) => {
     try {
       const response: AxiosResponse<User> = await axios.post(
         `${URL}/`,
         newUser
       );
+      dispatch(saveUserInformation(response.data));
       return response.data;
     } catch (e) {
       return rejectWithValue(e);
@@ -97,6 +128,9 @@ const usersSlice = createSlice({
       window.localStorage.clear();
       return state;
     },
+    saveUserInformation: (state, action: PayloadAction<User>) => {
+      state.user = action.payload;
+    },
   },
   extraReducers: (builder) => {
     //Fetch all users
@@ -116,6 +150,56 @@ const usersSlice = createSlice({
       };
     });
     builder.addCase(getAllUsers.rejected, (state, action) => {
+      return {
+        ...state,
+        loading: false,
+        error: action.error.message ?? "error",
+      };
+    });
+    //Fetch user by id
+    builder.addCase(fetchUserById.fulfilled, (state, action) => {
+      if (!(action.payload instanceof AxiosError)) {
+        const { id } = action.payload;
+        return {
+          ...state,
+          users: state.users.filter((user) => user.id !== id),
+          loading: false,
+        };
+      }
+    });
+    builder.addCase(fetchUserById.pending, (state) => {
+      return {
+        ...state,
+        loading: true,
+      };
+    });
+    builder.addCase(fetchUserById.rejected, (state, action) => {
+      return {
+        ...state,
+        loading: false,
+        error: action.error.message ?? "error",
+      };
+    });
+    //Update user
+    builder.addCase(updateUser.fulfilled, (state, action) => {
+      if (!(action.payload instanceof AxiosError)) {
+        const user = action.payload;
+        return {
+          ...state,
+          loading: false,
+          users: state.users.map((item) =>
+            item.id === user?.id ? user : item
+          ),
+        };
+      }
+    });
+    builder.addCase(updateUser.pending, (state) => {
+      return {
+        ...state,
+        loading: true,
+      };
+    });
+    builder.addCase(updateUser.rejected, (state, action) => {
       return {
         ...state,
         loading: false,
@@ -200,5 +284,5 @@ const usersSlice = createSlice({
 });
 
 const userReducer = usersSlice.reducer;
-export const { logout } = usersSlice.actions;
+export const { logout, saveUserInformation } = usersSlice.actions;
 export default userReducer;

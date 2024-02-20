@@ -51,7 +51,7 @@ export const createProduct = createAsyncThunk(
   async (newProduct: NewProduct, { rejectWithValue }) => {
     try {
       const response: AxiosResponse<Product[]> = await axios.post(
-        `${URL}/`,
+        `${URL}/$`,
         newProduct
       );
       return response.data;
@@ -80,7 +80,7 @@ export const updateProduct = createAsyncThunk(
         };
       }
       // Make the PUT request to update the product
-      const { data } = await axios.put<Product[]>(
+      const { data } = await axios.put<Product>(
         `${URL}/${newProps.id}`,
         dataForUpdate
       );
@@ -192,14 +192,13 @@ const productSlice = createSlice({
     //Update Product
     builder.addCase(updateProduct.fulfilled, (state, action) => {
       if (!(action.payload instanceof AxiosError)) {
-        //The updated product is the first item in the array returned by the API.
-        const product = action.payload[0];
+        const product = action.payload;
         return {
           ...state,
-          loading: false,
           products: state.products.map((item) =>
             item.id === product.id ? product : item
           ),
+          loading: false,
         };
       }
     });

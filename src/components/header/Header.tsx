@@ -211,14 +211,18 @@ const Header = () => {
                   </Link>
                 </MenuItem>
               )}
-              <MenuItem onClick={handleCloseNavMenu}>
-                <Link to="/user-profile">
-                  <Typography sx={{ color: "primary.contrastText" }}>
-                    User Page
-                  </Typography>
-                </Link>
-              </MenuItem>
-              {!user ? (
+              {user && (
+                <MenuItem onClick={handleCloseNavMenu}>
+                  <Link to={`/user-profile/${user.id}`}>
+                    <Typography sx={{ color: "primary.contrastText" }}>
+                      User Page
+                    </Typography>
+                  </Link>
+                </MenuItem>
+              )}
+              {user ? (
+                <MenuItem onClick={handleLogout}>Logout</MenuItem>
+              ) : (
                 <MenuItem onClick={handleCloseNavMenu}>
                   <Link to="/login">
                     <Typography sx={{ color: "primary.contrastText" }}>
@@ -226,8 +230,6 @@ const Header = () => {
                     </Typography>
                   </Link>
                 </MenuItem>
-              ) : (
-                <MenuItem onClick={handleLogout}>Logout</MenuItem>
               )}
             </Menu>
           </Box>

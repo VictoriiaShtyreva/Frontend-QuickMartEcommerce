@@ -14,7 +14,7 @@ const ProductDetails = ({ id }: { id: number }) => {
   const product = useSelector((state: AppState) =>
     state.products.products.find((product) => product.id === id)
   );
-  const [anchorEl, setAnchorEl] = useState(null);
+  // const [anchorEl, setAnchorEl] = useState(null);
 
   //   const handleAddToFavoritesClick = (event) => {
   //     if (!isLoggedIn) {
@@ -78,7 +78,7 @@ const ProductDetails = ({ id }: { id: number }) => {
       </Grid>
 
       {/* logic for user */}
-      {/* {isLoggedIn && (
+      {/* {user && (
         <Grid item xs={12} style={{ textAlign: "right" }}>
           <Box sx={{ display: "flex", justifyContent: "space-between", mt: 3 }}>
             <Fab
