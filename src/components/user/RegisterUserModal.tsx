@@ -1,13 +1,17 @@
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import {
+  Box,
   Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
+  Grid,
+  InputLabel,
   TextField,
 } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 
 import { UserRegister } from "../../types/User";
 import uploadFilesService from "../../utils/uploadFilesService";
@@ -65,46 +69,79 @@ const RegistrationModal = ({
 
   return (
     <Dialog open={isOpen} onClose={onClose}>
-      <DialogTitle>Register</DialogTitle>
+      <DialogTitle
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <span>Create New Customer Account</span>
+        <Button onClick={onClose} color="secondary" sx={{ minWidth: "0px" }}>
+          <CloseIcon />
+        </Button>
+      </DialogTitle>
       <DialogContent>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <TextField
-            label="Email"
-            {...register("email", {
-              required: true,
-              pattern: /^\S+@\S+\.\S+$/,
-            })}
-            error={!!errors.email}
-            helperText={errors.email ? "Invalid email format" : null}
-            fullWidth
-            required
-          />
-          <TextField
-            label="Name"
-            {...register("name", { required: true })}
-            error={!!errors.name}
-            helperText={errors.name ? "Name is required" : null}
-            fullWidth
-            required
-          />
-          <TextField
-            label="Password"
-            type="password"
-            {...register("password", { required: true })}
-            error={!!errors.password}
-            helperText={errors.password ? "Password is required" : null}
-            fullWidth
-            required
-          />
-          <input type="file" accept="image/*" onChange={handleFileChange} />
-          <Button type="submit" variant="contained">
-            Register
-          </Button>
+          <Grid
+            container
+            spacing={2}
+            sx={{ display: "flex", flexDirection: "column", p: 2 }}
+          >
+            <Grid item xs={12}>
+              <TextField
+                label="Email"
+                {...register("email", {
+                  required: true,
+                  pattern: /^\S+@\S+\.\S+$/,
+                })}
+                error={!!errors.email}
+                helperText={errors.email ? "Invalid email format" : null}
+                fullWidth
+                required
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                label="Name"
+                {...register("name", { required: true })}
+                error={!!errors.name}
+                helperText={errors.name ? "Name is required" : null}
+                fullWidth
+                required
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                label="Password"
+                type="password"
+                {...register("password", { required: true })}
+                error={!!errors.password}
+                helperText={errors.password ? "Password is required" : null}
+                fullWidth
+                required
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Box sx={{ display: "flex", alignItems: "center" }}>
+                <InputLabel id="avatar-label">Add Avatar</InputLabel>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  style={{ marginLeft: 8 }}
+                />
+              </Box>
+            </Grid>
+            <Grid item xs={12}>
+              <Button type="submit" variant="contained">
+                Create an Account
+              </Button>
+            </Grid>
+          </Grid>
         </form>
       </DialogContent>
-      <DialogActions>
-        <Button onClick={onClose}>Cancel</Button>
-      </DialogActions>
+      <DialogActions></DialogActions>
     </Dialog>
   );
 };

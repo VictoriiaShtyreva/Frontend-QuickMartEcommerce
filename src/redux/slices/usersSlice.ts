@@ -6,6 +6,7 @@ import {
   Authentication,
   AuthenticationToken,
 } from "../../types/Authentication";
+import { error } from "console";
 
 const initialState: UserInitialState = {
   user: null,
@@ -68,7 +69,7 @@ const getAuthentication = createAsyncThunk(
 //Define thunk for login user
 export const loginUser = createAsyncThunk(
   "loginUser",
-  async (credentials: Authentication, { dispatch }) => {
+  async (credentials: Authentication, { dispatch, rejectWithValue }) => {
     try {
       const response: AxiosResponse<AuthenticationToken> = await axios.post(
         loginUrl,
@@ -80,8 +81,7 @@ export const loginUser = createAsyncThunk(
       );
       return authentication.payload as User;
     } catch (e) {
-      const error = e as AxiosError;
-      return error;
+      return rejectWithValue(e);
     }
   }
 );
@@ -91,13 +91,10 @@ const usersSlice = createSlice({
   name: "users",
   initialState,
   reducers: {
-    saveUserInformation: (state, action: PayloadAction<User>) => {
-      state.user = action.payload;
-    },
     logout: (state) => {
       state.user = null;
-      window.localStorage.removeItem("token");
-      window.location.reload();
+      localStorage.removeItem("token");
+      window.localStorage.clear();
       return state;
     },
   },
@@ -195,7 +192,7 @@ const usersSlice = createSlice({
         return {
           ...state,
           loading: false,
-          error: action.payload.message,
+          error: action.error.message ?? "An error occurred",
         };
       }
     });
@@ -203,5 +200,5 @@ const usersSlice = createSlice({
 });
 
 const userReducer = usersSlice.reducer;
-export const { saveUserInformation, logout } = usersSlice.actions;
+export const { logout } = usersSlice.actions;
 export default userReducer;

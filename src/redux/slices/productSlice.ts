@@ -48,16 +48,15 @@ export const fetchProductById = createAsyncThunk(
 //Define thunk for create product
 export const createProduct = createAsyncThunk(
   "createProduct",
-  async (newProduct: NewProduct) => {
+  async (newProduct: NewProduct, { rejectWithValue }) => {
     try {
       const response: AxiosResponse<Product[]> = await axios.post(
-        URL,
+        `${URL}/`,
         newProduct
       );
       return response.data;
     } catch (e) {
-      const error = e as AxiosError;
-      return error;
+      return rejectWithValue(e);
     }
   }
 );
@@ -65,7 +64,7 @@ export const createProduct = createAsyncThunk(
 //Define thunk for update product with function for uploading images if they exist in the update data.
 export const updateProduct = createAsyncThunk(
   "updateProduct",
-  async (newProps: ProductDataForUpdate) => {
+  async (newProps: ProductDataForUpdate, { rejectWithValue }) => {
     try {
       //Initialize with existing data
       let dataForUpdate: UpdateProduct = { ...newProps.data };
@@ -87,8 +86,7 @@ export const updateProduct = createAsyncThunk(
       );
       return data;
     } catch (e) {
-      const error = e as AxiosError;
-      return error;
+      return rejectWithValue(e);
     }
   }
 );
@@ -96,15 +94,14 @@ export const updateProduct = createAsyncThunk(
 //Define thunk for delete product
 export const deleteProduct = createAsyncThunk(
   "deleteProduct",
-  async (id: number) => {
+  async (id: number, { rejectWithValue }) => {
     try {
       const response: AxiosResponse<Product> = await axios.delete(
         `${URL}/${id}`
       );
       return { data: response.data, id };
     } catch (e) {
-      let error = e as AxiosError;
-      return error;
+      return rejectWithValue(e);
     }
   }
 );
@@ -186,13 +183,11 @@ const productSlice = createSlice({
       };
     });
     builder.addCase(createProduct.rejected, (state, action) => {
-      if (action.payload instanceof AxiosError) {
-        return {
-          ...state,
-          loading: false,
-          error: action.payload.message,
-        };
-      }
+      return {
+        ...state,
+        loading: false,
+        error: action.error.message ?? "error",
+      };
     });
     //Update Product
     builder.addCase(updateProduct.fulfilled, (state, action) => {
@@ -215,13 +210,11 @@ const productSlice = createSlice({
       };
     });
     builder.addCase(updateProduct.rejected, (state, action) => {
-      if (action.payload instanceof AxiosError) {
-        return {
-          ...state,
-          loading: false,
-          error: action.payload.message,
-        };
-      }
+      return {
+        ...state,
+        loading: false,
+        error: action.error.message ?? "error",
+      };
     });
     //Delete Product
     builder.addCase(deleteProduct.fulfilled, (state, action) => {
@@ -241,13 +234,11 @@ const productSlice = createSlice({
       };
     });
     builder.addCase(deleteProduct.rejected, (state, action) => {
-      if (action.payload instanceof AxiosError) {
-        return {
-          ...state,
-          loading: false,
-          error: action.payload.message,
-        };
-      }
+      return {
+        ...state,
+        loading: false,
+        error: action.error.message ?? "error",
+      };
     });
   },
 });

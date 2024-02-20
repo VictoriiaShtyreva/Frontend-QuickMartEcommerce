@@ -44,7 +44,7 @@ const ProductDetails = ({ id }: { id: number }) => {
   };
 
   return (
-    <Grid container spacing={2}>
+    <Grid container spacing={2} sx={{ minHeight: "100vh" }}>
       <Grid item xs={12} md={6}>
         <Box p={2}>
           {product?.images && product?.images.length > 0 ? (

@@ -9,15 +9,15 @@ import {
   Grid,
   FormControlLabel,
   Checkbox,
+  Paper,
 } from "@mui/material";
-import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 import { useAppDispatch } from "../hooks/useAppDispach";
 import { AppState } from "../types/type";
 import { Authentication } from "../types/Authentication";
 import { loginUser, registerUser } from "../redux/slices/usersSlice";
-import { useState } from "react";
 import { UserRegister } from "../types/User";
 import RegistrationModal from "../components/user/RegisterUserModal";
 
@@ -28,9 +28,7 @@ const LoginPage = () => {
     formState: { errors },
   } = useForm<Authentication>();
   const dispatch = useAppDispatch();
-  const { user, loading, error } = useSelector(
-    (state: AppState) => state.users
-  );
+  const { user } = useSelector((state: AppState) => state.users);
   const navigate = useNavigate();
   const [agreeToTerms, setAgreeToTerms] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -40,121 +38,125 @@ const LoginPage = () => {
     email,
     password,
   }) => {
-    try {
-      await dispatch(loginUser({ email, password }));
-      //Redirect to home or user profile depending on user data
-      if (user) {
-        if (user.role === "admin") {
-          navigate("/admin-dashboard");
-        } else {
-          navigate("/user-profile");
-        }
-      }
-    } catch (e) {
-      toast.error(error, {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    }
+    await dispatch(loginUser({ email, password }));
   };
+
+  // Redirect to the appropriate page when user is logged in
+  useEffect(() => {
+    if (user) {
+      if (user.role === "admin") {
+        navigate("/admin-dashboard");
+      } else {
+        navigate("/user-profile");
+      }
+    }
+  }, [user, navigate]);
 
   //Handle register for create account
   const handleRegister = async (data: UserRegister) => {
-    try {
-      await dispatch(registerUser(data));
-      setShowModal(false);
-      navigate("/user-profile");
-    } catch (e) {
-      toast.error(error, {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    }
+    await dispatch(registerUser(data));
+    setShowModal(false);
+    navigate("/user-profile");
   };
 
   return (
-    <Container maxWidth="sm" sx={{ p: 2, margin: "0 auto" }}>
-      <Typography variant="h6" sx={{ mb: 2 }}>
-        Login your account
-      </Typography>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        style={{ width: "100%", maxWidth: "400px" }}
+    <Container
+      maxWidth="sm"
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        minHeight: "100vh",
+      }}
+    >
+      <Paper
+        sx={{
+          p: 4,
+          border: "1px solid #ccc",
+          borderRadius: 5,
+        }}
       >
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <TextField
-              label="Email"
-              {...register("email", {
-                required: true,
-                pattern: /^\S+@\S+\.\S+$/,
-              })}
-              error={!!errors.email}
-              helperText={errors.email ? "Invalid email format" : null}
-              fullWidth
-              required
-              color="secondary"
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              label="Password"
-              type="password"
-              {...register("password", { required: true })}
-              error={!!errors.password}
-              helperText={errors.password ? "Password is required" : null}
-              fullWidth
-              required
-              color="secondary"
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={agreeToTerms}
-                  onChange={(e) => setAgreeToTerms(e.target.checked)}
-                  color="secondary"
-                />
-              }
-              label="By using this form you agree with the storage and handling of your data by this website."
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <Button
-              type="submit"
-              variant="contained"
-              disabled={loading}
-              fullWidth
+        <Typography variant="h6" sx={{ mb: 2 }}>
+          Login your account
+        </Typography>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <TextField
+                label="Email"
+                {...register("email", {
+                  required: true,
+                  pattern: /^\S+@\S+\.\S+$/,
+                })}
+                error={!!errors.email}
+                helperText={errors.email ? "Invalid email format" : null}
+                fullWidth
+                required
+                color="secondary"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                label="Password"
+                type="password"
+                {...register("password", { required: true })}
+                error={!!errors.password}
+                helperText={errors.password ? "Password is required" : null}
+                fullWidth
+                required
+                color="secondary"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={agreeToTerms}
+                    onChange={(e) => setAgreeToTerms(e.target.checked)}
+                    color="secondary"
+                    required
+                  />
+                }
+                label="By using this form you agree with the storage and handling of your data by this website."
+              />
+            </Grid>
+            <Grid
+              item
+              xs={12}
+              sx={{ display: "flex", justifyContent: "center" }}
             >
-              {loading ? <CircularProgress size={24} /> : "Sign in"}
-            </Button>
+              <Button
+                type="submit"
+                variant="contained"
+                fullWidth
+                sx={{ width: "100%", maxWidth: "200px" }}
+              >
+                Sign in
+              </Button>
+            </Grid>
+            <Grid
+              item
+              xs={12}
+              sx={{ display: "flex", justifyContent: "center" }}
+            >
+              <Button
+                variant="contained"
+                style={{ maxWidth: "200px" }}
+                onClick={() => setShowModal(true)}
+                sx={{ width: "100%", maxWidth: "200px" }}
+              >
+                Create Account
+              </Button>
+            </Grid>
           </Grid>
-          <Grid item xs={12}>
-            <Button variant="contained" onClick={() => setShowModal(true)}>
-              Create Account
-            </Button>
-          </Grid>
-        </Grid>
-      </form>
-      <ToastContainer />
-      <RegistrationModal
-        isOpen={showModal}
-        onClose={() => setShowModal(false)}
-        onRegister={handleRegister}
-      />
+        </form>
+
+        <RegistrationModal
+          isOpen={showModal}
+          onClose={() => setShowModal(false)}
+          onRegister={handleRegister}
+        />
+      </Paper>
     </Container>
   );
 };

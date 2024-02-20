@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   AppBar,
   Toolbar,
@@ -14,15 +14,20 @@ import {
   Avatar,
   useTheme,
 } from "@mui/material";
+import { useSelector } from "react-redux";
 import MenuIcon from "@mui/icons-material/Menu";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
 
-import UserPage from "../../pages/UserPage";
 import ColorThemeContext from "../contextAPI/ColorThemeContext";
-import LoginPage from "../../pages/LoginPage";
+import { useAppDispatch } from "../../hooks/useAppDispach";
+import { AppState } from "../../types/type";
+import { logout } from "../../redux/slices/usersSlice";
 
 const Header = () => {
+  const dispatch = useAppDispatch();
+  const { user } = useSelector((state: AppState) => state.users);
+  const navigate = useNavigate();
   const colorContext = useContext(ColorThemeContext);
   const theme = useTheme();
   const themeClickHandler = () => {
@@ -34,6 +39,7 @@ const Header = () => {
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
   };
+
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -49,6 +55,11 @@ const Header = () => {
   //Styles using theme
   const headerStyle = {
     backgroundColor: theme.palette.primary.main,
+  };
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate("/login");
   };
 
   return (
@@ -72,7 +83,7 @@ const Header = () => {
               LOGO
             </Typography>
           </Link>
-
+          {/* Navigation Menu */}
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
@@ -84,6 +95,7 @@ const Header = () => {
             >
               <MenuIcon />
             </IconButton>
+            {/* Menu Items */}
             <Menu
               id="menu-appbar"
               anchorEl={anchorElNav}
@@ -110,7 +122,7 @@ const Header = () => {
               </MenuItem>
             </Menu>
           </Box>
-
+          {/* Logo */}
           <Typography
             variant="h5"
             noWrap
@@ -126,7 +138,7 @@ const Header = () => {
           >
             LOGO
           </Typography>
-
+          {/* Navigation Links */}
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             <Button color="inherit" sx={{ mr: 2 }}>
               <Link to="/">
@@ -142,8 +154,17 @@ const Header = () => {
                 </Typography>
               </Link>
             </Button>
+            {user && (
+              <Button color="inherit" sx={{ mr: 2 }}>
+                <Link to="/shopping-cart">
+                  <Typography sx={{ color: "primary.contrastText" }}>
+                    Shopping Cart
+                  </Typography>
+                </Link>
+              </Button>
+            )}
           </Box>
-
+          {/* Theme Switch Button */}
           <IconButton
             onClick={themeClickHandler}
             aria-label="color theme switch"
@@ -155,7 +176,7 @@ const Header = () => {
               <LightModeIcon />
             )}
           </IconButton>
-
+          {/* User Avatar and Menu */}
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -178,16 +199,18 @@ const Header = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              <MenuItem
-                onClick={handleCloseNavMenu}
-                sx={{ display: { xs: "flex", md: "none" } }}
-              >
-                <Link to="/shopping-cart">
-                  <Typography sx={{ color: "primary.contrastText" }}>
-                    Shopping Cart
-                  </Typography>
-                </Link>
-              </MenuItem>
+              {user && (
+                <MenuItem
+                  onClick={handleCloseNavMenu}
+                  sx={{ display: { xs: "flex", md: "none" } }}
+                >
+                  <Link to="/shopping-cart">
+                    <Typography sx={{ color: "primary.contrastText" }}>
+                      Shopping Cart
+                    </Typography>
+                  </Link>
+                </MenuItem>
+              )}
               <MenuItem onClick={handleCloseNavMenu}>
                 <Link to="/user-profile">
                   <Typography sx={{ color: "primary.contrastText" }}>
@@ -195,13 +218,17 @@ const Header = () => {
                   </Typography>
                 </Link>
               </MenuItem>
-              <MenuItem onClick={handleCloseNavMenu}>
-                <Link to="/login">
-                  <Typography sx={{ color: "primary.contrastText" }}>
-                    Login
-                  </Typography>
-                </Link>
-              </MenuItem>
+              {!user ? (
+                <MenuItem onClick={handleCloseNavMenu}>
+                  <Link to="/login">
+                    <Typography sx={{ color: "primary.contrastText" }}>
+                      Login
+                    </Typography>
+                  </Link>
+                </MenuItem>
+              ) : (
+                <MenuItem onClick={handleLogout}>Logout</MenuItem>
+              )}
             </Menu>
           </Box>
         </Toolbar>
