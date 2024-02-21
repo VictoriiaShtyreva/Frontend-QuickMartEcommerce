@@ -82,7 +82,9 @@ const Products = () => {
           selectedCategory={selectedCategory}
           pagination={pagination}
         />
-        <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
+        <Box
+          sx={{ display: "flex", justifyContent: "center", mt: 2, mb: 2, p: 2 }}
+        >
           <Pagination
             variant="outlined"
             count={10}

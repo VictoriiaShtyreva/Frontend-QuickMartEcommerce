@@ -105,6 +105,7 @@ export const loginUser = createAsyncThunk(
         loginUrl,
         credentials
       );
+      // Store token
       localStorage.setItem("token", response.data.access_token);
       const authentication = await dispatch(
         getAuthentication(response.data.access_token)
@@ -124,7 +125,6 @@ const usersSlice = createSlice({
     logout: (state) => {
       state.user = null;
       localStorage.removeItem("token");
-      window.localStorage.clear();
       return state;
     },
     saveUserInformation: (state, action: PayloadAction<User>) => {

@@ -4,7 +4,6 @@ import {
   Typography,
   Button,
   TextField,
-  CircularProgress,
   Container,
   Grid,
   FormControlLabel,
@@ -161,3 +160,6 @@ const LoginPage = () => {
 };
 
 export default LoginPage;
+function getAuthentication(token: string): any {
+  throw new Error("Function not implemented.");
+}
