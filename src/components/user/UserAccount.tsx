@@ -3,6 +3,7 @@ import {
   Avatar,
   Box,
   Button,
+  Container,
   FormControlLabel,
   Switch,
   TextField,
@@ -49,7 +50,12 @@ const UserAccount = ({ id }: { id: number }) => {
   }, [dispatch, id, user]);
 
   return (
-    <div>
+    <Container
+      maxWidth="sm"
+      sx={{
+        minHeight: "100vh",
+      }}
+    >
       <Typography variant="h5" sx={{ mb: 1 }}>
         {user?.name}
       </Typography>
@@ -97,7 +103,7 @@ const UserAccount = ({ id }: { id: number }) => {
       <p>Email: {user?.email}</p>
       <p>ID: {user?.id}</p>
       <p>Role: {user?.role}</p>
-    </div>
+    </Container>
   );
 };
 

@@ -99,6 +99,7 @@ const RegistrationModal = ({
                 helperText={errors.email ? "Invalid email format" : null}
                 fullWidth
                 required
+                color="secondary"
               />
             </Grid>
             <Grid item xs={12}>
@@ -109,6 +110,7 @@ const RegistrationModal = ({
                 helperText={errors.name ? "Name is required" : null}
                 fullWidth
                 required
+                color="secondary"
               />
             </Grid>
             <Grid item xs={12}>
@@ -120,6 +122,7 @@ const RegistrationModal = ({
                 helperText={errors.password ? "Password is required" : null}
                 fullWidth
                 required
+                color="secondary"
               />
             </Grid>
             <Grid item xs={12}>
@@ -134,7 +137,7 @@ const RegistrationModal = ({
               </Box>
             </Grid>
             <Grid item xs={12}>
-              <Button type="submit" variant="contained">
+              <Button type="submit" variant="contained" color="secondary">
                 Create an Account
               </Button>
             </Grid>

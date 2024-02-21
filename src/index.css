@@ -24,7 +24,3 @@ img {
   max-width: 100%;
   height: auto;
 }
-
-footer {
-  flex-shrink: 0;
-}
