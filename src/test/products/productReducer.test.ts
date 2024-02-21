@@ -1,14 +1,26 @@
 import productReducer, {
+  createProduct,
   fetchAllProducts,
 } from "../../redux/slices/productSlice";
-import { Product } from "../../types/Product";
+import store from "../../redux/store";
+import { NewProduct, Product } from "../../types/Product";
+import { productServer } from "../shared/productServer";
+
+beforeAll(() => {
+  productServer.listen();
+});
+
+afterAll(() => {
+  productServer.close();
+});
 
 //test for product reducer
 const initialState = {
   products: [],
   loading: false,
-  error: "",
+  error: null,
 };
+
 // test suit for product reducer
 describe("product reducer", () => {
   //mock data
@@ -44,7 +56,7 @@ describe("product reducer", () => {
     expect(state).toEqual({
       products: mockproduct,
       loading: false,
-      error: "",
+      error: null,
     });
   });
   //test2: pending
@@ -56,6 +68,7 @@ describe("product reducer", () => {
     expect(state).toEqual({
       products: [],
       loading: true,
+      error: null,
     });
   });
   //test3: rejected
@@ -70,5 +83,24 @@ describe("product reducer", () => {
       loading: false,
       error: error.message,
     });
+  });
+
+  //test fetching asyncthunk with store dispatch
+  test("should fetch all products from api", async () => {
+    await store.dispatch(fetchAllProducts());
+    expect(store.getState().products.products.length).toBeCalled;
+  });
+
+  //create new product
+  test("should create a new product", async () => {
+    const newProduct: NewProduct = {
+      title: "Test1",
+      price: 45,
+      description: "description for T-short",
+      images: ["1.png"],
+      categoryId: 1,
+    };
+    await store.dispatch(createProduct(newProduct));
+    expect(store.getState().products.products.length).toBe(1);
   });
 });

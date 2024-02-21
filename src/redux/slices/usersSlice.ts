@@ -72,7 +72,6 @@ export const registerUser = createAsyncThunk(
         `${URL}/`,
         newUser
       );
-      dispatch(saveUserInformation(response.data));
       return response.data;
     } catch (e) {
       return rejectWithValue(e);

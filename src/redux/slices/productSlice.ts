@@ -50,13 +50,14 @@ export const createProduct = createAsyncThunk(
   "createProduct",
   async (newProduct: NewProduct, { rejectWithValue }) => {
     try {
-      const response: AxiosResponse<Product[]> = await axios.post(
-        `${URL}/$`,
+      const response: AxiosResponse<Product> = await axios.post(
+        `${URL}/`,
         newProduct
       );
       return response.data;
     } catch (e) {
-      return rejectWithValue(e);
+      const error = e as AxiosError;
+      return rejectWithValue(error.message);
     }
   }
 );
@@ -168,13 +169,10 @@ const productSlice = createSlice({
     });
     //Create Product
     builder.addCase(createProduct.fulfilled, (state, action) => {
-      if (!(action.payload instanceof AxiosError)) {
-        return {
-          ...state,
-          products: action.payload,
-          loading: false,
-        };
-      }
+      return {
+        ...state,
+        products: [...state.products, action.payload],
+      };
     });
     builder.addCase(createProduct.pending, (state) => {
       return {
