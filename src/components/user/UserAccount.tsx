@@ -14,12 +14,13 @@ import {
   styled,
   useTheme,
 } from "@mui/material";
+import { useSelector } from "react-redux";
 
 import { useAppDispatch } from "../../hooks/useAppDispach";
-import { useSelector } from "react-redux";
 import { AppState } from "../../types/type";
 import { fetchUserById, updateUser } from "../../redux/slices/usersSlice";
 import { User } from "../../types/User";
+import { useAppSelector } from "../../hooks/useAppSelector";
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -28,8 +29,8 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
     boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
     "&::after": {
       position: "absolute",
-      top: 0,
-      left: 0,
+      top: "-1px",
+      left: "-1px",
       width: "100%",
       height: "100%",
       borderRadius: "50%",
@@ -52,7 +53,7 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 
 const UserAccount = ({ id }: { id: number }) => {
   const dispatch = useAppDispatch();
-  const user = useSelector((state: AppState) =>
+  const user = useAppSelector((state: AppState) =>
     state.users.users.find((user) => user.id === id)
   );
   const theme = useTheme();
@@ -127,6 +128,7 @@ const UserAccount = ({ id }: { id: number }) => {
               <Switch
                 checked={isEditing}
                 onChange={() => setIsEditing(!isEditing)}
+                color="secondary"
               />
             }
             label="Edit Info"

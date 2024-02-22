@@ -10,6 +10,7 @@ import {
 } from "../../redux/slices/productSlice";
 import { Product } from "../../types/Product";
 import ProductCard from "./ProductCard";
+import { useAppSelector } from "../../hooks/useAppSelector";
 
 const ProductList = ({
   selectedCategory,
@@ -19,7 +20,7 @@ const ProductList = ({
   pagination: { page: number; limit: number };
 }) => {
   const dispatch = useAppDispatch();
-  const products = useSelector((state: AppState) => state.products.products);
+  const products = useAppSelector((state: AppState) => state.products.products);
 
   // Filter products based on the selected category
   const filteredProducts =

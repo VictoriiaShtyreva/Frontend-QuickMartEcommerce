@@ -23,10 +23,11 @@ import ColorThemeContext from "../contextAPI/ColorThemeContext";
 import { useAppDispatch } from "../../hooks/useAppDispach";
 import { AppState } from "../../types/type";
 import { logout } from "../../redux/slices/usersSlice";
+import { useAppSelector } from "../../hooks/useAppSelector";
 
 const Header = () => {
   const dispatch = useAppDispatch();
-  const { user } = useSelector((state: AppState) => state.users);
+  const { user } = useAppSelector((state: AppState) => state.users);
   const navigate = useNavigate();
   const colorContext = useContext(ColorThemeContext);
   const theme = useTheme();

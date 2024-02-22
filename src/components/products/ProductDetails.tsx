@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { Grid, Box, Typography, Popover, Button, Fab } from "@mui/material";
+import { useEffect } from "react";
+import { Grid, Box, Typography, Fab } from "@mui/material";
 import Carousel from "react-slick";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
@@ -8,25 +7,14 @@ import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { useAppDispatch } from "../../hooks/useAppDispach";
 import { AppState } from "../../types/type";
 import { fetchProductById } from "../../redux/slices/productSlice";
+import { useAppSelector } from "../../hooks/useAppSelector";
 
 const ProductDetails = ({ id }: { id: number }) => {
   const dispatch = useAppDispatch();
-  const product = useSelector((state: AppState) =>
+  const product = useAppSelector((state: AppState) =>
     state.products.products.find((product) => product.id === id)
   );
-  // const [anchorEl, setAnchorEl] = useState(null);
-
-  //   const handleAddToFavoritesClick = (event) => {
-  //     if (!isLoggedIn) {
-  //       setAnchorEl(event.currentTarget);
-  //     } else {
-  //       onAddToFavorites(product);
-  //     }
-  //   };
-
-  //   const handleClose = () => {
-  //     setAnchorEl(null);
-  //   };
+  const { user } = useAppSelector((state: AppState) => state.users);
 
   useEffect(() => {
     if (!product) {
@@ -71,55 +59,31 @@ const ProductDetails = ({ id }: { id: number }) => {
           <Typography variant="body2" sx={{ mb: 1 }}>
             {product?.description}
           </Typography>
-          <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Box sx={{ display: "flex", alignItems: "center", mb: 3 }}>
             <Typography variant="body1">Price: ${product?.price}</Typography>
           </Box>
+          {/* logic for user */}
+          {user && (
+            <Grid item xs={12}>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  m: "0 auto",
+                  width: "150px",
+                }}
+              >
+                <Fab color="secondary" aria-label="add to favorites">
+                  <FavoriteIcon />
+                </Fab>
+                <Fab color="primary" aria-label="add to cart">
+                  <AddShoppingCartIcon />
+                </Fab>
+              </Box>
+            </Grid>
+          )}
         </Box>
       </Grid>
-
-      {/* logic for user */}
-      {/* {user && (
-        <Grid item xs={12} style={{ textAlign: "right" }}>
-          <Box sx={{ display: "flex", justifyContent: "space-between", mt: 3 }}>
-            <Fab
-              color="secondary"
-              aria-label="add to favorites"
-              onClick={handleAddToFavoritesClick}
-            >
-              <FavoriteIcon />
-            </Fab>
-            <Fab
-              color="primary"
-              aria-label="add to cart"
-              onClick={() => onAddToCart(product)}
-            >
-              <AddShoppingCartIcon />
-            </Fab>
-          </Box>
-        </Grid>
-      )}
-      <Popover
-        open={Boolean(anchorEl)}
-        anchorEl={anchorEl}
-        onClose={handleClose}
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "center",
-        }}
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "center",
-        }}
-      >
-        <Box sx={{ padding: 2 }}>
-          <Typography variant="body2">
-            You must be logged in to add products to favorites.
-          </Typography>
-          <Button variant="contained" color="primary" onClick={handleClose}>
-            Login
-          </Button>
-        </Box>
-      </Popover> */}
     </Grid>
   );
 };

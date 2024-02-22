@@ -19,6 +19,7 @@ import { Authentication } from "../types/Authentication";
 import { loginUser, registerUser } from "../redux/slices/usersSlice";
 import { UserRegister } from "../types/User";
 import RegistrationModal from "../components/user/RegisterUserModal";
+import { useAppSelector } from "../hooks/useAppSelector";
 
 const LoginPage = () => {
   const {
@@ -27,7 +28,7 @@ const LoginPage = () => {
     formState: { errors },
   } = useForm<Authentication>();
   const dispatch = useAppDispatch();
-  const { user } = useSelector((state: AppState) => state.users);
+  const { user } = useAppSelector((state: AppState) => state.users);
   const navigate = useNavigate();
   const [agreeToTerms, setAgreeToTerms] = useState(false);
   const [showModal, setShowModal] = useState(false);

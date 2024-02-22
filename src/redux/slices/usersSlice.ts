@@ -66,7 +66,7 @@ export const updateUser = createAsyncThunk(
 //Define thunk for register new user
 export const registerUser = createAsyncThunk(
   "registerUser",
-  async (newUser: UserRegister, { rejectWithValue, dispatch }) => {
+  async (newUser: UserRegister, { rejectWithValue }) => {
     try {
       const response: AxiosResponse<User> = await axios.post(
         `${URL}/`,

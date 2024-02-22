@@ -1,10 +1,15 @@
-import productReducer, {
+import {
   createProduct,
+  deleteProduct,
   fetchAllProducts,
+  fetchProductById,
+  updateProduct,
 } from "../../redux/slices/productSlice";
-import store from "../../redux/store";
-import { NewProduct, Product } from "../../types/Product";
+import { createNewStore } from "../../redux/store";
+import { NewProduct } from "../../types/Product";
 import { productServer } from "../shared/productServer";
+
+let store = createNewStore();
 
 beforeAll(() => {
   productServer.listen();
@@ -14,83 +19,18 @@ afterAll(() => {
   productServer.close();
 });
 
-//test for product reducer
-const initialState = {
-  products: [],
-  loading: false,
-  error: null,
-};
+beforeEach(() => {
+  store = createNewStore();
+});
 
-// test suit for product reducer
 describe("product reducer", () => {
-  //mock data
-  let mockproduct: Product[] = [
-    {
-      id: 1,
-      title: "product1",
-      price: 34,
-      description: "description for product1",
-      images: ["img1", "img2"],
-      category: { id: 1, name: "category1", image: "img1" },
-    },
-    {
-      id: 2,
-      title: "product2",
-      price: 67,
-      description: "description for product2",
-      images: ["img1", "img2"],
-      category: { id: 2, name: "category2", image: "img2" },
-    },
-  ];
-  //test initialState
-  test("should return the initial state", () => {
-    const state = productReducer(undefined, { type: "" });
-    expect(state).toEqual(initialState);
-  });
-  //test1: fullfill
-  test("should return a list of products", () => {
-    const state = productReducer(
-      initialState,
-      fetchAllProducts.fulfilled(mockproduct, "fulfilled")
-    );
-    expect(state).toEqual({
-      products: mockproduct,
-      loading: false,
-      error: null,
-    });
-  });
-  //test2: pending
-  test("should set loading to true", () => {
-    const state = productReducer(
-      initialState,
-      fetchAllProducts.pending("pending")
-    );
-    expect(state).toEqual({
-      products: [],
-      loading: true,
-      error: null,
-    });
-  });
-  //test3: rejected
-  test("should set error to the rejected message", () => {
-    const error = new Error("error");
-    const state = productReducer(
-      initialState,
-      fetchAllProducts.rejected(error, "error")
-    );
-    expect(state).toEqual({
-      products: [],
-      loading: false,
-      error: error.message,
-    });
-  });
-
   //test fetching asyncthunk with store dispatch
   test("should fetch all products from api", async () => {
     await store.dispatch(fetchAllProducts());
-    expect(store.getState().products.products.length).toBeCalled;
+    expect(store.getState().products.products.length).toBe(2);
+    expect(store.getState().products.error).toBeNull();
+    expect(store.getState().products.loading).toBeFalsy();
   });
-
   //create new product
   test("should create a new product", async () => {
     const newProduct: NewProduct = {
@@ -102,5 +42,62 @@ describe("product reducer", () => {
     };
     await store.dispatch(createProduct(newProduct));
     expect(store.getState().products.products.length).toBe(1);
+  });
+  //test for fetching single product by id
+  test("should fetch a single product by id", async () => {
+    const id = 1;
+    // Dispatch the action to fetch the product
+    const dispatchedAction = await store.dispatch(fetchProductById(id));
+    const expectedAction = {
+      type: "fetchProductById/fulfilled",
+      payload: {
+        data: {
+          id: 1,
+          title: "product1",
+          price: 34,
+          description: "description for product1",
+          images: ["img1", "img2"],
+          category: { id: 1, name: "category1", image: "img1" },
+        },
+        id: 1,
+      },
+      meta: {
+        arg: 1,
+        requestId: expect.any(String),
+        requestStatus: "fulfilled",
+      },
+    };
+    expect(dispatchedAction).toEqual(expectedAction);
+    expect(store.getState().products.error).toBeNull();
+    expect(store.getState().products.loading).toBeFalsy();
+  });
+  //test for updating product
+  test("should update a product", async () => {
+    const updates = {
+      id: 1,
+      data: {
+        title: "updated product",
+      },
+    };
+    const dispatchedAction = await store.dispatch(updateProduct(updates));
+    const expectedAction = {
+      type: "updateProduct/fulfilled",
+      payload: {
+        id: 1,
+        title: "updated product",
+        price: 34,
+        description: "description for product1",
+        images: ["img1", "img2"],
+        category: { id: 1, name: "category1", image: "img1" },
+      },
+      meta: {
+        arg: { id: 1, data: { title: "updated product" } },
+        requestId: expect.any(String),
+        requestStatus: "fulfilled",
+      },
+    };
+    expect(dispatchedAction).toEqual(expectedAction);
+    expect(store.getState().products.error).toBeNull();
+    expect(store.getState().products.loading).toBeFalsy();
   });
 });

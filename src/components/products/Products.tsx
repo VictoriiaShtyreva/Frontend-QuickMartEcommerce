@@ -11,10 +11,11 @@ import { sortProductsByPrice } from "../../redux/slices/productSlice";
 import { Category } from "../../types/Category";
 import CategorySelection from "./CategorySelection";
 import SortingFilter from "./SortingFilter";
+import { useAppSelector } from "../../hooks/useAppSelector";
 
 const Products = () => {
   const dispatch = useAppDispatch();
-  const categories = useSelector<RootState, Category[]>(
+  const categories = useAppSelector<Category[]>(
     (state) => state.categories.categories
   );
   const [selectedCategory, setSelectedCategory] = useState<string>("all");

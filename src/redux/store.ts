@@ -11,4 +11,15 @@ const store = configureStore({
   },
 });
 
+//for testing purposes
+export const createNewStore = () => {
+  return configureStore({
+    reducer: {
+      products: productReducer,
+      categories: categorySlice,
+      users: userReducer,
+    },
+  });
+};
+
 export default store;

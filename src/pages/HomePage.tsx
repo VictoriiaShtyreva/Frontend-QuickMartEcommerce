@@ -1,11 +1,7 @@
 import Products from "../components/products/Products";
 
 const Home = () => {
-  return (
-    <>
-      <Products />
-    </>
-  );
+  return <Products />;
 };
 
 export default Home;
