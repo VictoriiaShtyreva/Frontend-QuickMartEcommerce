@@ -8,7 +8,13 @@ interface SortingFilterProps {
 const SortingFilter = ({ sortPrice, onChange }: SortingFilterProps) => {
   return (
     <Box sx={{ marginBottom: 2 }}>
-      <Select value={sortPrice} onChange={onChange} displayEmpty fullWidth>
+      <Select
+        value={sortPrice}
+        onChange={onChange}
+        displayEmpty
+        fullWidth
+        color="secondary"
+      >
         <MenuItem value="asc">Price: Low to High</MenuItem>
         <MenuItem value="desc">Price: High to Low</MenuItem>
       </Select>

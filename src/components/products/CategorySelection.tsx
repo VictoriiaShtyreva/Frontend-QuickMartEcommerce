@@ -21,6 +21,7 @@ const CategorySelection = ({
         onChange={onChange}
         displayEmpty
         fullWidth
+        color="secondary"
       >
         <MenuItem value="all">All Categories</MenuItem>
         {categories.map((category) => (

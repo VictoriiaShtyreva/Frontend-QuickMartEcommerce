@@ -1,8 +1,6 @@
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
 import { Box, Grid } from "@mui/material";
 
-import { AppState } from "../../types/type";
 import { useAppDispatch } from "../../hooks/useAppDispach";
 import {
   fetchAllProducts,
@@ -20,7 +18,7 @@ const ProductList = ({
   pagination: { page: number; limit: number };
 }) => {
   const dispatch = useAppDispatch();
-  const products = useAppSelector((state: AppState) => state.products.products);
+  const products = useAppSelector((state) => state.products.products);
 
   // Filter products based on the selected category
   const filteredProducts =

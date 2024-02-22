@@ -46,8 +46,22 @@ const ProductCard = ({ product }: ProductCardProps) => {
             color={"info.main"}
             textAlign={"center"}
           >
-            <Typography variant="h6">{product.title}</Typography>
-            <Typography variant="h6">{product.price}$</Typography>
+            <Typography
+              variant="h6"
+              sx={{
+                color: "info.contrastText",
+              }}
+            >
+              {product.title}
+            </Typography>
+            <Typography
+              variant="h6"
+              sx={{
+                color: "info.contrastText",
+              }}
+            >
+              {product.price}$
+            </Typography>
           </Box>
           <Link
             to={`/products/${product.id}`}

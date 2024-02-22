@@ -14,20 +14,18 @@ import {
   Avatar,
   useTheme,
 } from "@mui/material";
-import { useSelector } from "react-redux";
 import MenuIcon from "@mui/icons-material/Menu";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
 
 import ColorThemeContext from "../contextAPI/ColorThemeContext";
 import { useAppDispatch } from "../../hooks/useAppDispach";
-import { AppState } from "../../types/type";
 import { logout } from "../../redux/slices/usersSlice";
 import { useAppSelector } from "../../hooks/useAppSelector";
 
 const Header = () => {
   const dispatch = useAppDispatch();
-  const { user } = useAppSelector((state: AppState) => state.users);
+  const { user } = useAppSelector((state) => state.users);
   const navigate = useNavigate();
   const colorContext = useContext(ColorThemeContext);
   const theme = useTheme();

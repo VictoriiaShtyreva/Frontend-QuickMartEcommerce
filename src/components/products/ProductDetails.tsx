@@ -1,20 +1,50 @@
-import { useEffect } from "react";
-import { Grid, Box, Typography, Fab } from "@mui/material";
+import { useEffect, useState } from "react";
+import {
+  Grid,
+  Box,
+  Typography,
+  Fab,
+  Popover,
+  Dialog,
+  DialogContent,
+} from "@mui/material";
 import Carousel from "react-slick";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 
 import { useAppDispatch } from "../../hooks/useAppDispach";
-import { AppState } from "../../types/type";
 import { fetchProductById } from "../../redux/slices/productSlice";
 import { useAppSelector } from "../../hooks/useAppSelector";
+import { Link } from "react-router-dom";
+import CartModal from "../cart/CartModal";
+import { ShoppingCartItem } from "../../types/ShoppingCart";
 
 const ProductDetails = ({ id }: { id: number }) => {
   const dispatch = useAppDispatch();
-  const product = useAppSelector((state: AppState) =>
+  const product = useAppSelector((state) =>
     state.products.products.find((product) => product.id === id)
   );
-  const { user } = useAppSelector((state: AppState) => state.users);
+  const { user } = useAppSelector((state) => state.users);
+  //Popover state
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+  //Cart state
+  const [showDialog, setShowDialog] = useState(false);
+
+  const handleFabClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClosePopover = () => {
+    setAnchorEl(null);
+  };
+
+  const handleOpenDialog = () => {
+    setShowDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setShowDialog(false);
+  };
 
   useEffect(() => {
     if (!product) {
@@ -34,7 +64,7 @@ const ProductDetails = ({ id }: { id: number }) => {
   return (
     <Grid container spacing={2} sx={{ minHeight: "100vh" }}>
       <Grid item xs={12} md={6}>
-        <Box p={2}>
+        <Box p={3}>
           {product?.images && product?.images.length > 0 ? (
             <Carousel {...settings}>
               {product?.images.slice(0, 3).map((image) => (
@@ -62,28 +92,68 @@ const ProductDetails = ({ id }: { id: number }) => {
           <Box sx={{ display: "flex", alignItems: "center", mb: 3 }}>
             <Typography variant="body1">Price: ${product?.price}</Typography>
           </Box>
-          {/* logic for user */}
-          {user && (
-            <Grid item xs={12}>
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  m: "0 auto",
-                  width: "150px",
+          <Grid item xs={12}>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                m: "0 auto",
+                width: "150px",
+              }}
+            >
+              <Fab
+                color="secondary"
+                aria-label="add to favorites"
+                onClick={handleFabClick}
+              >
+                <FavoriteIcon />
+              </Fab>
+              <Fab
+                color="primary"
+                aria-label="add to cart"
+                onClick={handleOpenDialog}
+              >
+                <AddShoppingCartIcon />
+              </Fab>
+            </Box>
+            {!user && (
+              <Popover
+                open={Boolean(anchorEl)}
+                anchorEl={anchorEl}
+                onClose={handleClosePopover}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "left",
+                }}
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "left",
                 }}
               >
-                <Fab color="secondary" aria-label="add to favorites">
-                  <FavoriteIcon />
-                </Fab>
-                <Fab color="primary" aria-label="add to cart">
-                  <AddShoppingCartIcon />
-                </Fab>
-              </Box>
-            </Grid>
-          )}
+                <Box p={2}>
+                  <Typography variant="body1">
+                    Please
+                    <Link to="/login">Login</Link>
+                    to add to favorites.
+                  </Typography>
+                </Box>
+              </Popover>
+            )}
+          </Grid>
         </Box>
       </Grid>
+      {/* Render CartModal*/}
+      <Dialog open={showDialog} onClose={handleCloseDialog}>
+        <DialogContent>
+          {product && (
+            <CartModal
+              onClose={handleCloseDialog}
+              item={product as ShoppingCartItem}
+              open={false}
+            />
+          )}
+        </DialogContent>
+      </Dialog>
     </Grid>
   );
 };

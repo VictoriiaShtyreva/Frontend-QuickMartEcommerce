@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import {
   Avatar,
   Badge,
-  Box,
   Button,
   Container,
   FormControlLabel,
@@ -14,10 +13,8 @@ import {
   styled,
   useTheme,
 } from "@mui/material";
-import { useSelector } from "react-redux";
 
 import { useAppDispatch } from "../../hooks/useAppDispach";
-import { AppState } from "../../types/type";
 import { fetchUserById, updateUser } from "../../redux/slices/usersSlice";
 import { User } from "../../types/User";
 import { useAppSelector } from "../../hooks/useAppSelector";
@@ -53,7 +50,7 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 
 const UserAccount = ({ id }: { id: number }) => {
   const dispatch = useAppDispatch();
-  const user = useAppSelector((state: AppState) =>
+  const user = useAppSelector((state) =>
     state.users.users.find((user) => user.id === id)
   );
   const theme = useTheme();

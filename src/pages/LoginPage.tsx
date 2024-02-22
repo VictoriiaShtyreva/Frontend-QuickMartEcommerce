@@ -1,5 +1,4 @@
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useSelector } from "react-redux";
 import {
   Typography,
   Button,
@@ -14,7 +13,6 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 import { useAppDispatch } from "../hooks/useAppDispach";
-import { AppState } from "../types/type";
 import { Authentication } from "../types/Authentication";
 import { loginUser, registerUser } from "../redux/slices/usersSlice";
 import { UserRegister } from "../types/User";
@@ -28,7 +26,7 @@ const LoginPage = () => {
     formState: { errors },
   } = useForm<Authentication>();
   const dispatch = useAppDispatch();
-  const { user } = useAppSelector((state: AppState) => state.users);
+  const { user } = useAppSelector((state) => state.users);
   const navigate = useNavigate();
   const [agreeToTerms, setAgreeToTerms] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -161,6 +159,3 @@ const LoginPage = () => {
 };
 
 export default LoginPage;
-function getAuthentication(token: string): any {
-  throw new Error("Function not implemented.");
-}

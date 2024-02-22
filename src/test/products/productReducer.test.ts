@@ -1,6 +1,5 @@
 import {
   createProduct,
-  deleteProduct,
   fetchAllProducts,
   fetchProductById,
   updateProduct,

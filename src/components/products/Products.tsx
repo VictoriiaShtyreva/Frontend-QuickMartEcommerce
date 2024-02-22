@@ -1,11 +1,9 @@
 import { Box, Container, Grid, Pagination, Typography } from "@mui/material";
-import { useSelector } from "react-redux";
 import { useCallback, useEffect, useState } from "react";
 import { SelectChangeEvent } from "@mui/material";
 
 import ProductList from "./ProductList";
 import { useAppDispatch } from "../../hooks/useAppDispach";
-import { RootState } from "../../types/type";
 import { fetchAllCategories } from "../../redux/slices/categorySlice";
 import { sortProductsByPrice } from "../../redux/slices/productSlice";
 import { Category } from "../../types/Category";
