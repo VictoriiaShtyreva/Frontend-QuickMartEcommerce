@@ -2,6 +2,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { useMemo, useState } from "react";
 import { createTheme, PaletteMode, Paper, ThemeProvider } from "@mui/material";
 import { Provider } from "react-redux";
+import { ToastContainer } from "react-toastify";
 
 import HomePage from "./pages/HomePage";
 import CartPage from "./pages/CartPage";
@@ -34,6 +35,7 @@ const App = () => {
             <Paper sx={{ boxShadow: "none" }}>
               <h1 style={{ display: "none" }}>Redux Toolkit</h1>
               <Header />
+              <ToastContainer />
               <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/about-us" element={<AboutUs />} />

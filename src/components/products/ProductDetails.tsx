@@ -11,11 +11,11 @@ import {
 import Carousel from "react-slick";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import { Bounce, toast } from "react-toastify";
 
 import { useAppDispatch } from "../../hooks/useAppDispach";
 import { fetchProductById } from "../../redux/slices/productSlice";
 import { useAppSelector } from "../../hooks/useAppSelector";
-import { Link } from "react-router-dom";
 import CartModal from "../cart/CartModal";
 import { ShoppingCartItem } from "../../types/ShoppingCart";
 
@@ -25,25 +25,46 @@ const ProductDetails = ({ id }: { id: number }) => {
     state.products.products.find((product) => product.id === id)
   );
   const { user } = useAppSelector((state) => state.users);
-  //Popover state
-  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   //Cart state
   const [showDialog, setShowDialog] = useState(false);
 
-  const handleFabClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClosePopover = () => {
-    setAnchorEl(null);
-  };
-
   const handleOpenDialog = () => {
-    setShowDialog(true);
+    if (!user) {
+      toast.info("You need to login to add this product to cart.", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+    } else {
+      setShowDialog(true);
+    }
   };
 
   const handleCloseDialog = () => {
     setShowDialog(false);
+  };
+
+  const handleAddToFavorites = () => {
+    if (!user) {
+      toast.info("You need to login to add this product to favorites.", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+    }
+    //Dispatch action to add to favorites
   };
 
   useEffect(() => {
@@ -104,7 +125,7 @@ const ProductDetails = ({ id }: { id: number }) => {
               <Fab
                 color="secondary"
                 aria-label="add to favorites"
-                onClick={handleFabClick}
+                onClick={handleAddToFavorites}
               >
                 <FavoriteIcon />
               </Fab>
@@ -116,29 +137,6 @@ const ProductDetails = ({ id }: { id: number }) => {
                 <AddShoppingCartIcon />
               </Fab>
             </Box>
-            {!user && (
-              <Popover
-                open={Boolean(anchorEl)}
-                anchorEl={anchorEl}
-                onClose={handleClosePopover}
-                anchorOrigin={{
-                  vertical: "bottom",
-                  horizontal: "left",
-                }}
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "left",
-                }}
-              >
-                <Box p={2}>
-                  <Typography variant="body1">
-                    Please
-                    <Link to="/login">Login</Link>
-                    to add to favorites.
-                  </Typography>
-                </Box>
-              </Popover>
-            )}
           </Grid>
         </Box>
       </Grid>

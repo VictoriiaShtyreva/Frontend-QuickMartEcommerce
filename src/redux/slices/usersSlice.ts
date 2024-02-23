@@ -8,10 +8,13 @@ import {
 } from "../../types/Authentication";
 
 const initialState: UserInitialState = {
+  //the currently logged-in user
   user: null,
+  //all aray of users
   users: [],
   loading: false,
   error: null,
+  access_token: null,
 };
 
 //Fetch data
@@ -129,6 +132,9 @@ const usersSlice = createSlice({
     },
     saveUserInformation: (state, action: PayloadAction<User>) => {
       state.user = action.payload;
+    },
+    saveAccessToken: (state, action: PayloadAction<string>) => {
+      state.access_token = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -285,3 +291,6 @@ const usersSlice = createSlice({
 const userReducer = usersSlice.reducer;
 export const { logout, saveUserInformation } = usersSlice.actions;
 export default userReducer;
+function setToken(access_token: string): any {
+  throw new Error("Function not implemented.");
+}
