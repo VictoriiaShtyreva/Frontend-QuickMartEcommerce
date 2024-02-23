@@ -14,7 +14,6 @@ const initialState: UserInitialState = {
   users: [],
   loading: false,
   error: null,
-  access_token: null,
 };
 
 //Fetch data
@@ -83,10 +82,14 @@ export const registerUser = createAsyncThunk(
 );
 
 //Define thunk for user with session
-const getAuthentication = createAsyncThunk(
+export const getAuthentication = createAsyncThunk(
   "getAuthentication",
-  async (access_token: string, { rejectWithValue }) => {
+  async (_, { rejectWithValue }) => {
     try {
+      const access_token = localStorage.getItem("token");
+      if (!access_token) {
+        throw new Error("No token found");
+      }
       const response: AxiosResponse<User> = await axios.get(profileUrl, {
         headers: {
           Authorization: `Bearer ${access_token}`,
@@ -108,11 +111,9 @@ export const loginUser = createAsyncThunk(
         loginUrl,
         credentials
       );
-      // Store token
+      // Store token in local storage
       localStorage.setItem("token", response.data.access_token);
-      const authentication = await dispatch(
-        getAuthentication(response.data.access_token)
-      );
+      const authentication = await dispatch(getAuthentication());
       return authentication.payload as User;
     } catch (e) {
       return rejectWithValue(e);
@@ -132,9 +133,6 @@ const usersSlice = createSlice({
     },
     saveUserInformation: (state, action: PayloadAction<User>) => {
       state.user = action.payload;
-    },
-    saveAccessToken: (state, action: PayloadAction<string>) => {
-      state.access_token = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -240,7 +238,6 @@ const usersSlice = createSlice({
       if (!(action.payload instanceof AxiosError)) {
         return {
           ...state,
-          users: state.users.concat(action.payload),
           user: action.payload,
           loading: false,
         };
@@ -291,6 +288,3 @@ const usersSlice = createSlice({
 const userReducer = usersSlice.reducer;
 export const { logout, saveUserInformation } = usersSlice.actions;
 export default userReducer;
-function setToken(access_token: string): any {
-  throw new Error("Function not implemented.");
-}

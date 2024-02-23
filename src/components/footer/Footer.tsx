@@ -55,8 +55,8 @@ const Footer = () => {
             © {currentYear} | All rights reserved.
           </Typography>
         </Box>
+        <ScrollToTopButton />
         <Box sx={{ display: "flex", alignItems: "center" }}>
-          <ScrollToTopButton />
           <Link
             href="https://github.com/VictoriiaShtyreva"
             target="_blank"

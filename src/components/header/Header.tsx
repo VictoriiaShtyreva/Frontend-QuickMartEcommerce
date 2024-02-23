@@ -13,10 +13,12 @@ import {
   Tooltip,
   Avatar,
   useTheme,
+  Badge,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
 import ColorThemeContext from "../contextAPI/ColorThemeContext";
 import { useAppDispatch } from "../../hooks/useAppDispach";
@@ -34,6 +36,8 @@ const Header = () => {
   };
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+  //Cart
+  const cartItems = useAppSelector((state) => state.cart.items);
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -154,13 +158,13 @@ const Header = () => {
               </Link>
             </Button>
             {user && (
-              <Button color="inherit" sx={{ mr: 2 }}>
-                <Link to="/shopping-cart">
-                  <Typography sx={{ color: "primary.contrastText" }}>
-                    Shopping Cart
-                  </Typography>
-                </Link>
-              </Button>
+              <Link to="/shopping-cart">
+                <IconButton aria-label="cart">
+                  <Badge badgeContent={cartItems.length} color="secondary">
+                    <ShoppingCartIcon />
+                  </Badge>
+                </IconButton>
+              </Link>
             )}
           </Box>
           {/* Theme Switch Button */}

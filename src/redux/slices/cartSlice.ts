@@ -1,6 +1,7 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 import { ShoppingCartItem, ShoppingCartState } from "../../types/ShoppingCart";
+import { User } from "../../types/User";
 
 const initialState: ShoppingCartState = {
   items: [],
@@ -10,14 +11,24 @@ export const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
-    addProduct: (state, action: PayloadAction<ShoppingCartItem>) => {
-      const { id } = action.payload;
+    addProduct: (
+      state,
+      action: PayloadAction<{
+        item: ShoppingCartItem;
+        user: User | null;
+      }>
+    ) => {
+      const { item, user } = action.payload;
+      const { id } = item;
       const existingItem = state.items.find((item) => item.id === id);
       if (existingItem) {
-        existingItem.quantity++;
+        existingItem.quantity += action.payload.item.quantity;
       } else {
-        state.items.push({ ...action.payload, quantity: 1 });
+        state.items.push({ ...item });
       }
+      //Save cart items along with user object to local storage
+      const cartData = { user, cartItems: state.items };
+      localStorage.setItem("cartData", JSON.stringify(cartData));
     },
     removeProduct: (state, action: PayloadAction<number>) => {
       const index = state.items.findIndex((item) => item.id === action.payload);
@@ -26,15 +37,19 @@ export const cartSlice = createSlice({
       }
     },
     increaseQuantity: (state, action: PayloadAction<number>) => {
-      const item = state.items.find((item) => item.id === action.payload);
-      if (item) {
-        item.quantity++;
+      const itemIndex = state.items.findIndex(
+        (item) => item.id === action.payload
+      );
+      if (itemIndex !== -1) {
+        state.items[itemIndex].quantity++;
       }
     },
     decreaseQuantity: (state, action: PayloadAction<number>) => {
-      const item = state.items.find((item) => item.id === action.payload);
-      if (item && item.quantity > 1) {
-        item.quantity--;
+      const itemIndex = state.items.findIndex(
+        (item) => item.id === action.payload
+      );
+      if (itemIndex !== -1 && state.items[itemIndex].quantity > 1) {
+        state.items[itemIndex].quantity--;
       }
     },
     emptyCart: (state) => {

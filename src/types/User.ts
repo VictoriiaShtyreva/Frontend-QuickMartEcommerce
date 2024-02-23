@@ -17,5 +17,4 @@ export type UserInitialState = {
   users: User[];
   loading: boolean;
   error: string | null;
-  access_token: string | null;
 };

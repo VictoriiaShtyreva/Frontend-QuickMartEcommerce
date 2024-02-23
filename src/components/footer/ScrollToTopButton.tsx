@@ -1,5 +1,4 @@
 import Button from "@mui/material/Button";
-import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 
 import scrollToTop from "../../utils/scrollToTop";
 
@@ -11,7 +10,7 @@ const ScrollToTopButton = () => {
       color="primary"
       sx={{ mr: 3 }}
     >
-      <ArrowUpwardIcon />
+      Scroll to top
     </Button>
   );
 };
