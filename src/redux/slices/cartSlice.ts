@@ -24,7 +24,7 @@ export const cartSlice = createSlice({
       if (existingItem) {
         existingItem.quantity += action.payload.item.quantity;
       } else {
-        state.items.push({ ...item });
+        state.items.push({ ...item, quantity: item.quantity });
       }
       //Save cart items along with user object to local storage
       const cartData = { user, cartItems: state.items };
@@ -37,19 +37,15 @@ export const cartSlice = createSlice({
       }
     },
     increaseQuantity: (state, action: PayloadAction<number>) => {
-      const itemIndex = state.items.findIndex(
-        (item) => item.id === action.payload
-      );
-      if (itemIndex !== -1) {
-        state.items[itemIndex].quantity++;
+      const item = state.items.find((item) => item.id === action.payload);
+      if (item) {
+        item.quantity++;
       }
     },
     decreaseQuantity: (state, action: PayloadAction<number>) => {
-      const itemIndex = state.items.findIndex(
-        (item) => item.id === action.payload
-      );
-      if (itemIndex !== -1 && state.items[itemIndex].quantity > 1) {
-        state.items[itemIndex].quantity--;
+      const item = state.items.find((item) => item.id === action.payload);
+      if (item && item.quantity > 1) {
+        item.quantity--;
       }
     },
     emptyCart: (state) => {

@@ -24,24 +24,22 @@ interface CartModalProps {
 const CartModal = ({ onClose, item }: CartModalProps) => {
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.users.user);
-
-  const quantity = useAppSelector((state) => {
-    const cartItem = state.cart.items.find(
-      (cartItem) => cartItem.id === item.id
-    );
-    return cartItem ? cartItem.quantity : 1;
-  });
+  const [quantity, setQuantity] = useState(1);
 
   const increaseQuantityHandler = () => {
     dispatch(increaseQuantity(item.quantity));
+    setQuantity(quantity + 1);
   };
 
   const decreaseQuantityHandler = () => {
-    dispatch(decreaseQuantity(item.quantity));
+    if (quantity > 1) {
+      dispatch(decreaseQuantity(item.quantity));
+      setQuantity(quantity - 1);
+    }
   };
 
   const addToCart = () => {
-    dispatch(addProduct({ item, user }));
+    dispatch(addProduct({ item: { ...item, quantity }, user }));
     onClose();
     toast.success(`${item.title} added to cart!`, {
       position: "top-right",
