@@ -72,8 +72,6 @@ const ProductDetails = ({ id }: { id: number }) => {
     }
   }, [dispatch, id, product]);
 
-  console.log(product?.images);
-
   //Settings for carousel
   const settings = {
     dots: true,

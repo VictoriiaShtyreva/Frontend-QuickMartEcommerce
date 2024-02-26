@@ -14,7 +14,6 @@ import { useAppDispatch } from "../hooks/useAppDispach";
 import { useAppSelector } from "../hooks/useAppSelector";
 import { emptyCart } from "../redux/slices/cartSlice";
 import CartItem from "../components/cart/CartItem";
-import { useEffect } from "react";
 
 const CartPage = () => {
   const dispatch = useAppDispatch();

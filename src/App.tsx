@@ -16,6 +16,7 @@ import AboutUs from "./pages/AboutUs";
 import Footer from "./components/footer/Footer";
 import store from "./redux/store";
 import LoginPage from "./pages/LoginPage";
+import ProtectedAdminRoute from "./components/ProtectedRoute";
 
 const App = () => {
   const [themeMode, setThemeMode] = useState<PaletteMode>("light");
@@ -43,7 +44,10 @@ const App = () => {
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/user-profile/:id" element={<UserPage />} />
                 <Route path="/shopping-cart" element={<CartPage />} />
-                <Route path="/admin-dashboard" element={<AdminPage />} />
+                <Route
+                  path="/admin-dashboard"
+                  element={<ProtectedAdminRoute Component={AdminPage} />}
+                />
               </Routes>
               <Footer />
             </Paper>
