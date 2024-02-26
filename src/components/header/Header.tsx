@@ -157,7 +157,7 @@ const Header = () => {
                 </Typography>
               </Link>
             </Button>
-            {user && (
+            {user?.role === "customer" ? (
               <Link to="/shopping-cart">
                 <IconButton aria-label="cart">
                   <Badge badgeContent={cartItems.length} color="secondary">
@@ -165,6 +165,14 @@ const Header = () => {
                   </Badge>
                 </IconButton>
               </Link>
+            ) : (
+              <Button color="inherit" sx={{ mr: 2 }}>
+                <Link to="/admin-dashboard">
+                  <Typography sx={{ color: "primary.contrastText" }}>
+                    Admin Dashboard
+                  </Typography>
+                </Link>
+              </Button>
             )}
           </Box>
           {/* Theme Switch Button */}
@@ -206,7 +214,7 @@ const Header = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {user && (
+              {user?.role === "customer" ? (
                 <MenuItem
                   onClick={handleCloseNavMenu}
                   sx={{ display: { xs: "flex", md: "none" } }}
@@ -214,6 +222,17 @@ const Header = () => {
                   <Link to="/shopping-cart">
                     <Typography sx={{ color: "primary.contrastText" }}>
                       Shopping Cart
+                    </Typography>
+                  </Link>
+                </MenuItem>
+              ) : (
+                <MenuItem
+                  onClick={handleCloseNavMenu}
+                  sx={{ display: { xs: "flex", md: "none" } }}
+                >
+                  <Link to="/admin-dashboard">
+                    <Typography sx={{ color: "primary.contrastText" }}>
+                      Admin Dashboard
                     </Typography>
                   </Link>
                 </MenuItem>

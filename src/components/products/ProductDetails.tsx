@@ -24,6 +24,7 @@ const ProductDetails = ({ id }: { id: number }) => {
     state.products.products.find((product) => product.id === id)
   );
   const { user } = useAppSelector((state) => state.users);
+  const isAdmin = user?.role === "admin";
   //Cart state
   const [showDialog, setShowDialog] = useState(false);
 
@@ -40,7 +41,7 @@ const ProductDetails = ({ id }: { id: number }) => {
         theme: "light",
         transition: Bounce,
       });
-    } else {
+    } else if (!isAdmin) {
       setShowDialog(true);
     }
   };

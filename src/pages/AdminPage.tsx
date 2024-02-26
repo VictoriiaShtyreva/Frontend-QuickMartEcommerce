@@ -1,7 +1,7 @@
-import React from "react";
+import ProductListDashboard from "../components/admin/ProductListDashboard";
 
 const AdminPage = () => {
-  return <div>AdminPage</div>;
+  return <ProductListDashboard />;
 };
 
 export default AdminPage;
