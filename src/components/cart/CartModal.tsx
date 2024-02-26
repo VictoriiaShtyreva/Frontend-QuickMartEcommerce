@@ -1,7 +1,8 @@
 import { Button, Box, Typography, IconButton } from "@mui/material";
-import { memo, useEffect, useState } from "react";
+import { memo, useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CloseIcon from "@mui/icons-material/Close";
+import { toast } from "react-toastify";
 
 import { ShoppingCartItem } from "../../types/ShoppingCart";
 import { useAppDispatch } from "../../hooks/useAppDispach";
@@ -11,9 +12,6 @@ import {
   increaseQuantity,
   decreaseQuantity,
 } from "../../redux/slices/cartSlice";
-import { toast } from "react-toastify";
-
-import { useAppSelector } from "../../hooks/useAppSelector";
 
 interface CartModalProps {
   open: boolean;
@@ -23,7 +21,6 @@ interface CartModalProps {
 
 const CartModal = ({ onClose, item }: CartModalProps) => {
   const dispatch = useAppDispatch();
-  const user = useAppSelector((state) => state.users.user);
   const [quantity, setQuantity] = useState(1);
 
   const increaseQuantityHandler = () => {
@@ -39,7 +36,7 @@ const CartModal = ({ onClose, item }: CartModalProps) => {
   };
 
   const addToCart = () => {
-    dispatch(addProduct({ item: { ...item, quantity }, user }));
+    dispatch(addProduct({ item: { ...item, quantity } }));
     onClose();
     toast.success(`${item.title} added to cart!`, {
       position: "top-right",

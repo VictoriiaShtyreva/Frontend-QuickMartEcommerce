@@ -1,7 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 import { ShoppingCartItem, ShoppingCartState } from "../../types/ShoppingCart";
-import { User } from "../../types/User";
 
 const initialState: ShoppingCartState = {
   items: [],
@@ -15,10 +14,9 @@ export const cartSlice = createSlice({
       state,
       action: PayloadAction<{
         item: ShoppingCartItem;
-        user: User | null;
       }>
     ) => {
-      const { item, user } = action.payload;
+      const { item } = action.payload;
       const { id } = item;
       const existingItem = state.items.find((item) => item.id === id);
       if (existingItem) {
@@ -26,9 +24,6 @@ export const cartSlice = createSlice({
       } else {
         state.items.push({ ...item, quantity: item.quantity });
       }
-      //Save cart items along with user object to local storage
-      const cartData = { user, cartItems: state.items };
-      localStorage.setItem("cartData", JSON.stringify(cartData));
     },
     removeProduct: (state, action: PayloadAction<number>) => {
       const index = state.items.findIndex((item) => item.id === action.payload);

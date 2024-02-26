@@ -4,7 +4,6 @@ import {
   Box,
   Typography,
   Fab,
-  Popover,
   Dialog,
   DialogContent,
 } from "@mui/material";
@@ -73,6 +72,8 @@ const ProductDetails = ({ id }: { id: number }) => {
     }
   }, [dispatch, id, product]);
 
+  console.log(product?.images);
+
   //Settings for carousel
   const settings = {
     dots: true,
@@ -95,7 +96,7 @@ const ProductDetails = ({ id }: { id: number }) => {
               ))}
             </Carousel>
           ) : (
-            <Typography variant="body1">No images available</Typography>
+            <img src="../../images/default.png" alt="Default" width="100%" />
           )}
         </Box>
       </Grid>

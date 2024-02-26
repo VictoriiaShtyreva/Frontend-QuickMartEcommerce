@@ -14,6 +14,7 @@ import { useAppDispatch } from "../hooks/useAppDispach";
 import { useAppSelector } from "../hooks/useAppSelector";
 import { emptyCart } from "../redux/slices/cartSlice";
 import CartItem from "../components/cart/CartItem";
+import { useEffect } from "react";
 
 const CartPage = () => {
   const dispatch = useAppDispatch();
@@ -28,19 +29,18 @@ const CartPage = () => {
       sx={{
         minHeight: "100vh",
         justifyContent: "space-between",
-        flexDirection: { xs: "column", sm: "row" },
+        flexDirection: "column",
         p: 2,
       }}
     >
       <Typography variant="h4">Shopping Cart</Typography>
-      <TableContainer>
+      <TableContainer sx={{ overflowX: "auto" }}>
         <Table>
           <TableHead>
             <TableRow>
               <TableCell>Product</TableCell>
               <TableCell>Total Price</TableCell>
               <TableCell>Quantity</TableCell>
-              <TableCell></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -50,9 +50,26 @@ const CartPage = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      <Button variant="contained" color="secondary" onClick={clearCart}>
-        Clear Cart
-      </Button>
+      <Box
+        sx={{
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "space-around",
+          mt: 2,
+        }}
+      >
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={clearCart}
+          sx={{ mb: 2 }}
+        >
+          Clear Cart
+        </Button>
+        <Button variant="contained" color="secondary" sx={{ mb: 2 }}>
+          Proceed to checkout
+        </Button>
+      </Box>
     </Box>
   );
 };
