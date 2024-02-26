@@ -1,5 +1,5 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios, { AxiosError, AxiosResponse } from "axios";
+import { toast } from "react-toastify";
 
 import { User, UserInitialState, UserRegister } from "../../types/User";
 import {
@@ -26,10 +26,17 @@ export const getAllUsers = createAsyncThunk(
   "getAllUsers",
   async (_, { rejectWithValue }) => {
     try {
-      const response: AxiosResponse<User[]> = await axios.get(URL);
-      return response.data;
+      const response = await fetch(URL);
+      if (!response.ok) {
+        const errorResponse = await response.json();
+        toast.error(errorResponse.message);
+        return rejectWithValue(errorResponse);
+      }
+      const data: User[] = await response.json();
+      return data;
     } catch (e) {
-      return rejectWithValue(e);
+      const error = e as Error;
+      return rejectWithValue(error.message);
     }
   }
 );
@@ -39,10 +46,17 @@ export const fetchUserById = createAsyncThunk(
   "fetchUserById",
   async (id: number, { rejectWithValue }) => {
     try {
-      const response: AxiosResponse<User> = await axios.get(`${URL}/${id}`);
-      return { data: response.data, id };
+      const response = await fetch(`${URL}/${id}`);
+      if (!response.ok) {
+        const errorResponse = await response.json();
+        toast.error(errorResponse.message);
+        return rejectWithValue(errorResponse);
+      }
+      const data: User = await response.json();
+      return { data, id };
     } catch (e) {
-      return rejectWithValue(e);
+      const error = e as Error;
+      return rejectWithValue(error.message);
     }
   }
 );
@@ -52,15 +66,26 @@ export const updateUser = createAsyncThunk(
   "updateUser",
   async ({ id, ...updatedProps }: User, { rejectWithValue, dispatch }) => {
     try {
-      const response: AxiosResponse<User> = await axios.put(
-        `${URL}/${id}`,
-        updatedProps
-      );
-      const updatedUser = response.data;
+      const response = await fetch(`${URL}/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedProps),
+      });
+
+      if (!response.ok) {
+        const errorResponse = await response.json();
+        toast.error(errorResponse.message);
+        return rejectWithValue(errorResponse);
+      }
+
+      const updatedUser: User = await response.json();
       dispatch(saveUserInformation(updatedUser));
       return updatedUser;
     } catch (e) {
-      rejectWithValue(e);
+      const error = e as Error;
+      return rejectWithValue(error.message);
     }
   }
 );
@@ -70,13 +95,23 @@ export const registerUser = createAsyncThunk(
   "registerUser",
   async (newUser: UserRegister, { rejectWithValue }) => {
     try {
-      const response: AxiosResponse<User> = await axios.post(
-        `${URL}/`,
-        newUser
-      );
-      return response.data;
+      const response = await fetch(URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newUser),
+      });
+      if (!response.ok) {
+        const errorResponse = await response.json();
+        toast.error(errorResponse.message);
+        return rejectWithValue(errorResponse);
+      }
+      const data: User = await response.json();
+      return data;
     } catch (e) {
-      return rejectWithValue(e);
+      const error = e as Error;
+      return rejectWithValue(error.message);
     }
   }
 );
@@ -90,14 +125,21 @@ export const getAuthentication = createAsyncThunk(
       if (!access_token) {
         throw new Error("No token found");
       }
-      const response: AxiosResponse<User> = await axios.get(profileUrl, {
+      const response = await fetch(profileUrl, {
         headers: {
           Authorization: `Bearer ${access_token}`,
         },
       });
-      return response.data;
+      if (!response.ok) {
+        const errorResponse = await response.json();
+        toast.error(errorResponse.message);
+        return rejectWithValue(errorResponse);
+      }
+      const data: User = await response.json();
+      return data;
     } catch (e) {
-      return rejectWithValue(e);
+      const error = e as Error;
+      return rejectWithValue(error.message);
     }
   }
 );
@@ -107,16 +149,28 @@ export const loginUser = createAsyncThunk(
   "loginUser",
   async (credentials: Authentication, { dispatch, rejectWithValue }) => {
     try {
-      const response: AxiosResponse<AuthenticationToken> = await axios.post(
-        loginUrl,
-        credentials
-      );
-      // Store token in local storage
-      localStorage.setItem("token", response.data.access_token);
+      const response = await fetch(loginUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(credentials),
+      });
+
+      if (!response.ok) {
+        const errorResponse = await response.json();
+        toast.error(errorResponse.message);
+        return rejectWithValue(errorResponse);
+      }
+
+      const data: AuthenticationToken = await response.json();
+      localStorage.setItem("token", data.access_token);
+
       const authentication = await dispatch(getAuthentication());
       return authentication.payload as User;
     } catch (e) {
-      return rejectWithValue(e);
+      const error = e as Error;
+      return rejectWithValue(error.message);
     }
   }
 );
@@ -138,18 +192,18 @@ const usersSlice = createSlice({
   extraReducers: (builder) => {
     //Fetch all users
     builder.addCase(getAllUsers.fulfilled, (state, action) => {
-      if (!(action.payload instanceof AxiosError)) {
-        return {
-          ...state,
-          users: action.payload,
-          loading: false,
-        };
-      }
+      return {
+        ...state,
+        users: action.payload,
+        loading: false,
+        error: null,
+      };
     });
     builder.addCase(getAllUsers.pending, (state) => {
       return {
         ...state,
         loading: true,
+        error: null,
       };
     });
     builder.addCase(getAllUsers.rejected, (state, action) => {
@@ -161,19 +215,19 @@ const usersSlice = createSlice({
     });
     //Fetch user by id
     builder.addCase(fetchUserById.fulfilled, (state, action) => {
-      if (!(action.payload instanceof AxiosError)) {
-        const { id } = action.payload;
-        return {
-          ...state,
-          users: state.users.filter((user) => user.id !== id),
-          loading: false,
-        };
-      }
+      const { id } = action.payload;
+      return {
+        ...state,
+        users: state.users.filter((user) => user.id !== id),
+        loading: false,
+        error: null,
+      };
     });
     builder.addCase(fetchUserById.pending, (state) => {
       return {
         ...state,
         loading: true,
+        error: null,
       };
     });
     builder.addCase(fetchUserById.rejected, (state, action) => {
@@ -185,21 +239,19 @@ const usersSlice = createSlice({
     });
     //Update user
     builder.addCase(updateUser.fulfilled, (state, action) => {
-      if (!(action.payload instanceof AxiosError)) {
-        const user = action.payload;
-        return {
-          ...state,
-          loading: false,
-          users: state.users.map((item) =>
-            item.id === user?.id ? user : item
-          ),
-        };
-      }
+      const user = action.payload;
+      return {
+        ...state,
+        loading: false,
+        users: state.users.map((item) => (item.id === user?.id ? user : item)),
+        error: null,
+      };
     });
     builder.addCase(updateUser.pending, (state) => {
       return {
         ...state,
         loading: true,
+        error: null,
       };
     });
     builder.addCase(updateUser.rejected, (state, action) => {
@@ -211,19 +263,19 @@ const usersSlice = createSlice({
     });
     //Register user
     builder.addCase(registerUser.fulfilled, (state, action) => {
-      if (!(action.payload instanceof AxiosError)) {
-        return {
-          ...state,
-          users: state.users.concat(action.payload),
-          user: action.payload,
-          loading: false,
-        };
-      }
+      return {
+        ...state,
+        users: state.users.concat(action.payload),
+        user: action.payload,
+        loading: false,
+        error: null,
+      };
     });
     builder.addCase(registerUser.pending, (state) => {
       return {
         ...state,
         loading: true,
+        error: null,
       };
     });
     builder.addCase(registerUser.rejected, (state, action) => {
@@ -235,18 +287,18 @@ const usersSlice = createSlice({
     });
     //Get authentication
     builder.addCase(getAuthentication.fulfilled, (state, action) => {
-      if (!(action.payload instanceof AxiosError)) {
-        return {
-          ...state,
-          user: action.payload,
-          loading: false,
-        };
-      }
+      return {
+        ...state,
+        user: action.payload,
+        loading: false,
+        error: null,
+      };
     });
     builder.addCase(getAuthentication.pending, (state) => {
       return {
         ...state,
         loading: true,
+        error: null,
       };
     });
     builder.addCase(getAuthentication.rejected, (state, action) => {
@@ -258,29 +310,27 @@ const usersSlice = createSlice({
     });
     //Login user
     builder.addCase(loginUser.fulfilled, (state, action) => {
-      if (!(action.payload instanceof AxiosError)) {
-        return {
-          ...state,
-          users: state.users.concat(action.payload),
-          user: action.payload,
-          loading: false,
-        };
-      }
+      return {
+        ...state,
+        users: state.users.concat(action.payload),
+        user: action.payload,
+        loading: false,
+        error: null,
+      };
     });
     builder.addCase(loginUser.pending, (state) => {
       return {
         ...state,
         loading: true,
+        error: null,
       };
     });
     builder.addCase(loginUser.rejected, (state, action) => {
-      if (action.payload instanceof AxiosError) {
-        return {
-          ...state,
-          loading: false,
-          error: action.error.message ?? "An error occurred",
-        };
-      }
+      return {
+        ...state,
+        loading: false,
+        error: action.error.message ?? "An error occurred",
+      };
     });
   },
 });

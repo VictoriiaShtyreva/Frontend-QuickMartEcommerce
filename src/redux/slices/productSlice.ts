@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import { toast } from "react-toastify";
 
 import {
   NewProduct,
@@ -26,6 +27,7 @@ export const fetchAllProducts = createAsyncThunk(
       const response = await fetch(URL);
       if (!response.ok) {
         const errorResponse = await response.json();
+        toast.error(errorResponse.message);
         return rejectWithValue(errorResponse);
       }
       //If there's no HTTP error, parse and return the response body.
@@ -46,6 +48,7 @@ export const fetchProductById = createAsyncThunk(
       const response = await fetch(`${URL}/${id}`);
       if (!response.ok) {
         const errorResponse = await response.json();
+        toast.error(errorResponse.message);
         return rejectWithValue(errorResponse);
       }
       //If there's no HTTP error, parse and return the response body.
@@ -72,6 +75,7 @@ export const createProduct = createAsyncThunk(
       });
       if (!response.ok) {
         const errorResponse = await response.json();
+        toast.error(errorResponse.message);
         return rejectWithValue(errorResponse);
       }
       //If there's no HTTP error, parse and return the response body.
@@ -106,6 +110,7 @@ export const updateProduct = createAsyncThunk(
       });
       if (!response.ok) {
         const errorResponse = await response.json();
+        toast.error(errorResponse.message);
         return rejectWithValue(errorResponse);
       }
       //If there's no HTTP error, parse and return the response body.
@@ -128,6 +133,7 @@ export const deleteProduct = createAsyncThunk(
       });
       if (!response.ok) {
         const errorResponse = await response.json();
+        toast.error(errorResponse.message);
         return rejectWithValue(errorResponse);
       }
       const data: boolean = await response.json();

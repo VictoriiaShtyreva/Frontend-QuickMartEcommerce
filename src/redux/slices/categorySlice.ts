@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios, { AxiosError, AxiosResponse } from "axios";
+import { toast } from "react-toastify";
 
 import { Category, CategoryState } from "../../types/Category";
 
@@ -9,20 +9,26 @@ const urlCategories = "https://api.escuelajs.co/api/v1/categories";
 const initialState: CategoryState = {
   categories: [],
   loading: false,
-  error: "",
+  error: null,
 };
 
+//Define thunk for fetching all categories
 export const fetchAllCategories = createAsyncThunk(
   "fetchAllCategories",
-  async () => {
+  async (_, { rejectWithValue }) => {
     try {
-      const response: AxiosResponse<Category[]> = await axios.get(
-        urlCategories
-      );
-      return response.data;
+      const response = await fetch(urlCategories);
+      if (!response.ok) {
+        const errorResponse = await response.json();
+        toast.error(errorResponse.message);
+        return rejectWithValue(errorResponse);
+      }
+
+      const data: Category[] = await response.json();
+      return data;
     } catch (e) {
-      const error = e as AxiosError;
-      return error;
+      const error = e as Error;
+      return rejectWithValue(error.message);
     }
   }
 );
@@ -34,28 +40,26 @@ const categorySlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchAllCategories.fulfilled, (state, action) => {
-        if (!(action.payload instanceof AxiosError)) {
-          return {
-            ...state,
-            categories: action.payload,
-            loading: false,
-          };
-        }
+        return {
+          ...state,
+          categories: action.payload,
+          loading: false,
+          error: null,
+        };
       })
       .addCase(fetchAllCategories.pending, (state) => {
         return {
           ...state,
           loading: true,
+          error: null,
         };
       })
       .addCase(fetchAllCategories.rejected, (state, action) => {
-        if (action.payload instanceof AxiosError) {
-          return {
-            ...state,
-            loading: false,
-            error: action.payload.message,
-          };
-        }
+        return {
+          ...state,
+          loading: false,
+          error: action.error.message ?? "error",
+        };
       });
   },
 });
