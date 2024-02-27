@@ -8,17 +8,17 @@ import {
 } from "../../redux/slices/productSlice";
 import { Product } from "../../types/Product";
 import ProductCard from "./ProductCard";
-import { useAppSelector } from "../../hooks/useAppSelector";
 
 const ProductList = ({
   selectedCategory,
   pagination,
+  products,
 }: {
   selectedCategory: number | string;
   pagination: { page: number; limit: number };
+  products: Product[];
 }) => {
   const dispatch = useAppDispatch();
-  const products = useAppSelector((state) => state.products.products);
 
   // Filter products based on the selected category
   const filteredProducts =

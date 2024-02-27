@@ -147,7 +147,7 @@ const LoginPage = () => {
             </Grid>
           </Grid>
         </form>
-
+        {/* Modal window for registration */}
         <RegistrationModal
           isOpen={showModal}
           onClose={() => setShowModal(false)}

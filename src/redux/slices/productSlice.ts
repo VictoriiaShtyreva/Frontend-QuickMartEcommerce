@@ -156,6 +156,12 @@ const productSlice = createSlice({
       if (action.payload === "asc")
         state.products.sort((a, b) => a.price - b.price);
     },
+    searchProductByName: (state, action: PayloadAction<string>) => {
+      // Filter products based on the search input
+      state.products = state.products.filter((product) =>
+        product.title.toLowerCase().includes(action.payload.toLowerCase())
+      );
+    },
   },
   extraReducers(builder) {
     //Fetch All Products
@@ -290,5 +296,6 @@ const productSlice = createSlice({
 });
 
 const productReducer = productSlice.reducer;
-export const { sortProductsByPrice } = productSlice.actions;
+export const { sortProductsByPrice, searchProductByName } =
+  productSlice.actions;
 export default productReducer;

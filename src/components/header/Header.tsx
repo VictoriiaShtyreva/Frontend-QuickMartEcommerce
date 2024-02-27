@@ -157,7 +157,7 @@ const Header = () => {
                 </Typography>
               </Link>
             </Button>
-            {user?.role === "customer" ? (
+            {user?.role === "customer" && (
               <Link to="/shopping-cart">
                 <IconButton aria-label="cart">
                   <Badge badgeContent={cartItems.length} color="secondary">
@@ -165,7 +165,8 @@ const Header = () => {
                   </Badge>
                 </IconButton>
               </Link>
-            ) : (
+            )}
+            {user?.role === "admin" && (
               <Button color="inherit" sx={{ mr: 2 }}>
                 <Link to="/admin-dashboard">
                   <Typography sx={{ color: "primary.contrastText" }}>
@@ -214,7 +215,7 @@ const Header = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {user?.role === "customer" ? (
+              {user?.role === "customer" && (
                 <MenuItem
                   onClick={handleCloseNavMenu}
                   sx={{ display: { xs: "flex", md: "none" } }}
@@ -225,7 +226,8 @@ const Header = () => {
                     </Typography>
                   </Link>
                 </MenuItem>
-              ) : (
+              )}{" "}
+              {user?.role === "admin" && (
                 <MenuItem
                   onClick={handleCloseNavMenu}
                   sx={{ display: { xs: "flex", md: "none" } }}
