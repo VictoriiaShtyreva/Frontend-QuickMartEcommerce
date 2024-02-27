@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -8,6 +8,8 @@ import {
   InputLabel,
   Box,
   Grid,
+  Popover,
+  Typography,
 } from "@mui/material";
 import { toast } from "react-toastify";
 import CloseIcon from "@mui/icons-material/Close";
@@ -15,7 +17,10 @@ import CloseIcon from "@mui/icons-material/Close";
 import { updateProduct } from "../../redux/slices/productSlice";
 import { useAppDispatch } from "../../hooks/useAppDispach";
 import uploadFilesService from "../../utils/uploadFilesService";
-import { Product } from "../../types/Product";
+import { Product, ProductDataForUpdate } from "../../types/Product";
+import { useAppSelector } from "../../hooks/useAppSelector";
+import { Category } from "../../types/Category";
+import { fetchAllCategories } from "../../redux/slices/categorySlice";
 
 interface UpdateProductProps {
   product: Product;
@@ -28,11 +33,8 @@ const UpdateProduct = ({ product, onClose }: UpdateProductProps) => {
     description: product.description,
     images: product.images,
     price: product.price,
-    category: product.category.id,
   });
-
   const dispatch = useAppDispatch();
-  const [fileInput, setFileInput] = useState<{ file: File[] }>({ file: [] });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -42,33 +44,24 @@ const UpdateProduct = ({ product, onClose }: UpdateProductProps) => {
     }));
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      setFileInput({ file: Array.from(e.target.files) });
-    }
-  };
-
   const handleUpdateProduct = async () => {
     try {
-      const images: { file: File }[] = [];
-      if (fileInput.file.length > 0) {
-        fileInput.file.forEach((file) => {
-          images.push({ file });
-        });
-      }
-      const location = await uploadFilesService(images);
-      //Check if location is not undefined before spreading
-      const updatedImages = location ? [...location] : [];
-      const updatedData = {
-        data: {
-          title: formData.title,
-          description: formData.description,
-          price: formData.price,
-          category: formData.category,
-          images: updatedImages,
-        },
+      // Create an object to store only the updated fields
+      const updatedData: ProductDataForUpdate = {
         id: product.id,
+        data: {},
       };
+      // Check if each field in formData is different from the original product data
+      if (formData.title !== product.title) {
+        updatedData.data.title = formData.title;
+      }
+      if (formData.description !== product.description) {
+        updatedData.data.description = formData.description;
+      }
+      if (formData.price !== product.price) {
+        updatedData.data.price = formData.price;
+      }
+      // Dispatch the updateProduct action only if there are updated fields
       dispatch(updateProduct(updatedData));
       onClose();
       toast.success("Product updated successfully.");
@@ -134,28 +127,6 @@ const UpdateProduct = ({ product, onClose }: UpdateProductProps) => {
               value={formData.price}
               onChange={handleChange}
             />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              color="secondary"
-              fullWidth
-              name="category"
-              label="Category"
-              value={formData.category}
-              onChange={handleChange}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <Box sx={{ display: "flex", alignItems: "center" }}>
-              <InputLabel id="avatar-label">Add images</InputLabel>
-              <input
-                multiple
-                type="file"
-                accept="image/*"
-                onChange={handleFileChange}
-                style={{ marginLeft: 8 }}
-              />
-            </Box>
           </Grid>
           <Grid item xs={12}>
             <Button

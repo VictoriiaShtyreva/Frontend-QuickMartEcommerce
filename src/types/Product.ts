@@ -34,6 +34,7 @@ export type UpdateProduct = {
   price?: number;
   description?: string;
   images?: string[];
+  category?: Category;
 };
 
 //Define type for update data of product
@@ -43,7 +44,7 @@ export type ProductDataForUpdate = {
     title?: string;
     price?: number;
     description?: string;
-    category?: number;
+    category?: Category;
   };
   images?: { file: File }[];
 };

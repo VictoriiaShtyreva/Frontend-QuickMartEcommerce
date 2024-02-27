@@ -1,5 +1,6 @@
 import { useState } from "react";
 import {
+  Box,
   Button,
   Card,
   CardActions,
@@ -66,6 +67,7 @@ const ProductAdminItem = ({ product }: ProductCardProps) => {
       }
     );
   };
+
   return (
     <>
       <Card
@@ -73,28 +75,34 @@ const ProductAdminItem = ({ product }: ProductCardProps) => {
         sx={{ width: "100%", height: "100%", margin: "auto" }}
       >
         <CardContent>
-          <CardMedia sx={{ height: 140 }} image={product.images[0]} />
+          <CardMedia
+            sx={{ height: 200, width: "100%" }}
+            image={product.images[0]}
+          />
         </CardContent>
         <CardContent>
+          <Typography variant="body1">{product.id}</Typography>
           <Typography variant="body1">{product.title}</Typography>
-          <Typography variant="body1">{product.description}</Typography>
+          <Typography variant="body1">{product.price}$</Typography>
         </CardContent>
-        <CardActions>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleOpenDialog}
-          >
-            Update
-          </Button>
-          <Button
-            variant="contained"
-            color="error"
-            onClick={() => handleDeleteProduct(product.id)}
-          >
-            Delete
-          </Button>
-        </CardActions>
+        <Box style={{ marginTop: "auto" }}>
+          <CardActions>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleOpenDialog}
+            >
+              Update
+            </Button>
+            <Button
+              variant="contained"
+              color="error"
+              onClick={() => handleDeleteProduct(product.id)}
+            >
+              Delete
+            </Button>
+          </CardActions>
+        </Box>
       </Card>
       {openDialog && (
         <UpdateProduct product={product} onClose={handleCloseDialog} />

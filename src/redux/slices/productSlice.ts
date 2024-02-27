@@ -91,17 +91,17 @@ export const createProduct = createAsyncThunk(
 //Define thunk for update product with function for uploading images if they exist in the update data.
 export const updateProduct = createAsyncThunk(
   "updateProduct",
-  async ({ id, ...newProps }: ProductDataForUpdate, { rejectWithValue }) => {
+  async (newProps: ProductDataForUpdate, { rejectWithValue }) => {
     try {
       let dataForUpdate: UpdateProduct = { ...newProps.data };
       if (newProps.images) {
         const fileData = await uploadFilesService(newProps.images);
         dataForUpdate = {
           ...newProps.data,
-          images: fileData as string[],
+          images: [...fileData] as string[],
         };
       }
-      const response = await fetch(`${URL}/${id}`, {
+      const response = await fetch(`${URL}/${newProps.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
