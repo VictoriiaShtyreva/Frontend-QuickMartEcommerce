@@ -18,3 +18,9 @@ export type UserInitialState = {
   loading: boolean;
   error: string | null;
 };
+
+export type RegistrationFormData = {
+  name: string;
+  email: string;
+  password: string;
+};

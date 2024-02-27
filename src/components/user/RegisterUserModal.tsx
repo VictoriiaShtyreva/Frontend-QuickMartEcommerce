@@ -13,19 +13,13 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
-import { UserRegister } from "../../types/User";
+import { RegistrationFormData, UserRegister } from "../../types/User";
 import uploadFilesService from "../../utils/uploadFilesService";
 
 interface RegistrationModalProps {
   isOpen: boolean;
   onClose: () => void;
   onRegister: (data: UserRegister) => void;
-}
-
-interface RegistrationFormData {
-  name: string;
-  email: string;
-  password: string;
 }
 
 const RegistrationModal = ({

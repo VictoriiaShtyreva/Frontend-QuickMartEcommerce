@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Box, Pagination, Grid } from "@mui/material";
+import { Box, Pagination, Grid, Button } from "@mui/material";
 
 import { useAppDispatch } from "../../hooks/useAppDispach";
 import { useAppSelector } from "../../hooks/useAppSelector";
@@ -10,6 +10,7 @@ import {
 import ProductAdminItem from "./ProductAdminItem";
 import { Product } from "../../types/Product";
 import SearchForm from "../products/SearchForm";
+import ProductCreateForm from "./ProductCreateForm";
 
 const ProductListDashboard = () => {
   const dispatch = useAppDispatch();
@@ -20,6 +21,7 @@ const ProductListDashboard = () => {
   const [pagination, setPagination] = useState<{ page: number; limit: number }>(
     { page: 1, limit: 20 }
   );
+  const [openCreateDialog, setOpenCreateDialog] = useState(false);
 
   //Handle pagination
   const handlePaginationChange = useCallback(
@@ -43,6 +45,14 @@ const ProductListDashboard = () => {
     dispatch(fetchAllProducts());
   };
 
+  const handleCreateDialogOpen = () => {
+    setOpenCreateDialog(true);
+  };
+
+  const handleCreateDialogClose = () => {
+    setOpenCreateDialog(false);
+  };
+
   //fetchAllProducts
   useEffect(() => {
     dispatch(fetchAllProducts());
@@ -59,14 +69,28 @@ const ProductListDashboard = () => {
         p: 2,
       }}
     >
-      <div>Create product</div>
-      <Box sx={{ m: 2, maxWidth: 250 }}>
-        <SearchForm
-          userInput={userInput}
-          setUserInput={setUserInput}
-          onSearch={handleSearch}
-          onClear={handleClear}
-        />
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleCreateDialogOpen}
+        >
+          Create Product
+        </Button>
+        <Box>
+          <SearchForm
+            userInput={userInput}
+            setUserInput={setUserInput}
+            onSearch={handleSearch}
+            onClear={handleClear}
+          />
+        </Box>
       </Box>
       <Grid container justifyContent={"center"} spacing={2}>
         {products.slice(startIndex, endIndex).map((product: Product) => (
@@ -85,6 +109,10 @@ const ProductListDashboard = () => {
           onChange={handlePaginationChange}
         />
       </Box>
+      <ProductCreateForm
+        open={openCreateDialog}
+        onClose={handleCreateDialogClose}
+      />
     </Box>
   );
 };

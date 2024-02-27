@@ -8,21 +8,21 @@ interface SearchFormProps {
   onClear: () => void;
 }
 
-const SearchForm: React.FC<SearchFormProps> = ({
+const SearchForm = ({
   userInput,
   setUserInput,
   onSearch,
   onClear,
-}) => {
+}: SearchFormProps) => {
   const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUserInput(event.target.value);
-    // Trigger the search function on input change
+    //Trigger the search function on input change
     onSearch(event.target.value);
   };
 
   const handleClear = () => {
     setUserInput("");
-    // Trigger the clear function on clearing the input
+    //Trigger the clear function on clearing the input
     onClear();
   };
 

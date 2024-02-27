@@ -28,8 +28,18 @@ export type NewProduct = {
   images: string[];
 };
 
+//Define type for form values of product create form component
+export type FormValues = {
+  title: string;
+  price: number;
+  description: string;
+  categoryId: number;
+  images: string[];
+};
+
 //Define type for update product
 export type UpdateProduct = {
+  id?: number;
   title?: string;
   price?: number;
   description?: string;

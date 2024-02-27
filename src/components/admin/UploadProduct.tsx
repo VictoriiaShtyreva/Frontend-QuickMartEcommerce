@@ -5,22 +5,14 @@ import {
   DialogContent,
   TextField,
   Button,
-  InputLabel,
-  Box,
   Grid,
-  Popover,
-  Typography,
 } from "@mui/material";
 import { toast } from "react-toastify";
 import CloseIcon from "@mui/icons-material/Close";
 
 import { updateProduct } from "../../redux/slices/productSlice";
 import { useAppDispatch } from "../../hooks/useAppDispach";
-import uploadFilesService from "../../utils/uploadFilesService";
 import { Product, ProductDataForUpdate } from "../../types/Product";
-import { useAppSelector } from "../../hooks/useAppSelector";
-import { Category } from "../../types/Category";
-import { fetchAllCategories } from "../../redux/slices/categorySlice";
 
 interface UpdateProductProps {
   product: Product;
@@ -46,12 +38,12 @@ const UpdateProduct = ({ product, onClose }: UpdateProductProps) => {
 
   const handleUpdateProduct = async () => {
     try {
-      // Create an object to store only the updated fields
+      //Create an object to store only the updated fields
       const updatedData: ProductDataForUpdate = {
         id: product.id,
         data: {},
       };
-      // Check if each field in formData is different from the original product data
+      //Check if each field in formData is different from the original product data
       if (formData.title !== product.title) {
         updatedData.data.title = formData.title;
       }
