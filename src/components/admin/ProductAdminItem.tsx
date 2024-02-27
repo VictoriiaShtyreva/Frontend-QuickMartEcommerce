@@ -1,5 +1,5 @@
+import { useState } from "react";
 import {
-  Box,
   Button,
   Card,
   CardActions,
@@ -12,6 +12,7 @@ import { toast } from "react-toastify";
 import { Product } from "../../types/Product";
 import { useAppDispatch } from "../../hooks/useAppDispach";
 import { deleteProduct } from "../../redux/slices/productSlice";
+import UpdateProduct from "./UploadProduct";
 
 interface ProductCardProps {
   product: Product;
@@ -19,6 +20,16 @@ interface ProductCardProps {
 
 const ProductAdminItem = ({ product }: ProductCardProps) => {
   const dispatch = useAppDispatch();
+  //State for uploadProduct
+  const [openDialog, setOpenDialog] = useState(false);
+
+  const handleOpenDialog = () => {
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
 
   // Handle delete product
   const handleDeleteProduct = (id: number) => {
@@ -26,6 +37,7 @@ const ProductAdminItem = ({ product }: ProductCardProps) => {
       <div>
         <p>Are you sure you want to delete this product?</p>
         <Button
+          sx={{ mr: 1 }}
           variant="contained"
           color="primary"
           onClick={() => {
@@ -37,7 +49,7 @@ const ProductAdminItem = ({ product }: ProductCardProps) => {
         </Button>
         <Button
           variant="contained"
-          color="secondary"
+          color="warning"
           onClick={() => toast.dismiss()}
         >
           No
@@ -55,30 +67,39 @@ const ProductAdminItem = ({ product }: ProductCardProps) => {
     );
   };
   return (
-    <Card
-      key={product.id}
-      sx={{ width: "100%", height: "100%", margin: "auto" }}
-    >
-      <CardContent>
-        <CardMedia sx={{ height: 140 }} image={product.images[0]} />
-      </CardContent>
-      <CardContent>
-        <Typography variant="body1">{product.title}</Typography>
-        <Typography variant="body1">{product.description}</Typography>
-      </CardContent>
-      <CardActions>
-        <Button variant="contained" color="primary">
-          Update
-        </Button>
-        <Button
-          variant="contained"
-          color="error"
-          onClick={() => handleDeleteProduct(product.id)}
-        >
-          Delete
-        </Button>
-      </CardActions>
-    </Card>
+    <>
+      <Card
+        key={product.id}
+        sx={{ width: "100%", height: "100%", margin: "auto" }}
+      >
+        <CardContent>
+          <CardMedia sx={{ height: 140 }} image={product.images[0]} />
+        </CardContent>
+        <CardContent>
+          <Typography variant="body1">{product.title}</Typography>
+          <Typography variant="body1">{product.description}</Typography>
+        </CardContent>
+        <CardActions>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleOpenDialog}
+          >
+            Update
+          </Button>
+          <Button
+            variant="contained"
+            color="error"
+            onClick={() => handleDeleteProduct(product.id)}
+          >
+            Delete
+          </Button>
+        </CardActions>
+      </Card>
+      {openDialog && (
+        <UpdateProduct product={product} onClose={handleCloseDialog} />
+      )}
+    </>
   );
 };
 

@@ -73,7 +73,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
               sx={{
                 display: "block",
                 textAlign: "center",
-                color: "info.main",
+                color: "info.contrastText",
               }}
             >
               Detail
