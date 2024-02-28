@@ -1,14 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
+  Avatar,
   Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
+  Grid,
+  IconButton,
   TextField,
 } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { toast } from "react-toastify";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 import { useAppDispatch } from "../../hooks/useAppDispach";
 import { FormValues, NewProduct } from "../../types/Product";
@@ -25,21 +31,31 @@ const ProductCreateForm = ({ open, onClose }: ProductCreateFormProps) => {
   const {
     control,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<FormValues>();
-  const [fileInput, setFileInput] = useState<{ file: File[] }>({ file: [] });
+  const [fileInputs, setFileInputs] = useState<File[]>([]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
-      setFileInput({ file: Array.from(e.target.files) });
+      const newFiles = Array.from(e.target.files).slice(0, 3);
+      setFileInputs([...fileInputs, ...newFiles]);
     }
+  };
+
+  const handleFileDelete = (index: number) => {
+    setFileInputs((prevFiles) => {
+      const newFiles = [...prevFiles];
+      newFiles.splice(index, 1);
+      return newFiles;
+    });
   };
 
   const onSubmit: SubmitHandler<FormValues> = async (data: FormValues) => {
     try {
       const images: { file: File }[] = [];
-      if (fileInput.file.length > 0) {
-        fileInput.file.forEach((file) => {
+      if (fileInputs.length > 0) {
+        fileInputs.forEach((file) => {
           images.push({ file });
         });
       }
@@ -52,6 +68,8 @@ const ProductCreateForm = ({ open, onClose }: ProductCreateFormProps) => {
         images: location as string[],
       };
       await dispatch(createProduct(newProductData));
+      onClose();
+      reset();
       toast.success("Product created successfully");
     } catch (error) {
       toast.error("Failed to create product");
@@ -60,75 +78,210 @@ const ProductCreateForm = ({ open, onClose }: ProductCreateFormProps) => {
 
   return (
     <Dialog open={open} onClose={onClose}>
-      <DialogTitle>Create Product</DialogTitle>
+      <DialogTitle
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <span>Create Product</span>
+        <IconButton
+          onClick={onClose}
+          color="secondary"
+          sx={{ minWidth: "0px" }}
+        >
+          <CloseIcon />
+        </IconButton>
+      </DialogTitle>
       <DialogContent>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <Controller
-            name="title"
-            control={control}
-            defaultValue="Title"
-            rules={{ required: "Title is required" }}
-            render={({ field }) => (
-              <TextField
-                {...field}
-                label="Title"
-                error={!!errors.title}
-                helperText={errors.title?.message}
-                fullWidth
-                required
-                color="secondary"
+          <Grid
+            container
+            spacing={2}
+            sx={{ display: "flex", flexDirection: "column", p: 2 }}
+          >
+            <Grid item xs={12}>
+              <Controller
+                name="title"
+                control={control}
+                rules={{
+                  required: "Title is required",
+                  maxLength: {
+                    value: 50,
+                    message: "Title should not be more than 50 characters",
+                  },
+                  minLength: {
+                    value: 3,
+                    message: "Title should not be less than 3 characters",
+                  },
+                }}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    label="Product title"
+                    error={!!errors.title}
+                    helperText={errors.title?.message}
+                    fullWidth
+                    required
+                    color="info"
+                  />
+                )}
               />
-            )}
-          />
-          <Controller
-            name="price"
-            control={control}
-            defaultValue={0}
-            rules={{
-              required: "Price is required",
-              pattern: { value: /^\d+$/, message: "Invalid price" },
-            }}
-            render={({ field }) => (
-              <TextField
-                {...field}
-                label="Price"
-                type="number"
-                error={!!errors.price}
-                helperText={errors.price?.message}
-                fullWidth
-                required
-                color="secondary"
+            </Grid>
+            <Grid item xs={12}>
+              <Controller
+                name="price"
+                control={control}
+                rules={{
+                  required: "Price is required",
+                  pattern: { value: /^\d+$/, message: "Invalid price" },
+                  max: {
+                    value: 99999,
+                    message: "Price should not be more than 99999",
+                  },
+                  min: {
+                    value: 1,
+                    message: "Price should not be less than 1",
+                  },
+                }}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    label="Price"
+                    type="number"
+                    error={!!errors.price}
+                    helperText={errors.price?.message}
+                    fullWidth
+                    required
+                    color="info"
+                  />
+                )}
               />
-            )}
-          />
-          <Controller
-            name="description"
-            control={control}
-            defaultValue="Add your description of product"
-            rules={{ required: "Description is required" }}
-            render={({ field }) => (
-              <TextField
-                {...field}
-                label="Description"
-                error={!!errors.description}
-                helperText={errors.description?.message}
-                fullWidth
-                required
-                color="secondary"
+            </Grid>
+            <Grid item xs={12}>
+              <Controller
+                name="description"
+                control={control}
+                rules={{
+                  required: "Description is required",
+                  maxLength: {
+                    value: 500,
+                    message:
+                      "Description should not be more than 500 characters",
+                  },
+                  minLength: {
+                    value: 20,
+                    message:
+                      "Description should not be less than 20 characters",
+                  },
+                }}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    label="Description"
+                    error={!!errors.description}
+                    helperText={errors.description?.message}
+                    fullWidth
+                    required
+                    multiline
+                    maxRows={4}
+                    color="info"
+                  />
+                )}
               />
-            )}
-          />
+            </Grid>
+            <Grid item xs={12}>
+              <Controller
+                name="categoryId"
+                control={control}
+                rules={{ required: "Category is required" }}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    label="Category"
+                    error={!!errors.categoryId}
+                    helperText={errors.categoryId?.message}
+                    fullWidth
+                    required
+                    color="info"
+                  />
+                )}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Controller
+                name="images"
+                control={control}
+                rules={{
+                  required: "Images is required",
+                }}
+                render={({ field }) => (
+                  <>
+                    <label htmlFor="upload-button">
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        component="span"
+                        startIcon={<CloudUploadIcon />}
+                      >
+                        Upload Image
+                      </Button>
+                    </label>
+                    <input
+                      accept="image/*"
+                      id="upload-button"
+                      type="file"
+                      style={{ display: "none" }}
+                      onChange={(e) => {
+                        handleFileChange(e);
+                        field.onChange(e);
+                      }}
+                      multiple
+                    />
+                    {fileInputs.map((file, index) => (
+                      <Grid
+                        container
+                        key={index}
+                        alignItems="center"
+                        sx={{ mt: 1 }}
+                      >
+                        <Grid item xs={2}>
+                          <Avatar
+                            variant="rounded"
+                            src={URL.createObjectURL(file)}
+                          />
+                        </Grid>
+                        <Grid item xs={8}>
+                          <TextField
+                            variant="outlined"
+                            fullWidth
+                            value={file.name}
+                            InputProps={{
+                              readOnly: true,
+                            }}
+                          />
+                        </Grid>
+                        <Grid item xs={2}>
+                          <IconButton onClick={() => handleFileDelete(index)}>
+                            <DeleteIcon />
+                          </IconButton>
+                        </Grid>
+                      </Grid>
+                    ))}
+                  </>
+                )}
+              />
+            </Grid>
+          </Grid>
         </form>
       </DialogContent>
       <DialogActions>
-        <Button color="secondary" onClick={onClose}>
-          Cancel
-        </Button>
         <Button
           type="submit"
           onClick={handleSubmit(onSubmit)}
           variant="contained"
-          color="secondary"
+          color="info"
         >
           Create Product
         </Button>

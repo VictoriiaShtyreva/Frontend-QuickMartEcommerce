@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Box, Pagination, Grid, Button } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
 
 import { useAppDispatch } from "../../hooks/useAppDispach";
 import { useAppSelector } from "../../hooks/useAppSelector";
@@ -77,9 +78,10 @@ const ProductListDashboard = () => {
         }}
       >
         <Button
-          variant="contained"
-          color="primary"
+          variant="outlined"
+          color="secondary"
           onClick={handleCreateDialogOpen}
+          startIcon={<AddIcon />}
         >
           Create Product
         </Button>

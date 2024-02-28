@@ -14,7 +14,7 @@ const customTheme = (mode: PaletteMode) => ({
             contrastText: "#fff", // Text color for light secondary
           },
           info: {
-            main: "#FEFEFE", // Light info color
+            main: "#2d86b8", // Light info color
             contrastText: "#212121", // Text color for light info
           },
           text: {
@@ -36,7 +36,7 @@ const customTheme = (mode: PaletteMode) => ({
             contrastText: "#fff", // Text color for dark secondary
           },
           info: {
-            main: "#1e2c92", // Dark info color
+            main: "#7ab9dd", // Dark info color
             contrastText: "#fff", // Text color for dark info
           },
           text: {

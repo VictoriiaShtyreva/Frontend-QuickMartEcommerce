@@ -39,13 +39,15 @@ const ProductCard = ({ product }: ProductCardProps) => {
       <CardActionArea>
         <CardContent>
           <Box
-            display={"flex"}
-            flexDirection={"column"}
-            alignItems={"center"}
-            justifyContent={"center"}
-            minHeight={260}
-            color={"info.main"}
-            textAlign={"center"}
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              color: "info.main",
+              textAlign: "center",
+              minHeight: 260,
+            }}
           >
             <Typography
               variant="h6"

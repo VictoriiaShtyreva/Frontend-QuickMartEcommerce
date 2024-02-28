@@ -108,6 +108,8 @@ const UpdateProduct = ({ product, onClose }: UpdateProductProps) => {
               label="Description"
               value={formData.description}
               onChange={handleChange}
+              multiline
+              maxRows={4}
             />
           </Grid>
           <Grid item xs={12}>

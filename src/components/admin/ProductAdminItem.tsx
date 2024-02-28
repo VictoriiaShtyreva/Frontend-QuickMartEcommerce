@@ -4,11 +4,12 @@ import {
   Button,
   Card,
   CardActions,
-  CardContent,
   CardMedia,
   Typography,
 } from "@mui/material";
 import { toast } from "react-toastify";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 
 import { Product } from "../../types/Product";
 import { useAppDispatch } from "../../hooks/useAppDispach";
@@ -72,36 +73,59 @@ const ProductAdminItem = ({ product }: ProductCardProps) => {
     <>
       <Card
         key={product.id}
-        sx={{ width: "100%", height: "100%", margin: "auto" }}
+        sx={{
+          width: "100%",
+          height: "100%",
+          position: "relative",
+        }}
       >
-        <CardContent>
-          <CardMedia
-            sx={{ height: 200, width: "100%" }}
-            image={product.images[0]}
-          />
-        </CardContent>
-        <CardContent>
+        <CardMedia
+          sx={{ height: 200, width: "100%" }}
+          image={product.images[0]}
+        />
+        <CardActions
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Button
+            sx={{
+              position: "absolute",
+              top: "55%",
+              left: "23%",
+              transform: "translate(-50%, -50%)",
+              zIndex: 1,
+            }}
+            variant="contained"
+            color="primary"
+            onClick={handleOpenDialog}
+            startIcon={<EditIcon />}
+          >
+            Update
+          </Button>
+          <Button
+            sx={{
+              position: "absolute",
+              top: "10%",
+              left: "75%",
+              transform: "translate(-50%, -50%)",
+              zIndex: 1,
+            }}
+            variant="contained"
+            color="error"
+            onClick={() => handleDeleteProduct(product.id)}
+            endIcon={<DeleteIcon />}
+          >
+            Delete
+          </Button>
+        </CardActions>
+        <Box sx={{ p: 1 }}>
           <Typography variant="body1">{product.id}</Typography>
           <Typography variant="body1">{product.title}</Typography>
-          <Typography variant="body1">{product.price}$</Typography>
-        </CardContent>
-        <Box style={{ marginTop: "auto" }}>
-          <CardActions>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleOpenDialog}
-            >
-              Update
-            </Button>
-            <Button
-              variant="contained"
-              color="error"
-              onClick={() => handleDeleteProduct(product.id)}
-            >
-              Delete
-            </Button>
-          </CardActions>
+          <Typography variant="body1">Price: {product.price}$</Typography>
         </Box>
       </Card>
       {openDialog && (

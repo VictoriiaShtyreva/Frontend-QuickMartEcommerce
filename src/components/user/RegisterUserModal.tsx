@@ -10,8 +10,11 @@ import {
   Grid,
   InputLabel,
   TextField,
+  Typography,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 import { RegistrationFormData, UserRegister } from "../../types/User";
 import uploadFilesService from "../../utils/uploadFilesService";
@@ -38,6 +41,10 @@ const RegistrationModal = ({
     if (e.target.files && e.target.files.length > 0) {
       setFileInput({ file: Array.from(e.target.files) });
     }
+  };
+
+  const handleFileDelete = () => {
+    setFileInput({ file: [] });
   };
 
   const onSubmit: SubmitHandler<RegistrationFormData> = async (data) => {
@@ -122,12 +129,44 @@ const RegistrationModal = ({
             <Grid item xs={12}>
               <Box sx={{ display: "flex", alignItems: "center" }}>
                 <InputLabel id="avatar-label">Add Avatar</InputLabel>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleFileChange}
+                <Button
+                  component="label"
+                  variant="contained"
+                  color="secondary"
+                  startIcon={<CloudUploadIcon />}
                   style={{ marginLeft: 8 }}
-                />
+                >
+                  Upload File
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                    style={{ display: "none" }}
+                  />
+                </Button>
+                {fileInput.file.length > 0 && (
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      marginLeft: 8,
+                    }}
+                  >
+                    <Typography variant="h6">
+                      {fileInput.file[0].name}
+                    </Typography>
+                    <Button
+                      color="warning"
+                      onClick={handleFileDelete}
+                      size="small"
+                      startIcon={<DeleteIcon />}
+                      sx={{ alignItems: "stretch" }}
+                    >
+                      Delete
+                    </Button>
+                  </Box>
+                )}
               </Box>
             </Grid>
             <Grid item xs={12}>

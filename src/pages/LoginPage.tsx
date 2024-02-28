@@ -125,6 +125,7 @@ const LoginPage = () => {
               <Button
                 type="submit"
                 variant="contained"
+                color="info"
                 fullWidth
                 sx={{ width: "100%", maxWidth: "200px" }}
               >
@@ -138,6 +139,7 @@ const LoginPage = () => {
             >
               <Button
                 variant="contained"
+                color="info"
                 style={{ maxWidth: "200px" }}
                 onClick={() => setShowModal(true)}
                 sx={{ width: "100%", maxWidth: "200px" }}
