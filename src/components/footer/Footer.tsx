@@ -2,7 +2,7 @@ import { Box, Container, Grid, Link, Typography } from "@mui/material";
 import DoneIcon from "@mui/icons-material/Done";
 import GitHubIcon from "@mui/icons-material/GitHub";
 
-import ScrollToTopButton from "./ScrollToTopButton";
+import ScrollToTopButton from "../ScrollToTopButton";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -55,7 +55,6 @@ const Footer = () => {
             © {currentYear} | All rights reserved.
           </Typography>
         </Box>
-        <ScrollToTopButton />
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <Link
             href="https://github.com/VictoriiaShtyreva"

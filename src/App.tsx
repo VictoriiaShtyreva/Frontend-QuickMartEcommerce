@@ -17,6 +17,7 @@ import Footer from "./components/footer/Footer";
 import store from "./redux/store";
 import LoginPage from "./pages/LoginPage";
 import ProtectedAdminRoute from "./components/ProtectedRoute";
+import ScrollToTopButton from "./components/ScrollToTopButton";
 
 const App = () => {
   const [themeMode, setThemeMode] = useState<PaletteMode>("light");
@@ -50,6 +51,7 @@ const App = () => {
                 />
               </Routes>
               <Footer />
+              <ScrollToTopButton />
             </Paper>
           </ThemeProvider>
         </ColorThemeContext.Provider>
