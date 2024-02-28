@@ -75,9 +75,11 @@ const ProductListDashboard = () => {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
+          flexDirection: { xs: "column", sm: "row" },
         }}
       >
         <Button
+          sx={{ mb: 1 }}
           variant="outlined"
           color="secondary"
           onClick={handleCreateDialogOpen}
