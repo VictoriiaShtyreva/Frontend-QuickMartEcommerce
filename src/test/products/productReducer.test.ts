@@ -74,9 +74,8 @@ describe("product reducer", () => {
   });
   //test for fetching single product by id
   test("should fetch a single product by id", async () => {
-    const id = 1;
     // Dispatch the action to fetch the product
-    const dispatchedAction = await store.dispatch(fetchProductById(id));
+    const dispatchedAction = await store.dispatch(fetchProductById(1));
     const expectedAction = {
       type: "fetchProductById/fulfilled",
       payload: {
@@ -113,7 +112,7 @@ describe("product reducer", () => {
     expect(store.getState().products.error).toBeNull();
     expect(store.getState().products.loading).toBeFalsy();
   });
-  //test for updating product
+  //test for updating product title
   test("should update a product", async () => {
     const updates = {
       id: 2,

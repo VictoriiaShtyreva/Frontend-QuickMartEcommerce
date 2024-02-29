@@ -1,12 +1,12 @@
 export type UserRegister = {
-  email: string;
-  name: string;
-  password: string;
-  avatar: string;
+  email?: string;
+  name?: string;
+  password?: string;
+  avatar?: string;
 };
 
 export type User = UserRegister & {
-  role: "admin" | "customer";
+  role?: "admin" | "customer";
   id: number;
   creationAt?: string;
   updatedAt?: string;
