@@ -157,7 +157,7 @@ const productSlice = createSlice({
         state.products.sort((a, b) => a.price - b.price);
     },
     searchProductByName: (state, action: PayloadAction<string>) => {
-      // Filter products based on the search input
+      //Filter products based on the search input
       state.products = state.products.filter((product) =>
         product.title.toLowerCase().includes(action.payload.toLowerCase())
       );

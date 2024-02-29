@@ -1,25 +1,8 @@
 import { HttpResponse, http } from "msw";
 import { setupServer } from "msw/node";
-import { NewProduct, Product } from "../../types/Product";
 
-export const mockProducts: Product[] = [
-  {
-    id: 1,
-    title: "product1",
-    price: 34,
-    description: "description for product1",
-    images: ["img1", "img2"],
-    category: { id: 1, name: "category1", image: "img1" },
-  },
-  {
-    id: 2,
-    title: "product2",
-    price: 67,
-    description: "description for product2",
-    images: ["img1", "img2"],
-    category: { id: 2, name: "category2", image: "img2" },
-  },
-];
+import { NewProduct, Product } from "../../types/Product";
+import { mockProducts } from "../mockdata/products";
 
 export const handler = [
   //Handler for fetching all products
@@ -31,13 +14,13 @@ export const handler = [
     const product = (await request.json()) as NewProduct;
     const createdProduct: Product = {
       ...product,
-      id: 3,
+      id: 4,
       category: {
-        id: 3,
-        name: "",
-        image: "",
-        creationAt: "",
-        updatedAt: "",
+        id: 2,
+        name: "Electronics",
+        image: "https://i.imgur.com/ZANVnHE.jpeg",
+        creationAt: "2024-02-29T03:37:26.000Z",
+        updatedAt: "2024-02-29T03:37:26.000Z",
       },
     };
     return HttpResponse.json(createdProduct, { status: 201 });
@@ -53,8 +36,8 @@ export const handler = [
   ),
   //Handler for updating a product
   http.put("https://api.escuelajs.co/api/v1/products/:id", async () => {
-    const product = mockProducts[0];
-    product.title = "updated product";
+    const product = mockProducts[1];
+    product.title = "Stylish Notebook";
     return HttpResponse.json(product, { status: 200 });
   }),
   //Handler for for delete product
@@ -62,7 +45,7 @@ export const handler = [
     "https://api.escuelajs.co/api/v1/products/:id",
     async ({ params }) => {
       const id = Number(params.id);
-      const product = mockProducts.find((item) => item.id === id);
+      const product = mockProducts.filter((item) => item.id !== id);
       if (!product) {
         return new HttpResponse(null, { status: 404 });
       }

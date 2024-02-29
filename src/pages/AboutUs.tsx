@@ -21,10 +21,6 @@ const sections = [
     description: "We are dedicated to providing exceptional customer care.",
   },
   {
-    title: "Delivery",
-    description: "We offer fast and reliable delivery options.",
-  },
-  {
     title: "Contact Us",
     description: "Reach out to us for assistance or inquiries.",
   },
