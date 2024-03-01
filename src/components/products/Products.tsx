@@ -15,6 +15,8 @@ import CategorySelection from "./CategorySelection";
 import SortingFilter from "./SortingFilter";
 import { useAppSelector } from "../../hooks/useAppSelector";
 import SearchForm from "./SearchForm";
+import { Product } from "../../types/Product";
+import EmptyProducts from "./EmptyProducts";
 
 const Products = () => {
   const dispatch = useAppDispatch();
@@ -72,7 +74,7 @@ const Products = () => {
   }, [dispatch]);
 
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="lg" sx={{ minHeight: "100vh" }}>
       <Typography variant="h4" gutterBottom>
         Products Page
       </Typography>
@@ -107,21 +109,33 @@ const Products = () => {
             />
           </Grid>
         </Box>
-        <ProductList
-          products={products}
-          selectedCategory={selectedCategory}
-          pagination={pagination}
-        />
-        <Box
-          sx={{ display: "flex", justifyContent: "center", mt: 2, mb: 2, p: 2 }}
-        >
-          <Pagination
-            variant="outlined"
-            count={10}
-            page={pagination.page}
-            onChange={handlePaginationChange}
-          />
-        </Box>
+        {products.length > 0 ? (
+          <>
+            <ProductList
+              products={products}
+              selectedCategory={selectedCategory}
+              pagination={pagination}
+            />
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                mt: 2,
+                mb: 2,
+                p: 2,
+              }}
+            >
+              <Pagination
+                variant="outlined"
+                count={10}
+                page={pagination.page}
+                onChange={handlePaginationChange}
+              />
+            </Box>
+          </>
+        ) : (
+          <EmptyProducts />
+        )}
       </Grid>
     </Container>
   );

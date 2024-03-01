@@ -12,6 +12,7 @@ import ProductAdminItem from "./ProductAdminItem";
 import { Product } from "../../types/Product";
 import SearchForm from "../products/SearchForm";
 import ProductCreateForm from "./ProductCreateForm";
+import EmptyProducts from "../products/EmptyProducts";
 
 const ProductListDashboard = () => {
   const dispatch = useAppDispatch();
@@ -96,23 +97,37 @@ const ProductListDashboard = () => {
           />
         </Box>
       </Box>
-      <Grid container justifyContent={"center"} spacing={2}>
-        {products.slice(startIndex, endIndex).map((product: Product) => (
-          <Grid item key={product.id} xs={11} sm={6} md={4} lg={3}>
-            <ProductAdminItem product={product} />
+      {products.length > 0 ? (
+        <>
+          <Grid container justifyContent={"center"} spacing={2}>
+            {products.slice(startIndex, endIndex).map((product: Product) => (
+              <Grid item key={product.id} xs={11} sm={6} md={4} lg={3}>
+                <ProductAdminItem product={product} />
+              </Grid>
+            ))}
           </Grid>
-        ))}
-      </Grid>
-      <Box
-        sx={{ display: "flex", justifyContent: "center", mt: 2, mb: 2, p: 2 }}
-      >
-        <Pagination
-          variant="outlined"
-          count={20}
-          page={pagination.page}
-          onChange={handlePaginationChange}
-        />
-      </Box>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              mt: 2,
+              mb: 2,
+              p: 2,
+            }}
+          >
+            <Pagination
+              variant="outlined"
+              count={20}
+              page={pagination.page}
+              onChange={handlePaginationChange}
+            />
+          </Box>
+        </>
+      ) : (
+        <Grid item sx={{ mb: 50 }}>
+          <EmptyProducts />
+        </Grid>
+      )}
       <ProductCreateForm
         open={openCreateDialog}
         onClose={handleCreateDialogClose}
