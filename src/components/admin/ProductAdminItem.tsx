@@ -123,7 +123,6 @@ const ProductAdminItem = ({ product }: ProductCardProps) => {
           </Button>
         </CardActions>
         <Box sx={{ p: 1 }}>
-          <Typography variant="body1">{product.id}</Typography>
           <Typography variant="body1">{product.title}</Typography>
           <Typography variant="body1">Price: {product.price}$</Typography>
         </Box>

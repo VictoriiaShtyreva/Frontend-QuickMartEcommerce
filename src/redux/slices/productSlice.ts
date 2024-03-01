@@ -12,6 +12,20 @@ import uploadFilesService from "../../utils/uploadFilesService";
 
 const initialState: ProductState = {
   products: [],
+  productDetails: {
+    id: 0,
+    title: "",
+    price: 0,
+    description: "",
+    images: [],
+    category: {
+      id: 0,
+      name: "",
+      image: "",
+      creationAt: "",
+      updatedAt: "",
+    },
+  },
   loading: false,
   error: null,
 };
@@ -192,10 +206,10 @@ const productSlice = createSlice({
     });
     //Fetch Product by ID
     builder.addCase(fetchProductById.fulfilled, (state, action) => {
-      const { id } = action.payload;
+      const { data } = action.payload;
       return {
         ...state,
-        products: state.products.filter((product) => product.id !== id),
+        productDetails: data,
         loading: false,
         error: null,
       };

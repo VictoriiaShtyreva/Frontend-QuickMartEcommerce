@@ -12,7 +12,11 @@ import CloseIcon from "@mui/icons-material/Close";
 
 import { updateProduct } from "../../redux/slices/productSlice";
 import { useAppDispatch } from "../../hooks/useAppDispach";
-import { Product, ProductDataForUpdate } from "../../types/Product";
+import {
+  FormDataValues,
+  Product,
+  ProductDataForUpdate,
+} from "../../types/Product";
 
 interface UpdateProductProps {
   product: Product;
@@ -20,10 +24,9 @@ interface UpdateProductProps {
 }
 
 const UpdateProduct = ({ product, onClose }: UpdateProductProps) => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormDataValues>({
     title: product.title,
     description: product.description,
-    images: product.images,
     price: product.price,
   });
   const dispatch = useAppDispatch();
@@ -43,20 +46,26 @@ const UpdateProduct = ({ product, onClose }: UpdateProductProps) => {
         id: product.id,
         data: {},
       };
-      //Check if each field in formData is different from the original product data
-      if (formData.title !== product.title) {
-        updatedData.data.title = formData.title;
+      // Iterate through each field in formData
+      for (const field in formData) {
+        // Check if the formData value differs from the original product data
+        if (
+          formData[field as keyof FormDataValues] !==
+          product[field as keyof Product]
+        ) {
+          updatedData.data[field] = formData[field];
+        }
       }
-      if (formData.description !== product.description) {
-        updatedData.data.description = formData.description;
+      //Dispatch the updateProduct action only if there are updated fields
+      //Check if updated fields in the updatedData object exist
+      if (Object.keys(updatedData.data).length > 0) {
+        dispatch(updateProduct(updatedData));
+        onClose();
+        toast.success("Product updated successfully.");
+      } else {
+        onClose();
+        toast.info("No changes detected.");
       }
-      if (formData.price !== product.price) {
-        updatedData.data.price = formData.price;
-      }
-      // Dispatch the updateProduct action only if there are updated fields
-      dispatch(updateProduct(updatedData));
-      onClose();
-      toast.success("Product updated successfully.");
     } catch (e) {
       toast.error("Failed to update product. Please try again.");
     }

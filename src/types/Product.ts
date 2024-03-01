@@ -15,6 +15,7 @@ export type Product = {
 //Define initial state for products
 export type ProductState = {
   products: Product[];
+  productDetails: Product;
   loading: boolean;
   error: string | null;
 };
@@ -37,6 +38,11 @@ export type FormValues = {
   images: string[];
 };
 
+//Define type for formData in UploadProduct.tsx
+export type FormDataValues = {
+  [key: string]: string | number;
+};
+
 //Define type for update product
 export type UpdateProduct = {
   id?: number;
@@ -55,6 +61,7 @@ export type ProductDataForUpdate = {
     price?: number;
     description?: string;
     categoryId?: number;
+    [key: string]: unknown;
   };
   images?: { file: File }[];
 };
