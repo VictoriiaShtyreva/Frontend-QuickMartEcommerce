@@ -68,8 +68,9 @@ const Products = () => {
     [pagination, setPagination]
   );
 
-  //Fetch allCategories of
+  //Fetch
   useEffect(() => {
+    dispatch(fetchAllProducts());
     dispatch(fetchAllCategories());
   }, [dispatch]);
 
