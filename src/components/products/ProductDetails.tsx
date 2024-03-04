@@ -34,8 +34,8 @@ const ProductDetails = ({ id }: { id: number }) => {
     state.products.products.find((product) => product.id === id)
   );
   const images = product?.images.map((image) => {
-    const imageUrl = checkImageUrl(image);
-    return typeof imageUrl === "string" ? imageUrl : svgUrl;
+    const imageUrl = checkImageUrl(image, svgUrl);
+    return imageUrl;
   });
   const { user } = useAppSelector((state) => state.users);
   const isAdmin = user?.role === "admin";
@@ -135,7 +135,11 @@ const ProductDetails = ({ id }: { id: number }) => {
           <Carousel {...settingsImages}>
             {images?.map((imageUrl, index) => (
               <Box key={index}>
-                <img src={imageUrl} alt={product?.title} width="100%" />
+                <img
+                  src={imageUrl as string}
+                  alt={product?.title}
+                  width="100%"
+                />
               </Box>
             ))}
           </Carousel>

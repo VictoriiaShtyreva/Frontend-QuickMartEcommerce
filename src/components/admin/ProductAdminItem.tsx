@@ -72,8 +72,8 @@ const ProductAdminItem = ({ product }: ProductCardProps) => {
   };
 
   const images = product.images.map((image) => {
-    const imageUrl = checkImageUrl(image);
-    return typeof imageUrl === "string" ? imageUrl : svgUrl;
+    const imageUrl = checkImageUrl(image, svgUrl);
+    return imageUrl;
   });
 
   return (
@@ -86,7 +86,10 @@ const ProductAdminItem = ({ product }: ProductCardProps) => {
           position: "relative",
         }}
       >
-        <CardMedia sx={{ height: 200, width: "100%" }} image={images[0]} />
+        <CardMedia
+          sx={{ height: 200, width: "100%" }}
+          image={images[0] as string}
+        />
         <CardActions
           sx={{
             display: "flex",

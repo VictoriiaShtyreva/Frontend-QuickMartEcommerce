@@ -40,8 +40,8 @@ const CartItem = ({ item }: CartItemProps) => {
 
   const renderItemImage = () => {
     if (item.images && item.images.length > 0) {
-      const imageUrl = checkImageUrl(item.images[0]);
-      return typeof imageUrl === "string" ? imageUrl : svgUrl;
+      const imageUrl = checkImageUrl(item.images[0], svgUrl);
+      return imageUrl;
     }
     return null;
   };

@@ -80,6 +80,7 @@ describe("product reducer", () => {
     await store.dispatch(fetchAllProducts());
     store.dispatch(addFavoriteProduct(favProduct));
     expect(store.getState().products.favoriteProducts).toHaveLength(1);
+    //id of favProduct = 1
     store.dispatch(removeFavoriteProduct(1));
     expect(store.getState().products.favoriteProducts).toHaveLength(0);
   });
