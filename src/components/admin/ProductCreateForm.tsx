@@ -105,11 +105,12 @@ const ProductCreateForm = ({ open, onClose }: ProductCreateFormProps) => {
               <Controller
                 name="title"
                 control={control}
+                defaultValue=""
                 rules={{
                   required: "Title is required",
                   maxLength: {
-                    value: 50,
-                    message: "Title should not be more than 50 characters",
+                    value: 150,
+                    message: "Title should not be more than 150 characters",
                   },
                   minLength: {
                     value: 3,
@@ -133,6 +134,7 @@ const ProductCreateForm = ({ open, onClose }: ProductCreateFormProps) => {
               <Controller
                 name="price"
                 control={control}
+                defaultValue={0}
                 rules={{
                   required: "Price is required",
                   pattern: { value: /^\d+$/, message: "Invalid price" },
@@ -163,6 +165,7 @@ const ProductCreateForm = ({ open, onClose }: ProductCreateFormProps) => {
               <Controller
                 name="description"
                 control={control}
+                defaultValue=""
                 rules={{
                   required: "Description is required",
                   maxLength: {
@@ -195,6 +198,7 @@ const ProductCreateForm = ({ open, onClose }: ProductCreateFormProps) => {
               <Controller
                 name="categoryId"
                 control={control}
+                defaultValue={1}
                 rules={{ required: "Category is required" }}
                 render={({ field }) => (
                   <TextField

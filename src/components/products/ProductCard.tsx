@@ -64,7 +64,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              justifyContent: "center",
+              justifyContent: "flex-start",
               color: "info.main",
               textAlign: "center",
               minHeight: 260,
