@@ -31,7 +31,7 @@ const SearchForm = ({
       sx={{ mb: 2 }}
       label="Search products..."
       variant="outlined"
-      color="secondary"
+      color="primary"
       value={userInput}
       onChange={handleOnChange}
       fullWidth

@@ -1,23 +1,27 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { useMemo, useState } from "react";
+import { useMemo, useState, lazy, Suspense } from "react";
 import { createTheme, PaletteMode, Paper, ThemeProvider } from "@mui/material";
 import { Provider } from "react-redux";
 import { ToastContainer } from "react-toastify";
 
-import HomePage from "./pages/HomePage";
-import CartPage from "./pages/CartPage";
-import SingleProductPage from "./pages/SingleProductPage";
-import UserPage from "./pages/UserPage";
-import AdminPage from "./pages/AdminPage";
 import ColorThemeContext from "./components/contextAPI/ColorThemeContext";
 import customTheme from "./components/contextAPI/theme/customTheme";
-import Header from "./components/header/Header";
-import AboutUs from "./pages/AboutUs";
-import Footer from "./components/footer/Footer";
 import store from "./redux/store";
-import LoginPage from "./pages/LoginPage";
 import ProtectedAdminRoute from "./components/ProtectedRoute";
-import ScrollToTopButton from "./components/ScrollToTopButton";
+import LoadingPage from "./pages/LoadingPage";
+
+// Lazily load components
+const HomePage = lazy(() => import("./pages/HomePage"));
+const CartPage = lazy(() => import("./pages/CartPage"));
+const SingleProductPage = lazy(() => import("./pages/SingleProductPage"));
+const UserPage = lazy(() => import("./pages/UserPage"));
+const AdminPage = lazy(() => import("./pages/AdminPage"));
+const LoginPage = lazy(() => import("./pages/LoginPage"));
+const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
+const AboutUs = lazy(() => import("./pages/AboutUs"));
+const Footer = lazy(() => import("./components/footer/Footer"));
+const Header = lazy(() => import("./components/header/Header"));
+const ScrollToTopButton = lazy(() => import("./components/ScrollToTopButton"));
 
 const App = () => {
   const [themeMode, setThemeMode] = useState<PaletteMode>("light");
@@ -38,18 +42,21 @@ const App = () => {
               <h1 style={{ display: "none" }}>Redux Toolkit</h1>
               <Header />
               <ToastContainer />
-              <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/about-us" element={<AboutUs />} />
-                <Route path="/products/:id" element={<SingleProductPage />} />
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/user-profile/:id" element={<UserPage />} />
-                <Route path="/shopping-cart" element={<CartPage />} />
-                <Route
-                  path="/admin-dashboard"
-                  element={<ProtectedAdminRoute Component={AdminPage} />}
-                />
-              </Routes>
+              <Suspense fallback={<LoadingPage />}>
+                <Routes>
+                  <Route path="/" element={<HomePage />} />
+                  <Route path="/about-us" element={<AboutUs />} />
+                  <Route path="/products/:id" element={<SingleProductPage />} />
+                  <Route path="/login" element={<LoginPage />} />
+                  <Route path="/user-profile/:id" element={<UserPage />} />
+                  <Route path="/shopping-cart" element={<CartPage />} />
+                  <Route
+                    path="/admin-dashboard"
+                    element={<ProtectedAdminRoute Component={AdminPage} />}
+                  />
+                  <Route path="*" element={<NotFoundPage />} />
+                </Routes>
+              </Suspense>
               <Footer />
               <ScrollToTopButton />
             </Paper>

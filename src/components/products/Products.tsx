@@ -1,4 +1,11 @@
-import { Box, Container, Grid, Pagination, Typography } from "@mui/material";
+import {
+  Box,
+  CardContent,
+  Container,
+  Grid,
+  Pagination,
+  Typography,
+} from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
 import { SelectChangeEvent } from "@mui/material";
 
@@ -15,7 +22,6 @@ import CategorySelection from "./CategorySelection";
 import SortingFilter from "./SortingFilter";
 import { useAppSelector } from "../../hooks/useAppSelector";
 import SearchForm from "./SearchForm";
-import { Product } from "../../types/Product";
 import EmptyProducts from "./EmptyProducts";
 
 const Products = () => {
@@ -76,9 +82,42 @@ const Products = () => {
 
   return (
     <Container maxWidth="lg" sx={{ minHeight: "100vh" }}>
-      <Typography variant="h4" gutterBottom>
-        Products Page
-      </Typography>
+      <Grid
+        container
+        spacing={0}
+        mt={2}
+        direction={{ xs: "column", sm: "row" }}
+        justifyContent="space-between"
+        alignItems="center"
+        style={{ backgroundColor: "#9362c6" }}
+      >
+        <Grid item xs={6} md={8}>
+          <img
+            src={require("../../images/homepicture.png")}
+            width={500}
+            height={400}
+          ></img>
+        </Grid>
+        <Grid item xs={6} md={4}>
+          <CardContent sx={{ display: "flex", flexDirection: "column" }}>
+            <Typography variant="h4" gutterBottom>
+              We Help You Make Modern Future
+            </Typography>
+            <Typography variant="body1" mb={2}>
+              All of our products are carefully selected to provide the best
+              choices for our customers. Explore future wuth us!
+            </Typography>
+            <Grid item xs={12} md={12}>
+              <SearchForm
+                userInput={userInput}
+                setUserInput={setUserInput}
+                onSearch={handleSearch}
+                onClear={handleClear}
+              />
+            </Grid>
+          </CardContent>
+        </Grid>
+      </Grid>
       <Grid container spacing={2} flexDirection={"column"}>
         <Box
           sx={{
@@ -86,24 +125,17 @@ const Products = () => {
             justifyContent: "space-between",
             flexDirection: { xs: "column", sm: "row" },
             p: 2,
+            mt: 2,
           }}
         >
-          <Grid item xs={12} sm={6} md={4} lg={3}>
+          <Grid item xs={12} md={4}>
             <CategorySelection
               categories={categories}
               selectedCategory={selectedCategory}
               onChange={handleCategoryChange}
             />
           </Grid>
-          <Grid item xs={12} sm={6} md={4} lg={3}>
-            <SearchForm
-              userInput={userInput}
-              setUserInput={setUserInput}
-              onSearch={handleSearch}
-              onClear={handleClear}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6} md={4} lg={3}>
+          <Grid item xs={12} md={4}>
             <SortingFilter
               sortPrice={sortPrice}
               onChange={handleSortPriceChange}

@@ -86,7 +86,7 @@ const ProductDetails = ({ id }: { id: number }) => {
     if (!product) {
       dispatch(fetchProductById(id));
     }
-  }, [dispatch, id, product]);
+  }, [dispatch, product, id]);
 
   //For scroll to top, when product detail is cliced in product card of related products
   useEffect(() => {

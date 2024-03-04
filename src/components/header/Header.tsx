@@ -24,6 +24,7 @@ import ColorThemeContext from "../contextAPI/ColorThemeContext";
 import { useAppDispatch } from "../../hooks/useAppDispach";
 import { logout } from "../../redux/slices/usersSlice";
 import { useAppSelector } from "../../hooks/useAppSelector";
+import { ReactComponent as LogoSVG } from "../../images/logo.svg";
 
 const Header = () => {
   const dispatch = useAppDispatch();
@@ -70,21 +71,14 @@ const Header = () => {
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Link to="/">
-            <Typography
-              variant="h6"
-              noWrap
+            <Box
               sx={{
                 display: { xs: "none", md: "flex" },
                 mr: 1,
-                fontFamily: "monospace",
-                fontWeight: 700,
-                letterSpacing: ".3rem",
-                color: "primary.contrastText",
-                textDecoration: "none",
               }}
             >
-              LOGO
-            </Typography>
+              <LogoSVG />
+            </Box>
           </Link>
           {/* Navigation Menu */}
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -126,21 +120,14 @@ const Header = () => {
             </Menu>
           </Box>
           {/* Logo */}
-          <Typography
-            variant="h5"
-            noWrap
+          <Box
             sx={{
               display: { xs: "flex", md: "none" },
               flexGrow: 1,
-              fontFamily: "monospace",
-              fontWeight: 700,
-              letterSpacing: ".3rem",
-              color: "primary.contrastText",
-              textDecoration: "none",
             }}
           >
-            LOGO
-          </Typography>
+            <LogoSVG />
+          </Box>
           {/* Navigation Links */}
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             <Button color="inherit" sx={{ mr: 2 }}>

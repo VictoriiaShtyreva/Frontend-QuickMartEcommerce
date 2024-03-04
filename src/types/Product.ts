@@ -15,7 +15,6 @@ export type Product = {
 //Define initial state for products
 export type ProductState = {
   products: Product[];
-  productDetails: Product;
   loading: boolean;
   error: string | null;
   favoriteProducts: Product[];
