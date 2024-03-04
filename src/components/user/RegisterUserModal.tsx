@@ -18,6 +18,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 
 import { RegistrationFormData, UserRegister } from "../../types/User";
 import uploadFilesService from "../../utils/uploadFilesService";
+import { toast } from "react-toastify";
 
 interface RegistrationModalProps {
   isOpen: boolean;
@@ -62,6 +63,7 @@ const RegistrationModal = ({
       avatar: location[0] as string,
     };
     onRegister(newUser);
+    toast.success(`${newUser.name} created successfully!`);
     //Close the modal after a delay
     setTimeout(() => {
       onClose();

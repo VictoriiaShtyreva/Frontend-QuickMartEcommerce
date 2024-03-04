@@ -28,6 +28,7 @@ const initialState: ProductState = {
   },
   loading: false,
   error: null,
+  favoriteProducts: [],
 };
 
 //Fetch data
@@ -176,6 +177,28 @@ const productSlice = createSlice({
         product.title.toLowerCase().includes(action.payload.toLowerCase())
       );
     },
+    addFavoriteProduct: (
+      state: ProductState,
+      action: PayloadAction<Product>
+    ) => {
+      const { id } = action.payload;
+      //Check if the product is not already in favoriteProducts
+      if (!state.favoriteProducts.some((product) => product.id === id)) {
+        state.favoriteProducts.push(action.payload);
+        toast.success("Product added to favorites.");
+        return state;
+      } else {
+        //Product already exists in favoriteProducts
+        toast.warning("This product is already in your favorites!");
+        return state;
+      }
+    },
+    removeFavoriteProduct: (state, action: PayloadAction<number>) => {
+      state.favoriteProducts = state.favoriteProducts.filter(
+        (product) => product.id !== action.payload
+      );
+      toast.success("Product remove from favorites.");
+    },
   },
   extraReducers(builder) {
     //Fetch All Products
@@ -310,6 +333,10 @@ const productSlice = createSlice({
 });
 
 const productReducer = productSlice.reducer;
-export const { sortProductsByPrice, searchProductByName } =
-  productSlice.actions;
+export const {
+  sortProductsByPrice,
+  searchProductByName,
+  addFavoriteProduct,
+  removeFavoriteProduct,
+} = productSlice.actions;
 export default productReducer;

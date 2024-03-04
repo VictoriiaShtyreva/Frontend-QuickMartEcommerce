@@ -13,11 +13,15 @@ import {
   styled,
   useTheme,
 } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 import { useAppDispatch } from "../../hooks/useAppDispach";
 import { fetchUserById, updateUser } from "../../redux/slices/usersSlice";
 import { User } from "../../types/User";
 import { useAppSelector } from "../../hooks/useAppSelector";
+import ProductCard from "../products/ProductCard";
+import { removeFavoriteProduct } from "../../redux/slices/productSlice";
+import EmptyFavoriteProduct from "../products/EmptyFavoritesProducts";
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -52,6 +56,9 @@ const UserAccount = ({ id }: { id: number }) => {
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) =>
     state.users.users.find((user) => user.id === id)
+  );
+  const favoriteProducts = useAppSelector(
+    (state) => state.products.favoriteProducts
   );
   const theme = useTheme();
   const [isEditing, setIsEditing] = useState(false);
@@ -166,6 +173,37 @@ const UserAccount = ({ id }: { id: number }) => {
             <Typography variant="body2">
               Click "Edit Info" to update your details.
             </Typography>
+          )}
+        </Grid>
+        <Grid item xs={12} sx={{ textAlign: "center" }}>
+          <Typography variant="h5" sx={{ mt: 4, mb: 2 }}>
+            Favorite Products
+          </Typography>
+          {favoriteProducts.length > 0 ? (
+            <Grid container spacing={2}>
+              {favoriteProducts.map((product) => (
+                <Grid
+                  item
+                  xs={12}
+                  sm={4}
+                  key={product.id}
+                  sx={{ mb: 5, width: "100%", height: "100%" }}
+                >
+                  <ProductCard product={product} />
+                  <Button
+                    variant="outlined"
+                    startIcon={<DeleteIcon />}
+                    color="error"
+                    onClick={() => dispatch(removeFavoriteProduct(product.id))}
+                    sx={{ mt: 1 }}
+                  >
+                    Remove
+                  </Button>
+                </Grid>
+              ))}
+            </Grid>
+          ) : (
+            <EmptyFavoriteProduct />
           )}
         </Grid>
       </Grid>

@@ -18,6 +18,7 @@ export type ProductState = {
   productDetails: Product;
   loading: boolean;
   error: string | null;
+  favoriteProducts: Product[];
 };
 
 //Define type for new product

@@ -1,15 +1,21 @@
 import {
+  addFavoriteProduct,
   createProduct,
   deleteProduct,
   fetchAllProducts,
   fetchProductById,
+  removeFavoriteProduct,
   searchProductByName,
   sortProductsByPrice,
   updateProduct,
 } from "../../redux/slices/productSlice";
 import { createNewStore } from "../../redux/store";
 import { NewProduct } from "../../types/Product";
-import { ascMockProducts, descMockProducts } from "../mockdata/products";
+import {
+  ascMockProducts,
+  descMockProducts,
+  favProduct,
+} from "../mockdata/products";
 import { productServer } from "../shared/productServer";
 
 let store = createNewStore();
@@ -54,6 +60,28 @@ describe("product reducer", () => {
     //Dispatch action with search query in uppercase
     store.dispatch(searchProductByName("NOTEBOOK"));
     expect(store.getState().products.products.length).toBe(0);
+  });
+  //test for add favorite product
+  test("should add favorite product", async () => {
+    await store.dispatch(fetchAllProducts());
+    store.dispatch(addFavoriteProduct(favProduct));
+    expect(store.getState().products.favoriteProducts).toHaveLength(1);
+  });
+  //test for add favorite product repeatedly
+  test("hould not add a product if it already exists in favorites", async () => {
+    await store.dispatch(fetchAllProducts());
+    store.dispatch(addFavoriteProduct(favProduct));
+    expect(store.getState().products.favoriteProducts).toHaveLength(1);
+    store.dispatch(addFavoriteProduct(favProduct));
+    expect(store.getState().products.favoriteProducts).toHaveLength(1);
+  });
+  //test for remove favorite product
+  test("should remove favorite product", async () => {
+    await store.dispatch(fetchAllProducts());
+    store.dispatch(addFavoriteProduct(favProduct));
+    expect(store.getState().products.favoriteProducts).toHaveLength(1);
+    store.dispatch(removeFavoriteProduct(1));
+    expect(store.getState().products.favoriteProducts).toHaveLength(0);
   });
   //create new product
   test("should create a new product", async () => {
