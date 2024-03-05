@@ -4,6 +4,7 @@ import {
   CardActionArea,
   CardContent,
   CardMedia,
+  Chip,
   Typography,
 } from "@mui/material";
 import { Link } from "react-router-dom";
@@ -45,53 +46,36 @@ const ProductCard = ({ product }: ProductCardProps) => {
           backgroundPosition: "center",
         }}
       />
-      <CardActionArea>
-        <CardContent>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "flex-start",
-              color: "info.main",
-              textAlign: "center",
-              minHeight: 260,
-            }}
-          >
-            <Typography
-              variant="h6"
+      <Link
+        to={`/products/${product.id}`}
+        style={{ textDecoration: "none", color: "inherit" }}
+      >
+        <CardActionArea>
+          <CardContent>
+            <Box
               sx={{
-                color: "info.contrastText",
-              }}
-            >
-              {product.title}
-            </Typography>
-            <Typography
-              variant="h6"
-              sx={{
-                color: "info.contrastText",
-              }}
-            >
-              {product.price}$
-            </Typography>
-          </Box>
-          <Link
-            to={`/products/${product.id}`}
-            style={{ textDecoration: "none", color: "inherit" }}
-          >
-            <Typography
-              variant="h6"
-              sx={{
-                display: "block",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "flex-start",
+                color: "info.main",
                 textAlign: "center",
-                color: "info.contrastText",
+                minHeight: 260,
               }}
             >
-              Detail
-            </Typography>
-          </Link>
-        </CardContent>
-      </CardActionArea>
+              <Chip label={product.title} variant="outlined" />
+              <Typography
+                variant="h6"
+                sx={{
+                  color: "info.contrastText",
+                }}
+              >
+                {product.price}$
+              </Typography>
+            </Box>
+          </CardContent>
+        </CardActionArea>
+      </Link>
     </Card>
   );
 };

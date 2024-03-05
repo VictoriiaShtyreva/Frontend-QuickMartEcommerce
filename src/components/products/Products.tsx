@@ -85,17 +85,18 @@ const Products = () => {
       <Grid
         container
         spacing={0}
-        mt={2}
+        mt={1}
         direction={{ xs: "column", sm: "row" }}
         justifyContent="space-between"
         alignItems="center"
-        style={{ backgroundColor: "#9362c6" }}
+        style={{ backgroundColor: "#b195cf" }}
       >
         <Grid item xs={6} md={8}>
           <img
             src={require("../../images/homepicture.png")}
             width={500}
             height={400}
+            alt="Good shopping cart"
           ></img>
         </Grid>
         <Grid item xs={6} md={4}>
@@ -105,7 +106,7 @@ const Products = () => {
             </Typography>
             <Typography variant="body1" mb={2}>
               All of our products are carefully selected to provide the best
-              choices for our customers. Explore future wuth us!
+              choices for our customers. Explore future with us!
             </Typography>
             <Grid item xs={12} md={12}>
               <SearchForm

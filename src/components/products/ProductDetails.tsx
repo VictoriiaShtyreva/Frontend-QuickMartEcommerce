@@ -170,14 +170,14 @@ const ProductDetails = ({ id }: { id: number }) => {
                 }}
               >
                 <Fab
-                  color="secondary"
+                  color="error"
                   aria-label="add to favorites"
                   onClick={handleAddToFavorites}
                 >
                   <FavoriteIcon />
                 </Fab>
                 <Fab
-                  color="primary"
+                  color="secondary"
                   aria-label="add to cart"
                   onClick={handleOpenDialog}
                 >

@@ -2,8 +2,6 @@ import { Box, Container, Grid, Link, Typography } from "@mui/material";
 import DoneIcon from "@mui/icons-material/Done";
 import GitHubIcon from "@mui/icons-material/GitHub";
 
-import ScrollToTopButton from "../ScrollToTopButton";
-
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
@@ -15,7 +13,7 @@ const Footer = () => {
   };
 
   return (
-    <>
+    <footer>
       <Grid container spacing={2} justifyContent="center" sx={{ p: 2 }}>
         <Grid item xs={12} sm={6} md={4} lg={3}>
           <Box style={boxStyle}>
@@ -66,7 +64,7 @@ const Footer = () => {
           </Link>
         </Box>
       </Container>
-    </>
+    </footer>
   );
 };
 

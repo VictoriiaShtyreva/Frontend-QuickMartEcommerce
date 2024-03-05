@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Box,
   Typography,
@@ -15,14 +16,31 @@ import { useAppSelector } from "../hooks/useAppSelector";
 import { emptyCart } from "../redux/slices/cartSlice";
 import CartItem from "../components/cart/CartItem";
 import EmptyCart from "../components/cart/EmptyCart";
+import CheckoutForm from "../components/cart/checkout/CheckoutForm";
 
 const CartPage = () => {
   const dispatch = useAppDispatch();
   const cartItems = useAppSelector((state) => state.cart.items);
+  const [openModal, setOpenModal] = useState(false);
+
+  const handleOpenModal = () => {
+    setOpenModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
 
   const clearCart = () => {
     dispatch(emptyCart());
   };
+
+  const shippingAddress = useAppSelector(
+    (state) => state.checkout.shippingAddress
+  );
+  const paymentDetails = useAppSelector(
+    (state) => state.checkout.paymentDetails
+  );
 
   return (
     <Box
@@ -37,7 +55,23 @@ const CartPage = () => {
         <EmptyCart />
       ) : (
         <>
-          <Typography variant="h4">Shopping Cart</Typography>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <Typography variant="h4">Shopping Cart</Typography>
+            <Button
+              variant="contained"
+              color="error"
+              onClick={clearCart}
+              sx={{ mb: 2 }}
+            >
+              Clear Cart
+            </Button>
+          </Box>
           <TableContainer sx={{ overflowX: "auto" }}>
             <Table>
               <TableHead>
@@ -65,17 +99,20 @@ const CartPage = () => {
             <Button
               variant="contained"
               color="secondary"
-              onClick={clearCart}
               sx={{ mb: 2 }}
+              onClick={handleOpenModal}
             >
-              Clear Cart
-            </Button>
-            <Button variant="contained" color="secondary" sx={{ mb: 2 }}>
               Proceed to checkout
             </Button>
           </Box>
         </>
       )}
+      <CheckoutForm
+        isOpen={openModal}
+        onClose={handleCloseModal}
+        shippingAddress={shippingAddress}
+        paymentDetails={paymentDetails}
+      />
     </Box>
   );
 };

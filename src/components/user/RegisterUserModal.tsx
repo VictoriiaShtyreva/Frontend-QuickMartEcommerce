@@ -10,6 +10,7 @@ import {
   Grid,
   InputLabel,
   TextField,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
@@ -55,19 +56,27 @@ const RegistrationModal = ({
         images.push({ file });
       });
     }
-    const location = await uploadFilesService(images);
-    const newUser: UserRegister = {
-      name: data.name,
-      email: data.email,
-      password: data.password,
-      avatar: location[0] as string,
-    };
-    onRegister(newUser);
-    toast.success(`${newUser.name} created successfully!`);
-    //Close the modal after a delay
-    setTimeout(() => {
-      onClose();
-    }, 6000);
+    try {
+      const location = await uploadFilesService(images);
+      const newUser: UserRegister = {
+        name: data.name,
+        email: data.email,
+        password: data.password,
+        avatar: location[0] as string,
+      };
+      onRegister(newUser);
+      toast.success(
+        `Congratulations, ${newUser.name}! Your account has been successfully created.`
+      );
+      //Close the modal after a delay
+      setTimeout(() => {
+        onClose();
+      }, 6000);
+    } catch (error) {
+      toast.error(
+        "Please fill in all the required fields and upload an avatar."
+      );
+    }
   };
 
   return (
@@ -130,7 +139,11 @@ const RegistrationModal = ({
             </Grid>
             <Grid item xs={12}>
               <Box sx={{ display: "flex", alignItems: "center" }}>
-                <InputLabel id="avatar-label">Add Avatar</InputLabel>
+                <Tooltip title="This field is required">
+                  <InputLabel id="avatar-label">
+                    Add Avatar <span style={{ color: "red" }}>*</span>
+                  </InputLabel>
+                </Tooltip>
                 <Button
                   component="label"
                   variant="contained"
@@ -141,6 +154,7 @@ const RegistrationModal = ({
                   Upload File
                   <input
                     type="file"
+                    required
                     accept="image/*"
                     onChange={handleFileChange}
                     style={{ display: "none" }}

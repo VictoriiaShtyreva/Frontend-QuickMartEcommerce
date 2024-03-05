@@ -57,6 +57,7 @@ const UserAccount = ({ id }: { id: number }) => {
   const user = useAppSelector((state) =>
     state.users.users.find((user) => user.id === id)
   );
+  const isAdmin = user?.role === "admin";
   const favoriteProducts = useAppSelector(
     (state) => state.products.favoriteProducts
   );
@@ -175,37 +176,41 @@ const UserAccount = ({ id }: { id: number }) => {
             </Typography>
           )}
         </Grid>
-        <Grid item xs={12} sx={{ textAlign: "center" }}>
-          <Typography variant="h5" sx={{ mt: 4, mb: 2 }}>
-            Favorite Products
-          </Typography>
-          {favoriteProducts.length > 0 ? (
-            <Grid container spacing={2}>
-              {favoriteProducts.map((product) => (
-                <Grid
-                  item
-                  xs={12}
-                  sm={4}
-                  key={product.id}
-                  sx={{ mb: 5, width: "100%", height: "100%" }}
-                >
-                  <ProductCard product={product} />
-                  <Button
-                    variant="outlined"
-                    startIcon={<DeleteIcon />}
-                    color="error"
-                    onClick={() => dispatch(removeFavoriteProduct(product.id))}
-                    sx={{ mt: 1 }}
+        {!isAdmin && (
+          <Grid item xs={12} sx={{ textAlign: "center" }}>
+            <Typography variant="h5" sx={{ mt: 4, mb: 2 }}>
+              Favorite Products
+            </Typography>
+            {favoriteProducts.length > 0 ? (
+              <Grid container spacing={2}>
+                {favoriteProducts.map((product) => (
+                  <Grid
+                    item
+                    xs={12}
+                    sm={4}
+                    key={product.id}
+                    sx={{ mb: 5, width: "100%", height: "100%" }}
                   >
-                    Remove
-                  </Button>
-                </Grid>
-              ))}
-            </Grid>
-          ) : (
-            <EmptyFavoriteProduct />
-          )}
-        </Grid>
+                    <ProductCard product={product} />
+                    <Button
+                      variant="outlined"
+                      startIcon={<DeleteIcon />}
+                      color="error"
+                      onClick={() =>
+                        dispatch(removeFavoriteProduct(product.id))
+                      }
+                      sx={{ mt: 1 }}
+                    >
+                      Remove
+                    </Button>
+                  </Grid>
+                ))}
+              </Grid>
+            ) : (
+              <EmptyFavoriteProduct />
+            )}
+          </Grid>
+        )}
       </Grid>
     </Container>
   );

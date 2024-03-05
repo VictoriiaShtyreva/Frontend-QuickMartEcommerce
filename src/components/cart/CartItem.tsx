@@ -1,5 +1,6 @@
 import {
   Box,
+  CardMedia,
   IconButton,
   TableCell,
   TableRow,
@@ -51,14 +52,14 @@ const CartItem = ({ item }: CartItemProps) => {
       <TableCell>
         <Box sx={{ display: "flex", alignItems: "center" }}>
           {renderItemImage() && (
-            <img
-              src={renderItemImage() as string}
-              alt={item.title}
-              style={{ width: 50, height: 50, marginRight: 10 }}
-            />
+            <CardMedia
+              image={renderItemImage() as string}
+              sx={{ width: 100, height: 100, mb: 2 }}
+              title={item.title}
+            ></CardMedia>
           )}
-          <Typography>{item.title}</Typography>
         </Box>
+        <Typography>{item.title}</Typography>
       </TableCell>
       <TableCell>${(item.quantity * item.price).toFixed(2)}</TableCell>
       <TableCell>
@@ -78,6 +79,7 @@ const CartItem = ({ item }: CartItemProps) => {
           </IconButton>
           <IconButton
             aria-label="remove from cart"
+            color="error"
             onClick={() => removeFromCart(item.id)}
           >
             <DeleteIcon />
