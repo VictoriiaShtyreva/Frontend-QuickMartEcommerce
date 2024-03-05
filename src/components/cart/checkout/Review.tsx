@@ -61,9 +61,6 @@ const Review = ({ items, shippingAddress, paymentDetails }: ReviewProps) => {
           <Typography gutterBottom>
             Card Number: {paymentDetails.cardNumber}
           </Typography>
-          <Typography gutterBottom>
-            Expiry Date: {paymentDetails.expiryDate}
-          </Typography>
         </Grid>
       </Grid>
     </>
