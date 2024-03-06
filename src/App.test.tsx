@@ -1,18 +1,14 @@
 import { render, screen } from "@testing-library/react";
-import React from "react";
 
 import App from "./App";
 
 //Mock timers before running the tests
 jest.useFakeTimers();
 
-test("renders learn react link", () => {
-  render(
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
-  );
-  const linkElement = screen.getByText(/Redux Toolkit/i);
+test("renders learn react link", async () => {
+  render(<App />);
+  // Use findByText to asynchronously find the text
+  const linkElement = await screen.findByText(/Redux Toolkit/i);
   expect(linkElement).toBeInTheDocument();
 });
 
