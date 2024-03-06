@@ -24,18 +24,18 @@ This repository for the Frontend project aimed at building an e-commerce website
 <details>
   <summary>🔗 Table of Contents</summary>
 
-- [📷 App Screenshots](#📷-app-screenshots)
-- [📍 API Reference](#📍-api-reference)
-- [🚀 Getting Started](#🚀-getting-started)
-  - [⚙️ Install](#⚙️-install)
-  - [► Using QuickMart](#►-using-quickmart)
-  - [🧪 Tests](#🧪-tests)
-- [📦 Features](#📦-features)
-- [📂 Repository Structure](#📂-repository-structure)
-- [🛠 Project Roadmap](#🛠-project-roadmap)
-  - [🔩 Redux Store Structure](#🔩-redux-store-structure)
-- [🌏 Deployment](#🌏-deployment)
-- [👏 Acknowledgments](#👏-acknowledgments)
+- [📷 App Screenshots](#-app-screenshots)
+- [📍 API Reference](#-api-reference)
+- [🚀 Getting Started](#-getting-started)
+  - [⚙️ Install](#-install)
+  - [► Using QuickMart](#-using-quickmart)
+  - [🧪 Tests](#-tests)
+- [📦 Features](#-features)
+- [📂 Repository Structure](#-repository-structure)
+- [🛠 Project Roadmap](#-project-roadmap)
+  - [🔩 Redux Store Structure](#-redux-store-structure)
+- [🌏 Deployment](#-deployment)
+- [👏 Acknowledgments](#-acknowledgments)
 </details>
 <hr>
 
