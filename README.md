@@ -239,4 +239,4 @@ To deploy the project was used [Vercel](https://vercel.com/docs/getting-started-
 
 - With sincere gratitude to the team at [Integrify](https://www.integrify.io/) for their unwavering support and knowledge. Their guidance and resources have been instrumental in the development of this project.
 
-[**Return**](#📷-app-screenshots)
+[**Return**](#-app-screenshots)
