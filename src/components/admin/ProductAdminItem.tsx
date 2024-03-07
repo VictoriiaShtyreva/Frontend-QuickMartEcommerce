@@ -107,7 +107,7 @@ const ProductAdminItem = ({ product }: ProductCardProps) => {
               zIndex: 1,
             }}
             variant="contained"
-            color="primary"
+            color="info"
             onClick={handleOpenDialog}
             startIcon={<EditIcon />}
           >

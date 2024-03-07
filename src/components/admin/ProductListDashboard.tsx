@@ -84,7 +84,7 @@ const ProductListDashboard = () => {
       >
         <Button
           sx={{ mb: 1 }}
-          variant="outlined"
+          variant="contained"
           color="secondary"
           onClick={handleCreateDialogOpen}
           startIcon={<AddIcon />}

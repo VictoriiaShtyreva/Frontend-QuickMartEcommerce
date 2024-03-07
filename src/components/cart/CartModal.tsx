@@ -1,7 +1,5 @@
-import { Button, Box, Typography, IconButton } from "@mui/material";
+import { Button, Box, Typography } from "@mui/material";
 import { memo, useState } from "react";
-import DeleteIcon from "@mui/icons-material/Delete";
-import CloseIcon from "@mui/icons-material/Close";
 import { toast } from "react-toastify";
 
 import { ShoppingCartItem } from "../../types/ShoppingCart";
@@ -61,13 +59,6 @@ const CartModal = ({ onClose, item }: CartModalProps) => {
         gap: 2,
       }}
     >
-      <Button
-        onClick={onClose}
-        color="secondary"
-        sx={{ alignSelf: "flex-end" }}
-      >
-        <CloseIcon />
-      </Button>
       <Typography variant="body1">{item.title}</Typography>
       <Typography variant="body2">Price: ${item.price}</Typography>
       <Box
@@ -105,6 +96,14 @@ const CartModal = ({ onClose, item }: CartModalProps) => {
       <Typography variant="body2">Total: ${totalPrice.toFixed(2)}</Typography>
       <Button variant="contained" color="secondary" onClick={addToCart}>
         Add to Cart
+      </Button>
+      <Button
+        variant="contained"
+        onClick={onClose}
+        color="error"
+        sx={{ alignSelf: "center" }}
+      >
+        Close
       </Button>
     </Box>
   );

@@ -108,7 +108,9 @@ const RegistrationModal = ({
                   pattern: /^\S+@\S+\.\S+$/,
                 })}
                 error={!!errors.email}
-                helperText={errors.email ? "Invalid email format" : null}
+                helperText={
+                  errors.email?.message ? "Invalid email format" : null
+                }
                 fullWidth
                 required
                 color="secondary"

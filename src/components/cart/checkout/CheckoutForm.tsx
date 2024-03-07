@@ -127,7 +127,7 @@ const CheckoutForm = ({
                 <DialogActions
                   sx={{
                     display: "flex",
-                    justifyContent: "space-between",
+                    justifyContent: "center",
                     alignItems: "center",
                   }}
                 >

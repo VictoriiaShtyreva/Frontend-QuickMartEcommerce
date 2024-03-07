@@ -52,7 +52,7 @@ const customTheme = (mode: PaletteMode): ThemeOptions => {
               contrastText: "#fff", // Text color for dark primary
             },
             secondary: {
-              main: "#090909", // Dark secondary color
+              main: "#6076b9", // Dark secondary color
               contrastText: "#fff", // Text color for dark secondary
             },
             info: {

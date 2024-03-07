@@ -24,12 +24,12 @@ const ScrollToTopButton = () => {
 
   return (
     <Fab
-      color="primary"
+      color="secondary"
       aria-label="scroll-to-top"
       sx={{
         position: "fixed",
-        bottom: 16,
-        left: "50%",
+        bottom: 30,
+        left: "90%",
         transform: "translateX(-50%)",
         display: isVisible ? "block" : "none",
       }}
