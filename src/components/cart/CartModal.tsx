@@ -7,7 +7,6 @@ import { toast } from "react-toastify";
 import { ShoppingCartItem } from "../../types/ShoppingCart";
 import { useAppDispatch } from "../../hooks/useAppDispach";
 import {
-  removeProduct,
   addProduct,
   increaseQuantity,
   decreaseQuantity,
@@ -47,10 +46,6 @@ const CartModal = ({ onClose, item }: CartModalProps) => {
       draggable: true,
       progress: undefined,
     });
-  };
-
-  const removeFromCart = () => {
-    dispatch(removeProduct(item.id));
   };
 
   //Total Price
