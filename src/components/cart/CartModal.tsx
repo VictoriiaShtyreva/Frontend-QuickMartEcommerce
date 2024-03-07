@@ -106,9 +106,6 @@ const CartModal = ({ onClose, item }: CartModalProps) => {
         >
           +
         </Button>
-        <IconButton aria-label="remove" onClick={removeFromCart} sx={{ ml: 1 }}>
-          <DeleteIcon />
-        </IconButton>
       </Box>
       <Typography variant="body2">Total: ${totalPrice.toFixed(2)}</Typography>
       <Button variant="contained" color="secondary" onClick={addToCart}>
