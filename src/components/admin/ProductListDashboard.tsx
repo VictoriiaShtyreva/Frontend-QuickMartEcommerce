@@ -35,6 +35,9 @@ const ProductListDashboard = () => {
   //Calculate start and end indexes based on pagination
   const startIndex = (pagination.page - 1) * pagination.limit;
   const endIndex = pagination.page * pagination.limit;
+  //Calculate total pages
+  const totalProducts = products.length;
+  const totalPages = Math.ceil(totalProducts / pagination.limit);
 
   ////Handle search product by name
   const handleSearch = (value: string) => {
@@ -117,7 +120,7 @@ const ProductListDashboard = () => {
           >
             <Pagination
               variant="outlined"
-              count={20}
+              count={totalPages}
               page={pagination.page}
               onChange={handlePaginationChange}
             />

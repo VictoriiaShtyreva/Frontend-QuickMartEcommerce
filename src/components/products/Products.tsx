@@ -66,6 +66,8 @@ const Products = () => {
     [setSelectedCategory]
   );
 
+  const totalProducts = products.length;
+  const totalPages = Math.ceil(totalProducts / pagination.limit);
   //Handle pagination
   const handlePaginationChange = useCallback(
     (event: React.ChangeEvent<unknown>, page: number) => {
@@ -161,7 +163,7 @@ const Products = () => {
             >
               <Pagination
                 variant="outlined"
-                count={10}
+                count={totalPages}
                 page={pagination.page}
                 onChange={handlePaginationChange}
               />

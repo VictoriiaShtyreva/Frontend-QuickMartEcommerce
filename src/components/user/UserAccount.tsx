@@ -119,7 +119,9 @@ const UserAccount = ({ id }: { id: number }) => {
               />
             </StyledBadge>
             <Typography variant="h5">{user?.name}</Typography>
-            <Typography variant="body2">Role: {user?.role}</Typography>
+            {isAdmin && (
+              <Typography variant="body2">Role: {user?.role}</Typography>
+            )}
             <Typography variant="body2">Email: {user?.email}</Typography>
           </Grid>
         </Paper>

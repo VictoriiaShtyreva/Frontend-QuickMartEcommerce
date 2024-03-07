@@ -12,7 +12,8 @@ export const checkImageUrl = (url: string, svgUrl: string) => {
   } else if (url.slice(0, 2) === '["' && url.slice(-1) === '"') {
     url = url.slice(2, -1);
     return url;
-  } else {
-    return svgUrl;
+  }
+  if (url) {
+    return url;
   }
 };

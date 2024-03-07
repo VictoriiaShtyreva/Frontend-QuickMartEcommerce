@@ -35,6 +35,7 @@ export type FormValues = {
   price: number;
   description: string;
   categoryId: number;
+  categoryName: string;
   images: string[];
 };
 

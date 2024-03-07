@@ -8,6 +8,7 @@ import {
   DialogTitle,
   Grid,
   IconButton,
+  MenuItem,
   TextField,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
@@ -20,6 +21,8 @@ import { useAppDispatch } from "../../hooks/useAppDispach";
 import { FormValues, NewProduct } from "../../types/Product";
 import { createProduct } from "../../redux/slices/productSlice";
 import uploadFilesService from "../../utils/uploadFilesService";
+import { useAppSelector } from "../../hooks/useAppSelector";
+import { Category } from "../../types/Category";
 
 interface ProductCreateFormProps {
   open: boolean;
@@ -34,6 +37,12 @@ const ProductCreateForm = ({ open, onClose }: ProductCreateFormProps) => {
     reset,
     formState: { errors },
   } = useForm<FormValues>();
+
+  const categories = useAppSelector<Category[]>(
+    (state) => state.categories.categories
+  );
+  const defaultCategoryId = categories.length > 0 ? categories[0].id : 1;
+
   const [fileInputs, setFileInputs] = useState<File[]>([]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -198,10 +207,11 @@ const ProductCreateForm = ({ open, onClose }: ProductCreateFormProps) => {
               <Controller
                 name="categoryId"
                 control={control}
-                defaultValue={1}
+                defaultValue={defaultCategoryId}
                 rules={{ required: "Category is required" }}
                 render={({ field }) => (
                   <TextField
+                    select
                     {...field}
                     label="Category"
                     error={!!errors.categoryId}
@@ -209,7 +219,13 @@ const ProductCreateForm = ({ open, onClose }: ProductCreateFormProps) => {
                     fullWidth
                     required
                     color="info"
-                  />
+                  >
+                    {categories.map((category) => (
+                      <MenuItem key={category.id} value={category.id}>
+                        {category.name}
+                      </MenuItem>
+                    ))}
+                  </TextField>
                 )}
               />
             </Grid>
