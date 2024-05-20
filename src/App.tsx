@@ -12,6 +12,7 @@ import LoadingPage from "./pages/LoadingPage";
 
 // Lazily load components
 const HomePage = lazy(() => import("./pages/HomePage"));
+const ShopPage = lazy(() => import("./pages/ShopPage"));
 const CartPage = lazy(() => import("./pages/CartPage"));
 const SingleProductPage = lazy(() => import("./pages/SingleProductPage"));
 const UserPage = lazy(() => import("./pages/UserPage"));
@@ -63,6 +64,7 @@ const App = () => {
               <Suspense fallback={<LoadingPage />}>
                 <Routes>
                   <Route path="/" element={<HomePage />} />
+                  <Route path="/shop" element={<ShopPage />} />
                   <Route path="/about-us" element={<AboutUs />} />
                   <Route path="/products/:id" element={<SingleProductPage />} />
                   <Route path="/login" element={<LoginPage />} />

@@ -117,6 +117,9 @@ const Header = () => {
               <MenuItem onClick={handleCloseNavMenu}>
                 <Link to="/about-us">About Us</Link>
               </MenuItem>
+              <MenuItem onClick={handleCloseNavMenu}>
+                <Link to="/shop">Shop</Link>
+              </MenuItem>
             </Menu>
           </Box>
           {/* Logo */}
@@ -141,6 +144,13 @@ const Header = () => {
               <Link to="/about-us">
                 <Typography sx={{ color: "primary.contrastText" }}>
                   About Us
+                </Typography>
+              </Link>
+            </Button>
+            <Button color="inherit" sx={{ mr: 2 }}>
+              <Link to="/shop">
+                <Typography sx={{ color: "primary.contrastText" }}>
+                  Shop
                 </Typography>
               </Link>
             </Button>
