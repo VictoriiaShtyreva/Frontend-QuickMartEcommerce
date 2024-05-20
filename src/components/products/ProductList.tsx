@@ -8,6 +8,8 @@ import {
 } from "../../redux/slices/productSlice";
 import { Product } from "../../types/Product";
 import ProductCard from "./ProductCard";
+import { useAppSelector } from "../../hooks/useAppSelector";
+import { QueryOptions } from "../../types/QueryOptions";
 
 const ProductList = ({
   selectedCategory,
@@ -19,6 +21,8 @@ const ProductList = ({
   products: Product[];
 }) => {
   const dispatch = useAppDispatch();
+  const sortOrder = useAppSelector((state) => state.products.sortOrder);
+  const sortBy = useAppSelector((state) => state.products.sortBy);
 
   // Filter products based on the selected category
   const filteredProducts =
@@ -26,11 +30,18 @@ const ProductList = ({
       ? products
       : products.filter((product) => product.category.id === selectedCategory);
 
+  const queryOptions: QueryOptions = {
+    page: pagination.page,
+    pageSize: pagination.limit,
+    sortBy: sortBy,
+    sortOrder: sortOrder,
+  };
+
   //fetchAllProducts
   useEffect(() => {
-    dispatch(fetchAllProducts());
+    dispatch(fetchAllProducts(queryOptions));
     dispatch(sortProductsByPrice("asc"));
-  }, [dispatch]);
+  }, [dispatch, queryOptions]);
 
   //Calculate start and end indexes based on pagination
   const startIndex = (pagination.page - 1) * pagination.limit;

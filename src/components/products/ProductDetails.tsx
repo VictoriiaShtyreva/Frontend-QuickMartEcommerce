@@ -34,7 +34,7 @@ const ProductDetails = ({ id }: { id: number }) => {
     state.products.products.find((product) => product.id === id)
   );
   const images = product?.images.map((image) => {
-    const imageUrl = checkImageUrl(image, svgUrl);
+    const imageUrl = checkImageUrl(image.url, svgUrl);
     return imageUrl;
   });
   const { user } = useAppSelector((state) => state.users);

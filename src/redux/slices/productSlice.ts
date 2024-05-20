@@ -8,24 +8,37 @@ import {
   ProductState,
   UpdateProduct,
 } from "../../types/Product";
-import uploadFilesService from "../../utils/uploadFilesService";
+import { API_BASE_URL } from "../../config/config";
+import { QueryOptions } from "../../types/QueryOptions";
 
 const initialState: ProductState = {
   products: [],
   loading: false,
   error: null,
   favoriteProducts: [],
+  sortOrder: "Ascending", // Default sort order
+  sortBy: "byPrice", // Default sort by
 };
 
 //Fetch data
-const URL = "https://api.escuelajs.co/api/v1/products";
+const URL = `${API_BASE_URL}/products`;
+
+//Queries
+const createQueryString = (options: QueryOptions) => {
+  const params = new URLSearchParams();
+  params.append("page", options.page.toString());
+  params.append("pageSize", options.pageSize.toString());
+  params.append("sortBy", options.sortBy);
+  params.append("sortOrder", options.sortOrder);
+  return params.toString();
+};
 
 //Define thunk for fetching all products
 export const fetchAllProducts = createAsyncThunk(
   "fetchAllProducts",
-  async (_, { rejectWithValue }) => {
+  async (options: QueryOptions, { rejectWithValue }) => {
     try {
-      const response = await fetch(URL);
+      const response = await fetch(`${URL}?${createQueryString(options)}`);
       if (!response.ok) {
         const errorResponse = await response.json();
         toast.error(errorResponse.message);
@@ -96,10 +109,8 @@ export const updateProduct = createAsyncThunk(
     try {
       let dataForUpdate: UpdateProduct = { ...newProps.data };
       if (newProps.images) {
-        const fileData = await uploadFilesService(newProps.images);
         dataForUpdate = {
           ...newProps.data,
-          images: [...fileData] as string[],
         };
       }
       const response = await fetch(`${URL}/${newProps.id}`, {
@@ -152,10 +163,8 @@ const productSlice = createSlice({
   initialState,
   reducers: {
     sortProductsByPrice: (state, action: PayloadAction<"desc" | "asc">) => {
-      if (action.payload === "desc")
-        state.products.sort((a, b) => b.price - a.price);
-      if (action.payload === "asc")
-        state.products.sort((a, b) => a.price - b.price);
+      state.sortOrder = action.payload === "asc" ? "Ascending" : "Descending";
+      state.sortBy = "byPrice";
     },
     searchProductByName: (state, action: PayloadAction<string>) => {
       //Filter products based on the search input

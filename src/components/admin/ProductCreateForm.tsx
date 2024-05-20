@@ -74,7 +74,7 @@ const ProductCreateForm = ({ open, onClose }: ProductCreateFormProps) => {
         price: data.price,
         categoryId: data.categoryId,
         description: data.description,
-        images: location as string[],
+        images: data.images,
       };
       await dispatch(createProduct(newProductData));
       onClose();

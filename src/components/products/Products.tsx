@@ -23,29 +23,40 @@ import SortingFilter from "./SortingFilter";
 import { useAppSelector } from "../../hooks/useAppSelector";
 import SearchForm from "./SearchForm";
 import EmptyProducts from "./EmptyProducts";
+import { QueryOptions } from "../../types/QueryOptions";
 
 const Products = () => {
   const dispatch = useAppDispatch();
   const categories = useAppSelector<Category[]>(
     (state) => state.categories.categories
   );
+  const products = useAppSelector((state) => state.products.products);
+  const sortOrder = useAppSelector((state) => state.products.sortOrder);
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [sortPrice, setSortPrice] = useState<"asc" | "desc">("asc");
   const [pagination, setPagination] = useState<{ page: number; limit: number }>(
     { page: 1, limit: 12 }
   );
   const [userInput, setUserInput] = useState("");
-  const products = useAppSelector((state) => state.products.products);
+
+  // Define query options
+  const queryOptions: QueryOptions = {
+    page: pagination.page,
+    pageSize: pagination.limit,
+    sortBy: "byTitle",
+    sortOrder: sortOrder,
+  };
 
   //Handle search product by name
   const handleSearch = (value: string) => {
     dispatch(searchProductByName(value.toLowerCase()));
   };
 
+  //Handle clear
   const handleClear = () => {
     setUserInput("");
     //Fetch all products again to display them
-    dispatch(fetchAllProducts());
+    dispatch(fetchAllProducts(queryOptions));
   };
 
   //Handle sort products by price
@@ -68,6 +79,7 @@ const Products = () => {
 
   const totalProducts = products.length;
   const totalPages = Math.ceil(totalProducts / pagination.limit);
+
   //Handle pagination
   const handlePaginationChange = useCallback(
     (event: React.ChangeEvent<unknown>, page: number) => {
@@ -76,11 +88,11 @@ const Products = () => {
     [pagination, setPagination]
   );
 
-  //Fetch
+  //Fetch products based on query options
   useEffect(() => {
-    dispatch(fetchAllProducts());
+    dispatch(fetchAllProducts(queryOptions));
     dispatch(fetchAllCategories());
-  }, [dispatch]);
+  }, [dispatch, queryOptions]);
 
   return (
     <Container maxWidth="lg" sx={{ minHeight: "100vh" }}>

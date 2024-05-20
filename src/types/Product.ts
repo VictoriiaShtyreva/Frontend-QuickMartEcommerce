@@ -1,15 +1,20 @@
 import { Category } from "./Category";
 
+// Define type for an image object
+export type Image = {
+  id: string;
+  productId: string;
+  url: string;
+};
+
 //Define type for product data
 export type Product = {
   id: number;
   title: string;
   price: number;
   description: string;
-  images: string[];
+  images: Image[];
   category: Category;
-  creationAt?: string;
-  updatedAt?: string;
 };
 
 //Define initial state for products
@@ -18,6 +23,8 @@ export type ProductState = {
   loading: boolean;
   error: string | null;
   favoriteProducts: Product[];
+  sortOrder: "Ascending" | "Descending";
+  sortBy: "byTitle" | "byPrice" | "byCategory" | "byName";
 };
 
 //Define type for new product
@@ -26,7 +33,7 @@ export type NewProduct = {
   price: number;
   description: string;
   categoryId: number;
-  images: string[];
+  images: Image[];
 };
 
 //Define type for form values of product create form component
@@ -36,7 +43,7 @@ export type FormValues = {
   description: string;
   categoryId: number;
   categoryName: string;
-  images: string[];
+  images: Image[];
 };
 
 //Define type for formData in UploadProduct.tsx
@@ -50,7 +57,7 @@ export type UpdateProduct = {
   title?: string;
   price?: number;
   description?: string;
-  images?: string[];
+  images?: Image[];
   categoryId?: number;
 };
 

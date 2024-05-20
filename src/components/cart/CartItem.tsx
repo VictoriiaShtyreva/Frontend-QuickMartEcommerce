@@ -41,7 +41,7 @@ const CartItem = ({ item }: CartItemProps) => {
 
   const renderItemImage = () => {
     if (item.images && item.images.length > 0) {
-      const imageUrl = checkImageUrl(item.images[0], svgUrl);
+      const imageUrl = checkImageUrl(item.images[0].url, svgUrl);
       return imageUrl;
     }
     return null;

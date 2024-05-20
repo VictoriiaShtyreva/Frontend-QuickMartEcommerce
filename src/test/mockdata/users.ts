@@ -9,8 +9,6 @@ export const usersList: User[] = [
     name: "Jhon",
     role: "customer",
     avatar: "https://i.imgur.com/LDOO4Qs.jpg",
-    creationAt: "2024-02-29T03:37:26.000Z",
-    updatedAt: "2024-02-29T03:37:26.000Z",
   },
   {
     id: 2,
@@ -19,8 +17,6 @@ export const usersList: User[] = [
     name: "Maria",
     role: "customer",
     avatar: "https://i.imgur.com/DTfowdu.jpg",
-    creationAt: "2024-02-29T03:37:26.000Z",
-    updatedAt: "2024-02-29T03:37:26.000Z",
   },
   {
     id: 3,
@@ -29,8 +25,6 @@ export const usersList: User[] = [
     name: "Admin",
     role: "admin",
     avatar: "https://i.imgur.com/yhW6Yw1.jpg",
-    creationAt: "2024-02-29T03:37:26.000Z",
-    updatedAt: "2024-02-29T03:37:26.000Z",
   },
   {
     id: 4,
@@ -39,8 +33,6 @@ export const usersList: User[] = [
     name: "anjelina jolly",
     role: "customer",
     avatar: "https://pbs.twimg.com/media/E3BIXavUcAEtTXk.jpg",
-    creationAt: "2024-02-29T04:19:41.000Z",
-    updatedAt: "2024-02-29T09:48:21.000Z",
   },
 ];
 

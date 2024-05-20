@@ -13,10 +13,13 @@ import { Product } from "../../types/Product";
 import SearchForm from "../products/SearchForm";
 import ProductCreateForm from "./ProductCreateForm";
 import EmptyProducts from "../products/EmptyProducts";
+import { QueryOptions } from "../../types/QueryOptions";
 
 const ProductListDashboard = () => {
   const dispatch = useAppDispatch();
   const products = useAppSelector((state) => state.products.products);
+  const sortOrder = useAppSelector((state) => state.products.sortOrder);
+  const sortBy = useAppSelector((state) => state.products.sortBy);
   //Search by name state
   const [userInput, setUserInput] = useState("");
   // Pagination state
@@ -24,6 +27,14 @@ const ProductListDashboard = () => {
     { page: 1, limit: 20 }
   );
   const [openCreateDialog, setOpenCreateDialog] = useState(false);
+
+  //Query options
+  const queryOptions: QueryOptions = {
+    page: pagination.page,
+    pageSize: pagination.limit,
+    sortBy: sortBy,
+    sortOrder: sortOrder,
+  };
 
   //Handle pagination
   const handlePaginationChange = useCallback(
@@ -39,7 +50,7 @@ const ProductListDashboard = () => {
   const totalProducts = products.length;
   const totalPages = Math.ceil(totalProducts / pagination.limit);
 
-  ////Handle search product by name
+  //Handle search product by name
   const handleSearch = (value: string) => {
     dispatch(searchProductByName(value.toLowerCase()));
   };
@@ -47,7 +58,7 @@ const ProductListDashboard = () => {
   const handleClear = () => {
     setUserInput("");
     //Fetch all products again to display them
-    dispatch(fetchAllProducts());
+    dispatch(fetchAllProducts(queryOptions));
   };
 
   const handleCreateDialogOpen = () => {
@@ -60,8 +71,8 @@ const ProductListDashboard = () => {
 
   //fetchAllProducts
   useEffect(() => {
-    dispatch(fetchAllProducts());
-  }, [dispatch]);
+    dispatch(fetchAllProducts(queryOptions));
+  }, [dispatch, queryOptions]);
 
   return (
     <Box

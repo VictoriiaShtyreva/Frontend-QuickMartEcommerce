@@ -11,6 +11,7 @@ import {
 } from "../../redux/slices/productSlice";
 import { createNewStore } from "../../redux/store";
 import { NewProduct } from "../../types/Product";
+import { QueryOptions } from "../../types/QueryOptions";
 import {
   ascMockProducts,
   descMockProducts,
@@ -33,28 +34,35 @@ beforeEach(() => {
 });
 
 describe("product reducer", () => {
+  const queryOptions: QueryOptions = {
+    page: 1,
+    pageSize: 10,
+    sortBy: "byPrice",
+    sortOrder: "Ascending",
+  };
+
   //test for fetch all data of products
   test("should fetch all products from api", async () => {
-    await store.dispatch(fetchAllProducts());
+    await store.dispatch(fetchAllProducts(queryOptions));
     expect(store.getState().products.products.length).toBe(3);
     expect(store.getState().products.error).toBeNull();
     expect(store.getState().products.loading).toBeFalsy();
   });
   //test for sorting products by price in descending order
   test("should sort products by price in descending order", async () => {
-    await store.dispatch(fetchAllProducts());
+    await store.dispatch(fetchAllProducts(queryOptions));
     store.dispatch(sortProductsByPrice("desc"));
     expect(store.getState().products.products).toEqual(descMockProducts);
   });
   //test for sorting products by price in ascending order
   test("should sort products by price in ascending order", async () => {
-    await store.dispatch(fetchAllProducts());
+    await store.dispatch(fetchAllProducts(queryOptions));
     store.dispatch(sortProductsByPrice("asc"));
     expect(store.getState().products.products).toEqual(ascMockProducts);
   });
   //test for search by name
   test("should search products by name", async () => {
-    await store.dispatch(fetchAllProducts());
+    await store.dispatch(fetchAllProducts(queryOptions));
     store.dispatch(searchProductByName("wallet"));
     expect(store.getState().products.products.length).toBe(1);
     //Dispatch action with search query in uppercase
@@ -63,13 +71,13 @@ describe("product reducer", () => {
   });
   //test for add favorite product
   test("should add favorite product", async () => {
-    await store.dispatch(fetchAllProducts());
+    await store.dispatch(fetchAllProducts(queryOptions));
     store.dispatch(addFavoriteProduct(favProduct));
     expect(store.getState().products.favoriteProducts).toHaveLength(1);
   });
   //test for add favorite product repeatedly
   test("hould not add a product if it already exists in favorites", async () => {
-    await store.dispatch(fetchAllProducts());
+    await store.dispatch(fetchAllProducts(queryOptions));
     store.dispatch(addFavoriteProduct(favProduct));
     expect(store.getState().products.favoriteProducts).toHaveLength(1);
     store.dispatch(addFavoriteProduct(favProduct));
@@ -77,7 +85,7 @@ describe("product reducer", () => {
   });
   //test for remove favorite product
   test("should remove favorite product", async () => {
-    await store.dispatch(fetchAllProducts());
+    await store.dispatch(fetchAllProducts(queryOptions));
     store.dispatch(addFavoriteProduct(favProduct));
     expect(store.getState().products.favoriteProducts).toHaveLength(1);
     //id of favProduct = 1
@@ -93,9 +101,21 @@ describe("product reducer", () => {
         "Experience the ultimate freedom in audio with our Modern Wireless Bluetooth Headphones. Featuring advanced Bluetooth technology, these headphones provide crystal-clear sound quality and hassle-free connectivity. With a lightweight and ergonomic design, they offer long-lasting comfort for extended listening sessions. Whether you're commuting, working out, or relaxing at home, these headphones deliver an immersive audio experience.",
       categoryId: 5,
       images: [
-        "https://i.imgur.com/AeQsKXD.jpg",
-        "https://i.imgur.com/um7UIr1.jpg",
-        "https://i.imgur.com/fz6XKSl.jpg",
+        {
+          id: "img2-1",
+          productId: "2",
+          url: "https://i.imgur.com/8qOr2G9.jpg",
+        },
+        {
+          id: "img2-2",
+          productId: "2",
+          url: "https://i.imgur.com/rDRPb3T.jpg",
+        },
+        {
+          id: "img2-3",
+          productId: "2",
+          url: "https://i.imgur.com/Ky15kXe.jpg",
+        },
       ],
     };
     await store.dispatch(createProduct(newProduct));

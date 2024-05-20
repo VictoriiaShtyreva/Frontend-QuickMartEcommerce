@@ -19,8 +19,6 @@ export const handler = [
         id: 2,
         name: "Electronics",
         image: "https://i.imgur.com/ZANVnHE.jpeg",
-        creationAt: "2024-02-29T03:37:26.000Z",
-        updatedAt: "2024-02-29T03:37:26.000Z",
       },
     };
     return HttpResponse.json(createdProduct, { status: 201 });

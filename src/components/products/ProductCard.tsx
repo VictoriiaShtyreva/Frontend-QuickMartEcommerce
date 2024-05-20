@@ -19,10 +19,10 @@ interface ProductCardProps {
 }
 
 const ProductCard = ({ product }: ProductCardProps) => {
-  const images = product.images.map((image) => {
-    const imageUrl = checkImageUrl(image, svgUrl);
-    return imageUrl;
-  });
+  const firstImageUrl =
+    product.images.length > 0
+      ? checkImageUrl(product.images[0].url, svgUrl)
+      : svgUrl;
 
   return (
     <Card
@@ -34,7 +34,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
       }}
     >
       <CardMedia
-        image={images[0] as string}
+        image={firstImageUrl}
         sx={{
           position: "absolute",
           width: "100%",
