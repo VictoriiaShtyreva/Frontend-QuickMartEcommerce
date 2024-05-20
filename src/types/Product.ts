@@ -15,16 +15,21 @@ export type Product = {
   description: string;
   images: Image[];
   category: Category;
+  inventory: number;
 };
+
+export interface PaginatedProducts {
+  items: Product[];
+  totalCount: number;
+}
 
 //Define initial state for products
 export type ProductState = {
   products: Product[];
+  total: number;
   loading: boolean;
   error: string | null;
   favoriteProducts: Product[];
-  sortOrder: "Ascending" | "Descending";
-  sortBy: "byTitle" | "byPrice" | "byCategory" | "byName";
 };
 
 //Define type for new product

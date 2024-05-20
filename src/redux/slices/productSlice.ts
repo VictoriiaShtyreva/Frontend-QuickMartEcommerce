@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 
 import {
   NewProduct,
+  PaginatedProducts,
   Product,
   ProductDataForUpdate,
   ProductState,
@@ -13,11 +14,10 @@ import { QueryOptions } from "../../types/QueryOptions";
 
 const initialState: ProductState = {
   products: [],
+  total: 0,
   loading: false,
   error: null,
   favoriteProducts: [],
-  sortOrder: "Ascending", // Default sort order
-  sortBy: "byPrice", // Default sort by
 };
 
 //Fetch data
@@ -38,14 +38,15 @@ export const fetchAllProducts = createAsyncThunk(
   "fetchAllProducts",
   async (options: QueryOptions, { rejectWithValue }) => {
     try {
-      const response = await fetch(`${URL}?${createQueryString(options)}`);
+      const queryString = createQueryString(options);
+      const response = await fetch(`${URL}?${queryString}`);
       if (!response.ok) {
         const errorResponse = await response.json();
         toast.error(errorResponse.message);
         return rejectWithValue(errorResponse);
       }
       //If there's no HTTP error, parse and return the response body.
-      const data: Product[] = await response.json();
+      const data: PaginatedProducts = await response.json();
       return data;
     } catch (e) {
       const error = e as Error;
@@ -162,9 +163,19 @@ const productSlice = createSlice({
   name: "products",
   initialState,
   reducers: {
-    sortProductsByPrice: (state, action: PayloadAction<"desc" | "asc">) => {
-      state.sortOrder = action.payload === "asc" ? "Ascending" : "Descending";
-      state.sortBy = "byPrice";
+    sortProductsByPrice: (state, action: PayloadAction<"asc" | "desc">) => {
+      if (action.payload === "asc") {
+        state.products.sort((a, b) => a.price - b.price);
+      } else {
+        state.products.sort((a, b) => b.price - a.price);
+      }
+    },
+    sortProductsByTitle: (state, action: PayloadAction<"asc" | "desc">) => {
+      if (action.payload === "asc") {
+        state.products.sort((a, b) => a.title.localeCompare(b.title));
+      } else {
+        state.products.sort((a, b) => b.title.localeCompare(a.title));
+      }
     },
     searchProductByName: (state, action: PayloadAction<string>) => {
       //Filter products based on the search input
@@ -201,7 +212,8 @@ const productSlice = createSlice({
       //save data in Redux
       return {
         ...state,
-        products: action.payload,
+        products: action.payload.items,
+        total: action.payload.totalCount,
         loading: false,
         error: null,
       };
@@ -330,6 +342,7 @@ const productSlice = createSlice({
 const productReducer = productSlice.reducer;
 export const {
   sortProductsByPrice,
+  sortProductsByTitle,
   searchProductByName,
   addFavoriteProduct,
   removeFavoriteProduct,

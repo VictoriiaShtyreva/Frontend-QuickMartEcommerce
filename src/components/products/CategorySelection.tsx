@@ -24,11 +24,12 @@ const CategorySelection = ({
         color="secondary"
       >
         <MenuItem value="all">All Categories</MenuItem>
-        {categories.map((category) => (
-          <MenuItem key={category.id} value={category.id}>
-            {category.name}
-          </MenuItem>
-        ))}
+        {Array.isArray(categories) &&
+          categories.map((category) => (
+            <MenuItem key={category.id} value={category.id}>
+              {category.name}
+            </MenuItem>
+          ))}
       </Select>
     </Box>
   );

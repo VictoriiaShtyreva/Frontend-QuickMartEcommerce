@@ -18,8 +18,6 @@ import { QueryOptions } from "../../types/QueryOptions";
 const ProductListDashboard = () => {
   const dispatch = useAppDispatch();
   const products = useAppSelector((state) => state.products.products);
-  const sortOrder = useAppSelector((state) => state.products.sortOrder);
-  const sortBy = useAppSelector((state) => state.products.sortBy);
   //Search by name state
   const [userInput, setUserInput] = useState("");
   // Pagination state
@@ -32,8 +30,8 @@ const ProductListDashboard = () => {
   const queryOptions: QueryOptions = {
     page: pagination.page,
     pageSize: pagination.limit,
-    sortBy: sortBy,
-    sortOrder: sortOrder,
+    sortBy: "byTitle",
+    sortOrder: "Ascending",
   };
 
   //Handle pagination
@@ -48,7 +46,8 @@ const ProductListDashboard = () => {
   const endIndex = pagination.page * pagination.limit;
   //Calculate total pages
   const totalProducts = products.length;
-  const totalPages = Math.ceil(totalProducts / pagination.limit);
+  const totalPages =
+    totalProducts < pagination.limit ? pagination.page : pagination.page + 1;
 
   //Handle search product by name
   const handleSearch = (value: string) => {
@@ -72,7 +71,7 @@ const ProductListDashboard = () => {
   //fetchAllProducts
   useEffect(() => {
     dispatch(fetchAllProducts(queryOptions));
-  }, [dispatch, queryOptions]);
+  }, [dispatch]);
 
   return (
     <Box

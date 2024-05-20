@@ -6,7 +6,7 @@ import {
   Pagination,
   Typography,
 } from "@mui/material";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { SelectChangeEvent } from "@mui/material";
 
 import ProductList from "./ProductList";
@@ -16,6 +16,7 @@ import {
   fetchAllProducts,
   searchProductByName,
   sortProductsByPrice,
+  sortProductsByTitle,
 } from "../../redux/slices/productSlice";
 import { Category } from "../../types/Category";
 import CategorySelection from "./CategorySelection";
@@ -31,21 +32,25 @@ const Products = () => {
     (state) => state.categories.categories
   );
   const products = useAppSelector((state) => state.products.products);
-  const sortOrder = useAppSelector((state) => state.products.sortOrder);
+  const totalProducts = useAppSelector((state) => state.products.total);
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
-  const [sortPrice, setSortPrice] = useState<"asc" | "desc">("asc");
+  const [sortBy, setSortBy] = useState<string>("priceAsc");
   const [pagination, setPagination] = useState<{ page: number; limit: number }>(
     { page: 1, limit: 12 }
   );
   const [userInput, setUserInput] = useState("");
 
   // Define query options
-  const queryOptions: QueryOptions = {
-    page: pagination.page,
-    pageSize: pagination.limit,
-    sortBy: "byTitle",
-    sortOrder: sortOrder,
-  };
+  const queryOptions: QueryOptions = useMemo(() => {
+    const sortByField = sortBy.includes("price") ? "byPrice" : "byTitle";
+    const sortOrder = sortBy.includes("Asc") ? "Ascending" : "Descending";
+    return {
+      page: pagination.page,
+      pageSize: pagination.limit,
+      sortBy: sortByField,
+      sortOrder,
+    };
+  }, [pagination.page, pagination.limit, sortBy]);
 
   //Handle search product by name
   const handleSearch = (value: string) => {
@@ -59,39 +64,46 @@ const Products = () => {
     dispatch(fetchAllProducts(queryOptions));
   };
 
-  //Handle sort products by price
-  const handleSortPriceChange = useCallback(
+  //Handle sort products by price and title
+  const handleSortChange = useCallback(
     (event: SelectChangeEvent) => {
-      const newSortPrice = event.target.value as "asc" | "desc";
-      setSortPrice(newSortPrice);
-      dispatch(sortProductsByPrice(newSortPrice));
+      const newSortBy = event.target.value as string;
+      setSortBy(newSortBy);
+      if (newSortBy.includes("price")) {
+        dispatch(
+          sortProductsByPrice(newSortBy.includes("Asc") ? "asc" : "desc")
+        );
+      } else {
+        dispatch(
+          sortProductsByTitle(newSortBy.includes("Asc") ? "asc" : "desc")
+        );
+        setPagination((prev) => ({ ...prev, page: 1 }));
+      }
     },
-    [dispatch, setSortPrice]
+    [dispatch]
   );
 
   //Handle sort products by category
-  const handleCategoryChange = useCallback(
-    (event: SelectChangeEvent) => {
-      setSelectedCategory(event.target.value);
-    },
-    [setSelectedCategory]
-  );
-
-  const totalProducts = products.length;
-  const totalPages = Math.ceil(totalProducts / pagination.limit);
+  const handleCategoryChange = useCallback((event: SelectChangeEvent) => {
+    setSelectedCategory(event.target.value as string);
+    setPagination((prev) => ({ ...prev, page: 1 }));
+  }, []);
 
   //Handle pagination
   const handlePaginationChange = useCallback(
     (event: React.ChangeEvent<unknown>, page: number) => {
-      setPagination({ ...pagination, page });
+      setPagination((prev) => ({ ...prev, page }));
     },
-    [pagination, setPagination]
+    []
   );
+
+  // Calculate total pages
+  const totalPages = Math.ceil(totalProducts / pagination.limit);
 
   //Fetch products based on query options
   useEffect(() => {
     dispatch(fetchAllProducts(queryOptions));
-    dispatch(fetchAllCategories());
+    dispatch(fetchAllCategories(queryOptions));
   }, [dispatch, queryOptions]);
 
   return (
@@ -151,10 +163,7 @@ const Products = () => {
             />
           </Grid>
           <Grid item xs={12} md={4}>
-            <SortingFilter
-              sortPrice={sortPrice}
-              onChange={handleSortPriceChange}
-            />
+            <SortingFilter sortBy={sortBy} onChange={handleSortChange} />
           </Grid>
         </Box>
         {products.length > 0 ? (
@@ -163,6 +172,7 @@ const Products = () => {
               products={products}
               selectedCategory={selectedCategory}
               pagination={pagination}
+              sortBy={sortBy}
             />
             <Box
               sx={{

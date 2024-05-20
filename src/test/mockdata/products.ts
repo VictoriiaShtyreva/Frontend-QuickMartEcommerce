@@ -17,6 +17,7 @@ export const mockProducts: Product[] = [
       name: "Miscellaneous",
       image: "https://i.imgur.com/BG8J0Fj.jpg",
     },
+    inventory: 100,
   },
   {
     id: 2,
@@ -34,6 +35,7 @@ export const mockProducts: Product[] = [
       name: "Miscellaneous",
       image: "https://i.imgur.com/7OcN6uW.jpg",
     },
+    inventory: 100,
   },
   {
     id: 3,
@@ -51,6 +53,7 @@ export const mockProducts: Product[] = [
       name: "Miscellaneous",
       image: "https://i.imgur.com/FGqOjWY.jpg",
     },
+    inventory: 100,
   },
 ];
 
@@ -71,6 +74,7 @@ export const descMockProducts: Product[] = [
       name: "Miscellaneous",
       image: "https://i.imgur.com/BG8J0Fj.jpg",
     },
+    inventory: 100,
   },
   {
     id: 3,
@@ -88,6 +92,7 @@ export const descMockProducts: Product[] = [
       name: "Miscellaneous",
       image: "https://i.imgur.com/FGqOjWY.jpg",
     },
+    inventory: 100,
   },
   {
     id: 2,
@@ -105,6 +110,7 @@ export const descMockProducts: Product[] = [
       name: "Miscellaneous",
       image: "https://i.imgur.com/7OcN6uW.jpg",
     },
+    inventory: 100,
   },
 ];
 
@@ -125,6 +131,7 @@ export const ascMockProducts: Product[] = [
       name: "Miscellaneous",
       image: "https://i.imgur.com/7OcN6uW.jpg",
     },
+    inventory: 100,
   },
   {
     id: 3,
@@ -142,6 +149,7 @@ export const ascMockProducts: Product[] = [
       name: "Miscellaneous",
       image: "https://i.imgur.com/FGqOjWY.jpg",
     },
+    inventory: 100,
   },
   {
     id: 1,
@@ -159,6 +167,7 @@ export const ascMockProducts: Product[] = [
       name: "Miscellaneous",
       image: "https://i.imgur.com/BG8J0Fj.jpg",
     },
+    inventory: 100,
   },
 ];
 
@@ -178,4 +187,5 @@ export const favProduct: Product = {
     name: "Miscellaneous",
     image: "https://i.imgur.com/BG8J0Fj.jpg",
   },
+  inventory: 100,
 };

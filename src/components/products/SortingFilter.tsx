@@ -1,22 +1,24 @@
 import { Box, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 
 interface SortingFilterProps {
-  sortPrice: "asc" | "desc";
+  sortBy: string;
   onChange: (event: SelectChangeEvent) => void;
 }
 
-const SortingFilter = ({ sortPrice, onChange }: SortingFilterProps) => {
+const SortingFilter = ({ sortBy, onChange }: SortingFilterProps) => {
   return (
     <Box sx={{ marginBottom: 2 }}>
       <Select
-        value={sortPrice}
+        value={sortBy}
         onChange={onChange}
         displayEmpty
         fullWidth
         color="secondary"
       >
-        <MenuItem value="asc">Price: Low to High</MenuItem>
-        <MenuItem value="desc">Price: High to Low</MenuItem>
+        <MenuItem value="priceAsc">Price: Low to High</MenuItem>
+        <MenuItem value="priceDesc">Price: High to Low</MenuItem>
+        <MenuItem value="titleAsc">Title: A to Z</MenuItem>
+        <MenuItem value="titleDesc">Title: Z to A</MenuItem>
       </Select>
     </Box>
   );

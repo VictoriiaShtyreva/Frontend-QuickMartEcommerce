@@ -20,6 +20,7 @@ export const handler = [
         name: "Electronics",
         image: "https://i.imgur.com/ZANVnHE.jpeg",
       },
+      inventory: 100,
     };
     return HttpResponse.json(createdProduct, { status: 201 });
   }),

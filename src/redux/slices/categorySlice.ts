@@ -1,31 +1,47 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 
-import { Category, CategoryState } from "../../types/Category";
+import {
+  Category,
+  CategoryState,
+  PaginatedCategory,
+} from "../../types/Category";
 import { API_BASE_URL } from "../../config/config";
+import { QueryOptions } from "../../types/QueryOptions";
 
 //Fetch data
 const urlCategories = `${API_BASE_URL}/categories`;
 
 const initialState: CategoryState = {
   categories: [],
+  total: 0,
   loading: false,
   error: null,
+};
+
+//Queries
+const createQueryString = (options: QueryOptions) => {
+  const params = new URLSearchParams();
+  params.append("page", options.page.toString());
+  params.append("pageSize", options.pageSize.toString());
+  params.append("sortBy", options.sortBy);
+  params.append("sortOrder", options.sortOrder);
+  return params.toString();
 };
 
 //Define thunk for fetching all categories
 export const fetchAllCategories = createAsyncThunk(
   "fetchAllCategories",
-  async (_, { rejectWithValue }) => {
+  async (options: QueryOptions, { rejectWithValue }) => {
     try {
-      const response = await fetch(urlCategories);
+      const queryString = createQueryString(options);
+      const response = await fetch(`${urlCategories}?${queryString}`);
       if (!response.ok) {
         const errorResponse = await response.json();
         toast.error(errorResponse.message);
         return rejectWithValue(errorResponse);
       }
-
-      const data: Category[] = await response.json();
+      const data: PaginatedCategory = await response.json();
       return data;
     } catch (e) {
       const error = e as Error;
@@ -43,7 +59,8 @@ const categorySlice = createSlice({
       .addCase(fetchAllCategories.fulfilled, (state, action) => {
         return {
           ...state,
-          categories: action.payload,
+          categories: action.payload.items,
+          total: action.payload.totalCount,
           loading: false,
           error: null,
         };

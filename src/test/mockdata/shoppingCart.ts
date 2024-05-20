@@ -17,4 +17,5 @@ export const shoppingItem: ShoppingCartItem = {
     image: "https://i.imgur.com/BG8J0Fj.jpg",
   },
   quantity: 1,
+  inventory: 100,
 };
