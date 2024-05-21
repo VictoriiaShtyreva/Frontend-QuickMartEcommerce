@@ -42,6 +42,7 @@ const LoginPage = () => {
 
   //Redirect to the appropriate page when user is logged in
   useEffect(() => {
+    console.log("User state updated:", user);
     if (user) {
       if (user.role === "customer") {
         navigate(`/users/${user.id}`);

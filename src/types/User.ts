@@ -1,13 +1,17 @@
 export type UserRegister = {
-  email?: string;
-  name?: string;
-  password?: string;
-  avatar?: string;
+  email: string;
+  name: string;
+  password: string;
+  avatar: string;
 };
 
-export type User = UserRegister & {
-  role?: "admin" | "customer";
+export type User = {
   id: string;
+  email: string;
+  name: string;
+  avatar: string;
+  password: string;
+  role: "admin" | "customer";
 };
 
 export type UserInitialState = {

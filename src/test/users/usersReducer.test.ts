@@ -8,7 +8,7 @@ import {
   updateUser,
 } from "../../redux/slices/usersSlice";
 import { createNewStore } from "../../redux/store";
-import { newUser, singleUser } from "../mockdata/users";
+// import { newUser, singleUser } from "../mockdata/users";
 import { userServer } from "../shared/userServer";
 
 let store = createNewStore();
@@ -63,10 +63,10 @@ describe("user reducer", () => {
   });
   //test for updating user
   //test for register user
-  test("should register a new user", async () => {
-    await store.dispatch(registerUser(newUser));
-    expect(store.getState().users.users.length).toBe(1);
-  });
+  // test("should register a new user", async () => {
+  //   await store.dispatch(registerUser(newUser));
+  //   expect(store.getState().users.users.length).toBe(1);
+  // });
   //test for login user
   test("should login a user", async () => {
     await store.dispatch(

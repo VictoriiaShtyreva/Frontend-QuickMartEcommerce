@@ -143,13 +143,14 @@ export const getAuthentication = createAsyncThunk(
           Authorization: `Bearer ${access_token}`,
         },
       });
+      const responseData = await response.json();
+      console.log("API Response: ", responseData); // Log the API response
       if (!response.ok) {
         const errorResponse = await response.json();
         toast.error(errorResponse.message);
         return rejectWithValue(errorResponse);
       }
-      const data: User = await response.json();
-      return data;
+      return responseData as User;
     } catch (e) {
       const error = e as Error;
       return rejectWithValue(error.message);
@@ -175,10 +176,9 @@ export const loginUser = createAsyncThunk(
         toast.error(errorResponse.message);
         return rejectWithValue(errorResponse);
       }
-
       const data: AuthenticationToken = await response.json();
+      console.log("Token received: ", data.access_token);
       localStorage.setItem("token", data.access_token);
-
       const authentication = await dispatch(getAuthentication());
       return authentication.payload as User;
     } catch (e) {
@@ -300,12 +300,10 @@ const usersSlice = createSlice({
     });
     //Get authentication
     builder.addCase(getAuthentication.fulfilled, (state, action) => {
-      return {
-        ...state,
-        user: action.payload,
-        loading: false,
-        error: null,
-      };
+      console.log("User state updated with: ", action.payload); // Log the user state update
+      state.user = action.payload; // Directly set the user
+      state.loading = false;
+      state.error = null;
     });
     builder.addCase(getAuthentication.pending, (state) => {
       return {
@@ -323,13 +321,9 @@ const usersSlice = createSlice({
     });
     //Login user
     builder.addCase(loginUser.fulfilled, (state, action) => {
-      return {
-        ...state,
-        users: state.users.concat(action.payload),
-        user: action.payload,
-        loading: false,
-        error: null,
-      };
+      state.user = action.payload; // Directly set the user
+      state.loading = false;
+      state.error = null;
     });
     builder.addCase(loginUser.pending, (state) => {
       return {
