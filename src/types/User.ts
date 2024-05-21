@@ -1,24 +1,24 @@
-export type UserRegister = {
-  email: string;
-  name: string;
-  password: string;
-  avatar: string;
-};
-
 export type User = {
   id: string;
   email: string;
   name: string;
-  avatar: string;
-  password: string;
-  role: "admin" | "customer";
+  avatar: string | File;
+  role: "Admin" | "Customer";
 };
 
-export type UserInitialState = {
+export interface UserState {
   user: User | null;
   users: User[];
   loading: boolean;
   error: string | null;
+}
+
+export type UserRegister = {
+  email: string;
+  name: string;
+  password: string;
+  avatar?: File;
+  role: string;
 };
 
 export type RegistrationFormData = {

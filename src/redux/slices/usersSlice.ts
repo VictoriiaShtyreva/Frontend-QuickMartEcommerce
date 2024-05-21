@@ -1,17 +1,12 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
+import axios from "axios";
 
-import { User, UserInitialState, UserRegister } from "../../types/User";
-import {
-  Authentication,
-  AuthenticationToken,
-} from "../../types/Authentication";
+import { User, UserRegister, UserState } from "../../types/User";
 import { QueryOptions } from "../../types/QueryOptions";
 
-const initialState: UserInitialState = {
-  //the currently logged-in user
+const initialState: UserState = {
   user: null,
-  //all aray of users
   users: [],
   loading: false,
   error: null,
@@ -35,158 +30,152 @@ const createQueryString = (options: QueryOptions) => {
 
 //Define thunk for fetching all users
 export const getAllUsers = createAsyncThunk(
-  "getAllUsers",
+  "users/getAllUsers",
   async (options: QueryOptions, { rejectWithValue }) => {
     try {
       const queryString = createQueryString(options);
-      const response = await fetch(`${URL}?${queryString}`);
-      if (!response.ok) {
-        const errorResponse = await response.json();
-        toast.error(errorResponse.message);
-        return rejectWithValue(errorResponse);
-      }
-      const data: User[] = await response.json();
-      return data;
-    } catch (e) {
-      const error = e as Error;
-      return rejectWithValue(error.message);
+      const response = await axios.get(`${URL}?${queryString}`);
+      return response.data;
+    } catch (error: any) {
+      toast.error(error.response.data.message);
+      return rejectWithValue(error.response.data);
     }
   }
 );
 
 //Define thunk for fetching single user
-export const fetchUserById = createAsyncThunk(
-  "fetchUserById",
-  async (id: string, { rejectWithValue }) => {
+export const fetchUserById = createAsyncThunk<User, string>(
+  "user/fetchById",
+  async (id, thunkAPI) => {
     try {
-      const response = await fetch(`${URL}/${id}`);
-      if (!response.ok) {
-        const errorResponse = await response.json();
-        toast.error(errorResponse.message);
-        return rejectWithValue(errorResponse);
-      }
-      const data: User = await response.json();
-      return { data, id };
-    } catch (e) {
-      const error = e as Error;
-      return rejectWithValue(error.message);
+      const response = await axios.get(`${URL}/${id}`);
+      return response.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.response.data);
     }
   }
 );
 
 // Define thunk for update user
-export const updateUser = createAsyncThunk(
-  "updateUser",
-  async ({ id, ...updatedProps }: User, { rejectWithValue, dispatch }) => {
+export const updateUser = createAsyncThunk<User, Partial<User>>(
+  "user/update",
+  async (userData, thunkAPI) => {
     try {
-      const response = await fetch(`${URL}/${id}`, {
-        method: "PUT",
+      const formData = new FormData();
+      if (userData.name) formData.append("name", userData.name);
+      if (userData.email) formData.append("email", userData.email);
+      if (userData.avatar) formData.append("avatar", userData.avatar as File);
+      const response = await axios.patch(`${URL}/${userData.id}`, formData, {
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "multipart/form-data",
         },
-        body: JSON.stringify(updatedProps),
       });
-
-      if (!response.ok) {
-        const errorResponse = await response.json();
-        toast.error(errorResponse.message);
-        return rejectWithValue(errorResponse);
-      }
-
-      const updatedUser: User = await response.json();
-      dispatch(saveUserInformation(updatedUser));
-      return updatedUser;
-    } catch (e) {
-      const error = e as Error;
-      return rejectWithValue(error.message);
+      return response.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.response.data);
     }
   }
 );
 
 //Define thunk for register new user
-export const registerUser = createAsyncThunk(
-  "registerUser",
-  async (newUser: UserRegister, { rejectWithValue }) => {
+export const registerUser = createAsyncThunk<User, UserRegister>(
+  "users/registerUser",
+  async (newUser, { rejectWithValue }) => {
     try {
-      const response = await fetch(URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newUser),
-      });
-      if (!response.ok) {
-        const errorResponse = await response.json();
-        toast.error(errorResponse.message);
-        return rejectWithValue(errorResponse);
+      const formData = new FormData();
+      formData.append("name", newUser.name);
+      formData.append("email", newUser.email);
+      formData.append("password", newUser.password);
+      formData.append("role", "Customer");
+      if (newUser.avatar) {
+        formData.append("avatar", newUser.avatar);
       }
-      const data: User = await response.json();
-      return data;
-    } catch (e) {
-      const error = e as Error;
-      return rejectWithValue(error.message);
+
+      const response = await axios.post(URL, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      return response.data;
+    } catch (error: any) {
+      toast.error(error.response.data.message);
+      return rejectWithValue(error.response.data);
     }
   }
 );
 
 //Define thunk for user with session
-export const getAuthentication = createAsyncThunk(
-  "getAuthentication",
+export const authenticateUser = createAsyncThunk(
+  "users/authenticateUser",
   async (_, { rejectWithValue }) => {
     try {
-      const access_token = localStorage.getItem("token");
-      if (!access_token) {
-        throw new Error("No token found");
-      }
-      const response = await fetch(profileUrl, {
+      const token = localStorage.getItem("token");
+      if (!token) throw new Error("No token found");
+      const response = await axios.get(profileUrl, {
         headers: {
-          Authorization: `Bearer ${access_token}`,
+          Authorization: `Bearer ${token}`,
         },
       });
-      const responseData = await response.json();
-      console.log("API Response: ", responseData); // Log the API response
-      if (!response.ok) {
-        const errorResponse = await response.json();
-        toast.error(errorResponse.message);
-        return rejectWithValue(errorResponse);
-      }
-      return responseData as User;
-    } catch (e) {
-      const error = e as Error;
-      return rejectWithValue(error.message);
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response.data);
     }
   }
 );
 
-//Define thunk for login user
+// Define async thunk for login
 export const loginUser = createAsyncThunk(
-  "loginUser",
-  async (credentials: Authentication, { dispatch, rejectWithValue }) => {
+  "user/login",
+  async (credentials: { email: string; password: string }, thunkAPI) => {
     try {
-      const response = await fetch(loginUrl, {
-        method: "POST",
+      const response = await axios.post(loginUrl, credentials);
+      const token = response.data;
+      localStorage.setItem("token", token);
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      const userResponse = await axios.get(profileUrl, {
+        params: { token },
+      });
+      return userResponse.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  }
+);
+
+// Delete user
+export const deleteUser = createAsyncThunk(
+  "users/deleteUser",
+  async (id: string, { rejectWithValue }) => {
+    try {
+      await axios.delete(`${URL}/${id}`);
+      return id;
+    } catch (error: any) {
+      toast.error(error.response.data.message);
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+// Define thunk for updating user password
+export const updateUserPassword = createAsyncThunk<
+  void,
+  { id: string; newPassword: string }
+>("user/updatePassword", async ({ id, newPassword }, thunkAPI) => {
+  try {
+    const response = await axios.patch(
+      `${URL}/${id}/update-password`,
+      newPassword,
+      {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(credentials),
-      });
-
-      if (!response.ok) {
-        const errorResponse = await response.json();
-        toast.error(errorResponse.message);
-        return rejectWithValue(errorResponse);
       }
-      const data: AuthenticationToken = await response.json();
-      console.log("Token received: ", data.access_token);
-      localStorage.setItem("token", data.access_token);
-      const authentication = await dispatch(getAuthentication());
-      return authentication.payload as User;
-    } catch (e) {
-      const error = e as Error;
-      return rejectWithValue(error.message);
-    }
+    );
+    return response.data;
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue(error.response.data);
   }
-);
+});
 
 //Define slice for users
 const usersSlice = createSlice({
@@ -195,8 +184,7 @@ const usersSlice = createSlice({
   reducers: {
     logout: (state) => {
       state.user = null;
-      localStorage.removeItem("token");
-      return state;
+      delete axios.defaults.headers.common["Authorization"];
     },
     saveUserInformation: (state, action: PayloadAction<User>) => {
       state.user = action.payload;
@@ -205,37 +193,26 @@ const usersSlice = createSlice({
   extraReducers: (builder) => {
     //Fetch all users
     builder.addCase(getAllUsers.fulfilled, (state, action) => {
-      return {
-        ...state,
-        users: action.payload,
-        loading: false,
-        error: null,
-      };
+      state.loading = false;
+      state.users = action.payload;
+      state.error = null;
     });
     builder.addCase(getAllUsers.pending, (state) => {
-      return {
-        ...state,
-        loading: true,
-        error: null,
-      };
+      state.loading = true;
     });
     builder.addCase(getAllUsers.rejected, (state, action) => {
-      return {
-        ...state,
-        loading: false,
-        error: action.error.message ?? "error",
-      };
+      state.loading = false;
+      state.error = action.payload as string;
     });
+
     //Fetch user by id
-    builder.addCase(fetchUserById.fulfilled, (state, action) => {
-      const id = action.payload.data.id;
-      return {
-        ...state,
-        users: state.users.filter((user) => user.id !== id),
-        loading: false,
-        error: null,
-      };
-    });
+    builder.addCase(
+      fetchUserById.fulfilled,
+      (state, action: PayloadAction<User>) => {
+        state.loading = false;
+        state.user = action.payload;
+      }
+    );
     builder.addCase(fetchUserById.pending, (state) => {
       return {
         ...state,
@@ -250,94 +227,82 @@ const usersSlice = createSlice({
         error: action.error.message ?? "error",
       };
     });
-    //Update user
+
+    // Update user
     builder.addCase(updateUser.fulfilled, (state, action) => {
-      const user = action.payload;
-      return {
-        ...state,
-        loading: false,
-        users: state.users.map((item) => (item.id === user?.id ? user : item)),
-        error: null,
-      };
+      state.loading = false;
+      const updatedUser = action.payload;
+      state.users = state.users.map((user) =>
+        user.id === updatedUser.id ? updatedUser : user
+      );
+      state.error = null;
     });
     builder.addCase(updateUser.pending, (state) => {
-      return {
-        ...state,
-        loading: true,
-        error: null,
-      };
+      state.loading = true;
     });
     builder.addCase(updateUser.rejected, (state, action) => {
-      return {
-        ...state,
-        loading: false,
-        error: action.error.message ?? "error",
-      };
+      state.loading = false;
+      state.error = action.payload as string;
     });
-    //Register user
+
+    // Register user
     builder.addCase(registerUser.fulfilled, (state, action) => {
-      return {
-        ...state,
-        users: state.users.concat(action.payload),
-        user: action.payload,
-        loading: false,
-        error: null,
-      };
+      state.loading = false;
+      state.users.push(action.payload);
+      state.user = action.payload;
+      state.error = null;
     });
     builder.addCase(registerUser.pending, (state) => {
-      return {
-        ...state,
-        loading: true,
-        error: null,
-      };
+      state.loading = true;
     });
     builder.addCase(registerUser.rejected, (state, action) => {
-      return {
-        ...state,
-        loading: false,
-        error: action.error.message ?? "error",
-      };
-    });
-    //Get authentication
-    builder.addCase(getAuthentication.fulfilled, (state, action) => {
-      console.log("User state updated with: ", action.payload); // Log the user state update
-      state.user = action.payload; // Directly set the user
       state.loading = false;
+      state.error = action.payload as string;
+    });
+
+    // Authenticate user
+    builder.addCase(authenticateUser.fulfilled, (state, action) => {
+      state.loading = false;
+      state.user = action.payload;
       state.error = null;
     });
-    builder.addCase(getAuthentication.pending, (state) => {
-      return {
-        ...state,
-        loading: true,
-        error: null,
-      };
+    builder.addCase(authenticateUser.pending, (state) => {
+      state.loading = true;
     });
-    builder.addCase(getAuthentication.rejected, (state, action) => {
-      return {
-        ...state,
-        loading: false,
-        error: action.error.message ?? "error",
-      };
+    builder.addCase(authenticateUser.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload as string;
     });
+
     //Login user
-    builder.addCase(loginUser.fulfilled, (state, action) => {
-      state.user = action.payload; // Directly set the user
-      state.loading = false;
+    builder.addCase(loginUser.pending, (state) => {
+      state.loading = true;
       state.error = null;
     });
-    builder.addCase(loginUser.pending, (state) => {
-      return {
-        ...state,
-        loading: true,
-        error: null,
-      };
-    });
+    builder.addCase(
+      loginUser.fulfilled,
+      (state, action: PayloadAction<User>) => {
+        state.loading = false;
+        state.user = action.payload;
+      }
+    );
     builder.addCase(loginUser.rejected, (state, action) => {
-      return {
-        ...state,
-        loading: false,
-        error: action.error.message ?? "An error occurred",
-      };
+      state.loading = false;
+      state.error = action.payload as string;
+    });
+
+    // Delete user
+    builder.addCase(deleteUser.fulfilled, (state, action) => {
+      state.loading = false;
+      state.users = state.users.filter((user) => user.id !== action.payload);
+      state.error = null;
+    });
+    builder.addCase(deleteUser.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(deleteUser.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload as string;
     });
   },
 });

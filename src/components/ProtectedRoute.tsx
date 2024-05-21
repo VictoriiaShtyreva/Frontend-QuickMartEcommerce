@@ -7,7 +7,7 @@ interface ProtectedRouteProps {
 
 const ProtectedAdminRoute = ({ Component }: ProtectedRouteProps) => {
   const { user } = useAppSelector((state) => state.users);
-  return user && user.role === "admin" ? (
+  return user && user.role === "Admin" ? (
     <Component />
   ) : (
     <Navigate to="/login" replace />

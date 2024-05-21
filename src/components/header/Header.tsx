@@ -154,7 +154,7 @@ const Header = () => {
                 </Typography>
               </Link>
             </Button>
-            {user?.role === "customer" && (
+            {user?.role === "Customer" && (
               <Link to="/shopping-cart">
                 <IconButton aria-label="cart">
                   <Badge badgeContent={cartItems.length} color="secondary">
@@ -163,7 +163,7 @@ const Header = () => {
                 </IconButton>
               </Link>
             )}
-            {user?.role === "admin" && (
+            {user?.role === "Admin" && (
               <Button color="inherit" sx={{ mr: 2 }}>
                 <Link to="/admin-dashboard">
                   <Typography sx={{ color: "primary.contrastText" }}>
@@ -190,7 +190,7 @@ const Header = () => {
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 {user ? (
-                  <Avatar alt={user.name} src={user.avatar} />
+                  <Avatar alt={user.name} src={user.avatar as string} />
                 ) : (
                   <Avatar alt="User" />
                 )}
@@ -212,7 +212,7 @@ const Header = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {user?.role === "customer" && (
+              {user?.role === "Customer" && (
                 <MenuItem
                   onClick={handleCloseNavMenu}
                   sx={{ display: { xs: "flex", md: "none" } }}
@@ -224,7 +224,7 @@ const Header = () => {
                   </Link>
                 </MenuItem>
               )}{" "}
-              {user?.role === "admin" && (
+              {user?.role === "Admin" && (
                 <MenuItem
                   onClick={handleCloseNavMenu}
                   sx={{ display: { xs: "flex", md: "none" } }}
@@ -238,7 +238,7 @@ const Header = () => {
               )}
               {user && (
                 <MenuItem onClick={handleCloseNavMenu}>
-                  <Link to={`/user-profile/${user.id}`}>
+                  <Link to={`/users/${user.id}`}>
                     <Typography sx={{ color: "primary.contrastText" }}>
                       User Page
                     </Typography>

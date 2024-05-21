@@ -20,7 +20,6 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { useAppDispatch } from "../../hooks/useAppDispach";
 import { FormValues, NewProduct } from "../../types/Product";
 import { createProduct } from "../../redux/slices/productSlice";
-import uploadFilesService from "../../utils/uploadFilesService";
 import { useAppSelector } from "../../hooks/useAppSelector";
 import { Category } from "../../types/Category";
 
@@ -68,7 +67,7 @@ const ProductCreateForm = ({ open, onClose }: ProductCreateFormProps) => {
           images.push({ file });
         });
       }
-      const location = await uploadFilesService(images);
+      // const location = await uploadFilesService(images);
       const newProductData: NewProduct = {
         title: data.title,
         price: data.price,
