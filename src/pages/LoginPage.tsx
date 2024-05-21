@@ -16,9 +16,10 @@ import { useEffect, useState } from "react";
 import { useAppDispatch } from "../hooks/useAppDispach";
 import { Authentication } from "../types/Authentication";
 import { loginUser, registerUser } from "../redux/slices/usersSlice";
-import { UserRegister } from "../types/User";
 import RegistrationModal from "../components/user/RegisterUserModal";
 import { useAppSelector } from "../hooks/useAppSelector";
+import { UserRegister } from "../types/User";
+import { toast } from "react-toastify";
 
 const LoginPage = () => {
   const {
@@ -27,24 +28,27 @@ const LoginPage = () => {
     formState: { errors },
   } = useForm<Authentication>();
   const dispatch = useAppDispatch();
-  const { user } = useAppSelector((state) => state.users);
+  const user = useAppSelector((state) => state.users.user);
   const navigate = useNavigate();
   const [agreeToTerms, setAgreeToTerms] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
-  //Submit form for sign in
+  // Submit form for sign in
   const onSubmit: SubmitHandler<Authentication> = async ({
     email,
     password,
   }) => {
-    await dispatch(loginUser({ email, password }));
+    try {
+      await dispatch(loginUser({ email, password })).unwrap();
+    } catch (error) {
+      toast.error("Incorrect email or password. Please check and try again.");
+    }
   };
 
   //Redirect to the appropriate page when user is logged in
   useEffect(() => {
-    console.log("User state updated:", user);
     if (user) {
-      if (user.role === "customer") {
+      if (user.role === "Customer") {
         navigate(`/users/${user.id}`);
       } else {
         navigate("/admin-dashboard");

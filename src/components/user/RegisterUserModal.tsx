@@ -18,7 +18,6 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 import { RegistrationFormData, UserRegister } from "../../types/User";
-import uploadFilesService from "../../utils/uploadFilesService";
 import { toast } from "react-toastify";
 
 interface RegistrationModalProps {
@@ -49,34 +48,21 @@ const RegistrationModal = ({
     setFileInput({ file: [] });
   };
 
-  const onSubmit: SubmitHandler<RegistrationFormData> = async (data) => {
-    const images: { file: File }[] = [];
-    if (fileInput.file.length > 0) {
-      fileInput.file.forEach((file) => {
-        images.push({ file });
-      });
-    }
-    try {
-      const location = await uploadFilesService(images);
-      const newUser: UserRegister = {
-        name: data.name,
-        email: data.email,
-        password: data.password,
-        avatar: location[0] as string,
-      };
-      onRegister(newUser);
-      toast.success(
-        `Congratulations, ${newUser.name}! Your account has been successfully created.`
-      );
-      //Close the modal after a delay
-      setTimeout(() => {
-        onClose();
-      }, 6000);
-    } catch (error) {
-      toast.error(
-        "Please fill in all the required fields and upload an avatar."
-      );
-    }
+  const onSubmit: SubmitHandler<RegistrationFormData> = (data) => {
+    const newUser: UserRegister = {
+      name: data.name,
+      email: data.email,
+      password: data.password,
+      avatar: fileInput.file.length > 0 ? fileInput.file[0] : undefined,
+      role: "Customer",
+    };
+    onRegister(newUser);
+    toast.success(
+      `Congratulations, ${newUser.name}! Your account has been successfully created.`
+    );
+    setTimeout(() => {
+      onClose();
+    }, 6000);
   };
 
   return (

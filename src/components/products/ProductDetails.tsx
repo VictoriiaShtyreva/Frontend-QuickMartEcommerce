@@ -38,7 +38,7 @@ const ProductDetails = ({ id }: { id: string }) => {
     return imageUrl;
   });
   const { user } = useAppSelector((state) => state.users);
-  const isAdmin = user?.role === "admin";
+  const isAdmin = user?.role === "Admin";
   //Cart state
   const [showDialog, setShowDialog] = useState(false);
 
