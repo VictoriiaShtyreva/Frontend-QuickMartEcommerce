@@ -3,7 +3,7 @@ import { User } from "../../types/User";
 
 export const usersList: User[] = [
   {
-    id: 1,
+    id: "1",
     email: "john@mail.com",
     password: "changeme",
     name: "Jhon",
@@ -11,7 +11,7 @@ export const usersList: User[] = [
     avatar: "https://i.imgur.com/LDOO4Qs.jpg",
   },
   {
-    id: 2,
+    id: "2",
     email: "maria@mail.com",
     password: "12345",
     name: "Maria",
@@ -19,7 +19,7 @@ export const usersList: User[] = [
     avatar: "https://i.imgur.com/DTfowdu.jpg",
   },
   {
-    id: 3,
+    id: "3",
     email: "admin@mail.com",
     password: "admin123",
     name: "Admin",
@@ -27,7 +27,7 @@ export const usersList: User[] = [
     avatar: "https://i.imgur.com/yhW6Yw1.jpg",
   },
   {
-    id: 4,
+    id: "4",
     email: "anjelina@gmail.com",
     password: "qwerty",
     name: "anjelina jolly",
@@ -37,7 +37,7 @@ export const usersList: User[] = [
 ];
 
 export const newUser: User = {
-  id: 5,
+  id: "5",
   email: "viktoriiashtyreva@mail.com",
   password: "viktoria24",
   role: "customer",
@@ -46,7 +46,7 @@ export const newUser: User = {
 };
 
 export const singleUser: User = {
-  id: 6,
+  id: "6",
   email: "garfiled@mail.com",
   password: "garfield45",
   role: "customer",

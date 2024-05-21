@@ -41,7 +41,7 @@ const ProductCreateForm = ({ open, onClose }: ProductCreateFormProps) => {
   const categories = useAppSelector<Category[]>(
     (state) => state.categories.categories
   );
-  const defaultCategoryId = categories.length > 0 ? categories[0].id : 1;
+  const defaultCategoryId = categories.length > 0 ? categories[0].id : "";
 
   const [fileInputs, setFileInputs] = useState<File[]>([]);
 

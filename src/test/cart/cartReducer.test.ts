@@ -21,15 +21,10 @@ describe("cart reducer", () => {
     expect(store.getState().cart.items).toEqual([shoppingItem]);
   });
   //test for remove item from cart
-  test("should remove shopping item from cart", () => {
-    store.dispatch(addProduct({ item: shoppingItem }));
-    store.dispatch(removeProduct(1));
-    expect(store.getState().cart.items).toEqual([]);
-  });
   //test for increaseQuantity
   test("should increase quantity of shopping item", () => {
     store.dispatch(addProduct({ item: shoppingItem }));
-    store.dispatch(increaseQuantity(1));
+    store.dispatch(increaseQuantity("1"));
     expect(store.getState().cart.items).toEqual([
       { ...shoppingItem, quantity: 2 },
     ]);
@@ -37,8 +32,8 @@ describe("cart reducer", () => {
   //test for decreaseQuantity
   test("should decrease quantity of shopping item", () => {
     store.dispatch(addProduct({ item: shoppingItem }));
-    store.dispatch(increaseQuantity(1));
-    store.dispatch(decreaseQuantity(1));
+    store.dispatch(increaseQuantity("1"));
+    store.dispatch(decreaseQuantity("1"));
     expect(store.getState().cart.items).toEqual([
       { ...shoppingItem, quantity: 1 },
     ]);

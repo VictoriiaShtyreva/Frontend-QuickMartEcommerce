@@ -44,7 +44,7 @@ export const getAllUsers = createAsyncThunk(
 //Define thunk for fetching single user
 export const fetchUserById = createAsyncThunk(
   "fetchUserById",
-  async (id: number, { rejectWithValue }) => {
+  async (id: string, { rejectWithValue }) => {
     try {
       const response = await fetch(`${URL}/${id}`);
       if (!response.ok) {
@@ -215,7 +215,7 @@ const usersSlice = createSlice({
     });
     //Fetch user by id
     builder.addCase(fetchUserById.fulfilled, (state, action) => {
-      const { id } = action.payload;
+      const id = action.payload.data.id;
       return {
         ...state,
         users: state.users.filter((user) => user.id !== id),

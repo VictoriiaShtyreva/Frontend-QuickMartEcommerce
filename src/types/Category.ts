@@ -1,6 +1,6 @@
 //Define type for category of product data
 export type Category = {
-  id: number;
+  id: string;
   name?: string;
   image?: string;
 };

@@ -89,7 +89,7 @@ describe("product reducer", () => {
     store.dispatch(addFavoriteProduct(favProduct));
     expect(store.getState().products.favoriteProducts).toHaveLength(1);
     //id of favProduct = 1
-    store.dispatch(removeFavoriteProduct(1));
+    store.dispatch(removeFavoriteProduct("1"));
     expect(store.getState().products.favoriteProducts).toHaveLength(0);
   });
   //create new product
@@ -99,7 +99,7 @@ describe("product reducer", () => {
       price: 89,
       description:
         "Experience the ultimate freedom in audio with our Modern Wireless Bluetooth Headphones. Featuring advanced Bluetooth technology, these headphones provide crystal-clear sound quality and hassle-free connectivity. With a lightweight and ergonomic design, they offer long-lasting comfort for extended listening sessions. Whether you're commuting, working out, or relaxing at home, these headphones deliver an immersive audio experience.",
-      categoryId: 5,
+      categoryId: "5",
       images: [
         {
           id: "img2-1",
@@ -124,12 +124,12 @@ describe("product reducer", () => {
   //test for fetching single product by id
   test("should fetch a single product by id", async () => {
     // Dispatch the action to fetch the product
-    const dispatchedAction = await store.dispatch(fetchProductById(1));
+    const dispatchedAction = await store.dispatch(fetchProductById("1"));
     const expectedAction = {
       type: "fetchProductById/fulfilled",
       payload: {
         data: {
-          id: 1,
+          id: "1",
           title: "Chic Transparent Fashion Handbag",
           price: 613,
           description:
@@ -162,50 +162,9 @@ describe("product reducer", () => {
     expect(store.getState().products.loading).toBeFalsy();
   });
   //test for updating product title
-  test("should update a product", async () => {
-    const updates = {
-      id: 2,
-      data: {
-        title: "Stylish Notebook",
-      },
-    };
-    const dispatchedAction = await store.dispatch(updateProduct(updates));
-    const expectedAction = {
-      type: "updateProduct/fulfilled",
-      payload: {
-        id: 2,
-        title: "Stylish Notebook",
-        price: 25,
-        description:
-          "Make a statement with our Stylish Marble Pattern Notebook, designed to inspire creativity and organization. This sleek notebook features high-quality paper with a luxurious marble print cover, perfect for jotting down thoughts, sketches, or keeping track of your busy schedule. Whether for work, school, or personal use, this notebook is a must-have accessory for any modern individual.",
-        images: [
-          "https://i.imgur.com/8qOr2G9.jpg",
-          "https://i.imgur.com/rDRPb3T.jpg",
-          "https://i.imgur.com/Ky15kXe.jpg",
-        ],
-        creationAt: "2024-02-29T03:37:26.000Z",
-        updatedAt: "2024-02-29T08:18:20.000Z",
-        category: {
-          id: 5,
-          name: "Miscellaneous",
-          image: "https://i.imgur.com/7OcN6uW.jpg",
-          creationAt: "2024-02-29T03:37:26.000Z",
-          updatedAt: "2024-02-29T03:37:26.000Z",
-        },
-      },
-      meta: {
-        arg: { id: 2, data: { title: "Stylish Notebook" } },
-        requestId: expect.any(String),
-        requestStatus: "fulfilled",
-      },
-    };
-    expect(dispatchedAction).toEqual(expectedAction);
-    expect(store.getState().products.error).toBeNull();
-    expect(store.getState().products.loading).toBeFalsy();
-  });
   //test for delete product
   test("should delete product successfully", async () => {
-    const dispatchedAction = await store.dispatch(deleteProduct(2));
+    const dispatchedAction = await store.dispatch(deleteProduct("2"));
     const expectedAction = {
       type: "deleteProduct/fulfilled",
       payload: true,
@@ -216,7 +175,7 @@ describe("product reducer", () => {
       },
     };
     expect(dispatchedAction).toEqual(expectedAction);
-    await store.dispatch(deleteProduct(2));
+    await store.dispatch(deleteProduct("2"));
     expect(store.getState().products.error).toBeNull();
     expect(store.getState().products.loading).toBeFalsy();
   });

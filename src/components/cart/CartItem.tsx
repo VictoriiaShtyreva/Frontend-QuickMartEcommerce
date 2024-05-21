@@ -35,7 +35,7 @@ const CartItem = ({ item }: CartItemProps) => {
     dispatch(decreaseQuantity(item.id));
   };
 
-  const removeFromCart = (itemId: number) => {
+  const removeFromCart = (itemId: string) => {
     dispatch(removeProduct(itemId));
   };
 

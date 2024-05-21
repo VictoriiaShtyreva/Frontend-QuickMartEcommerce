@@ -14,9 +14,9 @@ export const handler = [
     const product = (await request.json()) as NewProduct;
     const createdProduct: Product = {
       ...product,
-      id: 4,
+      id: "4",
       category: {
-        id: 2,
+        id: "2",
         name: "Electronics",
         image: "https://i.imgur.com/ZANVnHE.jpeg",
       },
@@ -28,7 +28,7 @@ export const handler = [
   http.get(
     "https://api.escuelajs.co/api/v1/products/:id",
     async ({ params }) => {
-      const id = Number(params.id);
+      const id = String(params.id);
       const product = mockProducts.find((item) => item.id === id);
       return HttpResponse.json(product, { status: 200 });
     }
@@ -43,7 +43,7 @@ export const handler = [
   http.delete(
     "https://api.escuelajs.co/api/v1/products/:id",
     async ({ params }) => {
-      const id = Number(params.id);
+      const id = String(params.id);
       const product = mockProducts.filter((item) => item.id !== id);
       if (!product) {
         return new HttpResponse(null, { status: 404 });

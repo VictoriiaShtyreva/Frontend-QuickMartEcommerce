@@ -9,7 +9,7 @@ export type Image = {
 
 //Define type for product data
 export type Product = {
-  id: number;
+  id: string;
   title: string;
   price: number;
   description: string;
@@ -37,7 +37,7 @@ export type NewProduct = {
   title: string;
   price: number;
   description: string;
-  categoryId: number;
+  categoryId: string;
   images: Image[];
 };
 
@@ -46,7 +46,7 @@ export type FormValues = {
   title: string;
   price: number;
   description: string;
-  categoryId: number;
+  categoryId: string;
   categoryName: string;
   images: Image[];
 };
@@ -58,7 +58,7 @@ export type FormDataValues = {
 
 //Define type for update product
 export type UpdateProduct = {
-  id?: number;
+  id?: string;
   title?: string;
   price?: number;
   description?: string;
@@ -68,7 +68,7 @@ export type UpdateProduct = {
 
 //Define type for update data of product
 export type ProductDataForUpdate = {
-  id: number;
+  id: string;
   data: {
     title?: string;
     price?: number;

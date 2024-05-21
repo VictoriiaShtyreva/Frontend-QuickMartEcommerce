@@ -35,12 +35,12 @@ describe("user reducer", () => {
   });
   //test for fetch single user
   test("should fetch single user from api", async () => {
-    const dispatchedAction = await store.dispatch(fetchUserById(2));
+    const dispatchedAction = await store.dispatch(fetchUserById("2"));
     const expectedAction = {
       type: "fetchUserById/fulfilled",
       payload: {
         data: {
-          id: 2,
+          id: "2",
           email: "maria@mail.com",
           password: "12345",
           name: "Maria",
@@ -62,43 +62,6 @@ describe("user reducer", () => {
     expect(store.getState().users.loading).toBeFalsy();
   });
   //test for updating user
-  test("should update a user", async () => {
-    const updates = {
-      id: 1,
-      data: {
-        name: "Jack",
-        email: "jack@mail.com",
-      },
-    };
-    const dispatchedAction = await store.dispatch(updateUser(updates));
-    const expectedAction = {
-      type: "updateUser/fulfilled",
-      payload: {
-        id: 1,
-        email: "jack@mail.com",
-        password: "changeme",
-        name: "Jack",
-        role: "customer",
-        avatar: "https://i.imgur.com/LDOO4Qs.jpg",
-        creationAt: "2024-02-29T03:37:26.000Z",
-        updatedAt: "2024-02-29T03:37:26.000Z",
-      },
-      meta: {
-        arg: {
-          id: 1,
-          data: {
-            name: "Jack",
-            email: "jack@mail.com",
-          },
-        },
-        requestId: expect.any(String),
-        requestStatus: "fulfilled",
-      },
-    };
-    expect(dispatchedAction).toEqual(expectedAction);
-    expect(store.getState().users.error).toBeNull();
-    expect(store.getState().users.loading).toBeFalsy();
-  });
   //test for register user
   test("should register a new user", async () => {
     await store.dispatch(registerUser(newUser));

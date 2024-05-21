@@ -36,7 +36,7 @@ const ProductAdminItem = ({ product }: ProductCardProps) => {
   };
 
   // Handle delete product
-  const handleDeleteProduct = (id: number) => {
+  const handleDeleteProduct = (id: string) => {
     toast.info(
       <div>
         <p>Are you sure you want to delete this product?</p>

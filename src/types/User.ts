@@ -7,7 +7,7 @@ export type UserRegister = {
 
 export type User = UserRegister & {
   role?: "admin" | "customer";
-  id: number;
+  id: string;
 };
 
 export type UserInitialState = {

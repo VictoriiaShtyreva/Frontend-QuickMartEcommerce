@@ -6,11 +6,10 @@ import {
   CategoryState,
   PaginatedCategory,
 } from "../../types/Category";
-import { API_BASE_URL } from "../../config/config";
 import { QueryOptions } from "../../types/QueryOptions";
 
-//Fetch data
-const urlCategories = `${API_BASE_URL}/categories`;
+const API_BASE_URL = process.env.REACT_APP_API_URL;
+const URL = `${API_BASE_URL}/categories`;
 
 const initialState: CategoryState = {
   categories: [],
@@ -35,7 +34,7 @@ export const fetchAllCategories = createAsyncThunk(
   async (options: QueryOptions, { rejectWithValue }) => {
     try {
       const queryString = createQueryString(options);
-      const response = await fetch(`${urlCategories}?${queryString}`);
+      const response = await fetch(`${URL}?${queryString}`);
       if (!response.ok) {
         const errorResponse = await response.json();
         toast.error(errorResponse.message);

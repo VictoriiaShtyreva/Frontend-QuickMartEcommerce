@@ -52,7 +52,7 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
   },
 }));
 
-const UserAccount = ({ id }: { id: number }) => {
+const UserAccount = ({ id }: { id: string }) => {
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) =>
     state.users.users.find((user) => user.id === id)

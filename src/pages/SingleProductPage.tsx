@@ -3,7 +3,7 @@ import ProductDetails from "../components/products/ProductDetails";
 
 const SingleProductPage = () => {
   const { id } = useParams<{ id: string }>();
-  return <ProductDetails id={Number(id)} />;
+  return <ProductDetails id={String(id)} />;
 };
 
 export default SingleProductPage;

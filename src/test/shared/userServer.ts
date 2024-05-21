@@ -10,7 +10,7 @@ export const handler = [
   }),
   //Handler for fetching single user
   http.get("https://api.escuelajs.co/api/v1/users/:id", async ({ params }) => {
-    const id = Number(params.id);
+    const id = String(params.id);
     const user = usersList.find((item) => item.id === id);
     return HttpResponse.json(user, { status: 200 });
   }),

@@ -19,7 +19,6 @@ import {
   sortProductsByTitle,
 } from "../../redux/slices/productSlice";
 import { Category } from "../../types/Category";
-import CategorySelection from "./CategorySelection";
 import SortingFilter from "./SortingFilter";
 import { useAppSelector } from "../../hooks/useAppSelector";
 import SearchForm from "./SearchForm";
@@ -28,12 +27,8 @@ import { QueryOptions } from "../../types/QueryOptions";
 
 const Products = () => {
   const dispatch = useAppDispatch();
-  const categories = useAppSelector<Category[]>(
-    (state) => state.categories.categories
-  );
   const products = useAppSelector((state) => state.products.products);
   const totalProducts = useAppSelector((state) => state.products.total);
-  const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [sortBy, setSortBy] = useState<string>("priceAsc");
   const [pagination, setPagination] = useState<{ page: number; limit: number }>(
     { page: 1, limit: 12 }
@@ -83,12 +78,6 @@ const Products = () => {
     [dispatch]
   );
 
-  //Handle sort products by category
-  const handleCategoryChange = useCallback((event: SelectChangeEvent) => {
-    setSelectedCategory(event.target.value as string);
-    setPagination((prev) => ({ ...prev, page: 1 }));
-  }, []);
-
   //Handle pagination
   const handlePaginationChange = useCallback(
     (event: React.ChangeEvent<unknown>, page: number) => {
@@ -103,7 +92,6 @@ const Products = () => {
   //Fetch products based on query options
   useEffect(() => {
     dispatch(fetchAllProducts(queryOptions));
-    dispatch(fetchAllCategories(queryOptions));
   }, [dispatch, queryOptions]);
 
   return (
@@ -156,24 +144,12 @@ const Products = () => {
           }}
         >
           <Grid item xs={12} md={4}>
-            <CategorySelection
-              categories={categories}
-              selectedCategory={selectedCategory}
-              onChange={handleCategoryChange}
-            />
-          </Grid>
-          <Grid item xs={12} md={4}>
             <SortingFilter sortBy={sortBy} onChange={handleSortChange} />
           </Grid>
         </Box>
         {products.length > 0 ? (
           <>
-            <ProductList
-              products={products}
-              selectedCategory={selectedCategory}
-              pagination={pagination}
-              sortBy={sortBy}
-            />
+            <ProductList products={products} />
             <Box
               sx={{
                 display: "flex",

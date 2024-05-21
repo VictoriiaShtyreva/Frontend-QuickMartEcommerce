@@ -21,13 +21,13 @@ const CartModal = ({ onClose, item }: CartModalProps) => {
   const [quantity, setQuantity] = useState(1);
 
   const increaseQuantityHandler = () => {
-    dispatch(increaseQuantity(item.quantity));
+    dispatch(increaseQuantity(item.id));
     setQuantity(quantity + 1);
   };
 
   const decreaseQuantityHandler = () => {
     if (quantity > 1) {
-      dispatch(decreaseQuantity(item.quantity));
+      dispatch(decreaseQuantity(item.id));
       setQuantity(quantity - 1);
     }
   };

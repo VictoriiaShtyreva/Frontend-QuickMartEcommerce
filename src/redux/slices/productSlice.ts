@@ -9,7 +9,6 @@ import {
   ProductState,
   UpdateProduct,
 } from "../../types/Product";
-import { API_BASE_URL } from "../../config/config";
 import { QueryOptions } from "../../types/QueryOptions";
 
 const initialState: ProductState = {
@@ -20,7 +19,7 @@ const initialState: ProductState = {
   favoriteProducts: [],
 };
 
-//Fetch data
+const API_BASE_URL = process.env.REACT_APP_API_URL;
 const URL = `${API_BASE_URL}/products`;
 
 //Queries
@@ -58,7 +57,7 @@ export const fetchAllProducts = createAsyncThunk(
 //Define thunk for fetching single product
 export const fetchProductById = createAsyncThunk(
   "fetchProductById",
-  async (id: number, { rejectWithValue }) => {
+  async (id: string, { rejectWithValue }) => {
     try {
       const response = await fetch(`${URL}/${id}`);
       if (!response.ok) {
@@ -139,7 +138,7 @@ export const updateProduct = createAsyncThunk(
 //Define thunk for delete product
 export const deleteProduct = createAsyncThunk(
   "deleteProduct",
-  async (id: number, { rejectWithValue }) => {
+  async (id: string, { rejectWithValue }) => {
     try {
       const response = await fetch(`${URL}/${id}`, {
         method: "DELETE",
@@ -199,7 +198,7 @@ const productSlice = createSlice({
         return state;
       }
     },
-    removeFavoriteProduct: (state, action: PayloadAction<number>) => {
+    removeFavoriteProduct: (state, action: PayloadAction<string>) => {
       state.favoriteProducts = state.favoriteProducts.filter(
         (product) => product.id !== action.payload
       );

@@ -1,7 +1,7 @@
 import { ShoppingCartItem } from "../../types/ShoppingCart";
 
 export const shoppingItem: ShoppingCartItem = {
-  id: 1,
+  id: "1",
   title: "Chic Transparent Fashion Handbag",
   price: 613,
   description:
@@ -12,7 +12,7 @@ export const shoppingItem: ShoppingCartItem = {
     { id: "img2-3", productId: "1", url: "https://i.imgur.com/Ky15kXe.jpg" },
   ],
   category: {
-    id: 5,
+    id: "5",
     name: "Miscellaneous",
     image: "https://i.imgur.com/BG8J0Fj.jpg",
   },

@@ -2,7 +2,7 @@ import { Product } from "../../types/Product";
 
 export const mockProducts: Product[] = [
   {
-    id: 1,
+    id: "1",
     title: "Chic Transparent Fashion Handbag",
     price: 613,
     description:
@@ -13,14 +13,14 @@ export const mockProducts: Product[] = [
       { id: "img1-3", productId: "1", url: "https://i.imgur.com/atWACf1.jpg" },
     ],
     category: {
-      id: 5,
+      id: "5",
       name: "Miscellaneous",
       image: "https://i.imgur.com/BG8J0Fj.jpg",
     },
     inventory: 100,
   },
   {
-    id: 2,
+    id: "2",
     title: "Stylish Marble Pattern Notebook",
     price: 25,
     description:
@@ -31,14 +31,14 @@ export const mockProducts: Product[] = [
       { id: "img1-3", productId: "2", url: "https://i.imgur.com/atWACf1.jpg" },
     ],
     category: {
-      id: 5,
+      id: "5",
       name: "Miscellaneous",
       image: "https://i.imgur.com/7OcN6uW.jpg",
     },
     inventory: 100,
   },
   {
-    id: 3,
+    id: "3",
     title: "Classic Leather Wallet",
     price: 120,
     description:
@@ -49,7 +49,7 @@ export const mockProducts: Product[] = [
       { id: "img1-3", productId: "3", url: "https://i.imgur.com/atWACf1.jpg" },
     ],
     category: {
-      id: 5,
+      id: "5",
       name: "Miscellaneous",
       image: "https://i.imgur.com/FGqOjWY.jpg",
     },
@@ -59,7 +59,7 @@ export const mockProducts: Product[] = [
 
 export const descMockProducts: Product[] = [
   {
-    id: 1,
+    id: "1",
     title: "Chic Transparent Fashion Handbag",
     price: 613,
     description:
@@ -70,14 +70,14 @@ export const descMockProducts: Product[] = [
       { id: "img1-3", productId: "1", url: "https://i.imgur.com/atWACf1.jpg" },
     ],
     category: {
-      id: 5,
+      id: "5",
       name: "Miscellaneous",
       image: "https://i.imgur.com/BG8J0Fj.jpg",
     },
     inventory: 100,
   },
   {
-    id: 3,
+    id: "3",
     title: "Classic Leather Wallet",
     price: 120,
     description:
@@ -88,14 +88,14 @@ export const descMockProducts: Product[] = [
       { id: "img1-3", productId: "3", url: "https://i.imgur.com/atWACf1.jpg" },
     ],
     category: {
-      id: 5,
+      id: "5",
       name: "Miscellaneous",
       image: "https://i.imgur.com/FGqOjWY.jpg",
     },
     inventory: 100,
   },
   {
-    id: 2,
+    id: "2",
     title: "Stylish Marble Pattern Notebook",
     price: 25,
     description:
@@ -106,7 +106,7 @@ export const descMockProducts: Product[] = [
       { id: "img1-3", productId: "2", url: "https://i.imgur.com/atWACf1.jpg" },
     ],
     category: {
-      id: 5,
+      id: "5",
       name: "Miscellaneous",
       image: "https://i.imgur.com/7OcN6uW.jpg",
     },
@@ -116,7 +116,7 @@ export const descMockProducts: Product[] = [
 
 export const ascMockProducts: Product[] = [
   {
-    id: 2,
+    id: "2",
     title: "Stylish Marble Pattern Notebook",
     price: 25,
     description:
@@ -127,14 +127,14 @@ export const ascMockProducts: Product[] = [
       { id: "img2-3", productId: "2", url: "https://i.imgur.com/Ky15kXe.jpg" },
     ],
     category: {
-      id: 5,
+      id: "5",
       name: "Miscellaneous",
       image: "https://i.imgur.com/7OcN6uW.jpg",
     },
     inventory: 100,
   },
   {
-    id: 3,
+    id: "3",
     title: "Classic Leather Wallet",
     price: 120,
     description:
@@ -145,14 +145,14 @@ export const ascMockProducts: Product[] = [
       { id: "img2-3", productId: "3", url: "https://i.imgur.com/Ky15kXe.jpg" },
     ],
     category: {
-      id: 5,
+      id: "5",
       name: "Miscellaneous",
       image: "https://i.imgur.com/FGqOjWY.jpg",
     },
     inventory: 100,
   },
   {
-    id: 1,
+    id: "1",
     title: "Chic Transparent Fashion Handbag",
     price: 613,
     description:
@@ -163,7 +163,7 @@ export const ascMockProducts: Product[] = [
       { id: "img2-3", productId: "1", url: "https://i.imgur.com/Ky15kXe.jpg" },
     ],
     category: {
-      id: 5,
+      id: "5",
       name: "Miscellaneous",
       image: "https://i.imgur.com/BG8J0Fj.jpg",
     },
@@ -172,7 +172,7 @@ export const ascMockProducts: Product[] = [
 ];
 
 export const favProduct: Product = {
-  id: 1,
+  id: "1",
   title: "Chic Transparent Fashion Handbag",
   price: 613,
   description:
@@ -183,7 +183,7 @@ export const favProduct: Product = {
     { id: "img2-3", productId: "1", url: "https://i.imgur.com/Ky15kXe.jpg" },
   ],
   category: {
-    id: 5,
+    id: "5",
     name: "Miscellaneous",
     image: "https://i.imgur.com/BG8J0Fj.jpg",
   },

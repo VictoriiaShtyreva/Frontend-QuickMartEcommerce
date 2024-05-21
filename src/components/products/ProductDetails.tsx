@@ -28,7 +28,7 @@ import { Product } from "../../types/Product";
 import { RootState } from "../../types/type";
 import { svgUrl } from "../../utils/svgUrl";
 
-const ProductDetails = ({ id }: { id: number }) => {
+const ProductDetails = ({ id }: { id: string }) => {
   const dispatch = useAppDispatch();
   const product = useAppSelector((state) =>
     state.products.products.find((product) => product.id === id)
@@ -103,20 +103,20 @@ const ProductDetails = ({ id }: { id: number }) => {
   };
 
   //Get the category of the current product
-  const currentProductCategory: number | undefined = product?.category.id;
-  const categoryId: number = currentProductCategory ?? 0;
+  const currentProductCategory: string | undefined = product?.category.id;
+  const categoryId: string = currentProductCategory ?? "";
 
   //Define selectors to extract specific data from the Redux store
   const selectProducts = (state: RootState) => state.products.products;
-  const selectCurrentProductCategory = (_: RootState, categoryId: number) =>
+  const selectCurrentProductCategory = (_: RootState, categoryId: string) =>
     categoryId;
-  const selectProductId = (_: RootState, __: number, productId: number) =>
+  const selectProductId = (_: RootState, __: string, productId: string) =>
     productId;
 
   //Create a memoized selector function using createDraftSafeSelector to filter related products based on category and excluding the current product
   const selectRelatedProducts = createDraftSafeSelector(
     [selectProducts, selectCurrentProductCategory, selectProductId],
-    (products: Product[], categoryId: number, productId: number) =>
+    (products: Product[], categoryId: string, productId: string) =>
       products.filter(
         (product: Product) =>
           product.category.id === categoryId && product.id !== productId
