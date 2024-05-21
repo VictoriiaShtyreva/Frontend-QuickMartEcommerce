@@ -6,6 +6,7 @@ import {
   Authentication,
   AuthenticationToken,
 } from "../../types/Authentication";
+import { QueryOptions } from "../../types/QueryOptions";
 
 const initialState: UserInitialState = {
   //the currently logged-in user
@@ -17,16 +18,28 @@ const initialState: UserInitialState = {
 };
 
 //Fetch data
-const URL = "https://api.escuelajs.co/api/v1/users";
-const profileUrl = "https://api.escuelajs.co/api/v1/auth/profile";
-const loginUrl = "https://api.escuelajs.co/api/v1/auth/login";
+const API_BASE_URL = process.env.REACT_APP_API_URL;
+const URL = `${API_BASE_URL}/users`;
+const profileUrl = `${API_BASE_URL}/auth/authenticate`;
+const loginUrl = `${API_BASE_URL}/auth/login`;
+
+//Queries
+const createQueryString = (options: QueryOptions) => {
+  const params = new URLSearchParams();
+  params.append("page", options.page.toString());
+  params.append("pageSize", options.pageSize.toString());
+  params.append("sortBy", options.sortBy);
+  params.append("sortOrder", options.sortOrder);
+  return params.toString();
+};
 
 //Define thunk for fetching all users
 export const getAllUsers = createAsyncThunk(
   "getAllUsers",
-  async (_, { rejectWithValue }) => {
+  async (options: QueryOptions, { rejectWithValue }) => {
     try {
-      const response = await fetch(URL);
+      const queryString = createQueryString(options);
+      const response = await fetch(`${URL}?${queryString}`);
       if (!response.ok) {
         const errorResponse = await response.json();
         toast.error(errorResponse.message);

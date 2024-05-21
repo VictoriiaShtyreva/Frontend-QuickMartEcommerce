@@ -11,14 +11,13 @@ import { SelectChangeEvent } from "@mui/material";
 
 import ProductList from "./ProductList";
 import { useAppDispatch } from "../../hooks/useAppDispach";
-import { fetchAllCategories } from "../../redux/slices/categorySlice";
 import {
+  clearSearch,
   fetchAllProducts,
   searchProductByName,
   sortProductsByPrice,
   sortProductsByTitle,
 } from "../../redux/slices/productSlice";
-import { Category } from "../../types/Category";
 import SortingFilter from "./SortingFilter";
 import { useAppSelector } from "../../hooks/useAppSelector";
 import SearchForm from "./SearchForm";
@@ -27,7 +26,7 @@ import { QueryOptions } from "../../types/QueryOptions";
 
 const Products = () => {
   const dispatch = useAppDispatch();
-  const products = useAppSelector((state) => state.products.products);
+  const products = useAppSelector((state) => state.products.filteredProducts);
   const totalProducts = useAppSelector((state) => state.products.total);
   const [sortBy, setSortBy] = useState<string>("priceAsc");
   const [pagination, setPagination] = useState<{ page: number; limit: number }>(
@@ -49,12 +48,18 @@ const Products = () => {
 
   //Handle search product by name
   const handleSearch = (value: string) => {
-    dispatch(searchProductByName(value.toLowerCase()));
+    setUserInput(value);
+    if (value.trim() === "") {
+      dispatch(clearSearch());
+    } else {
+      dispatch(searchProductByName(value));
+    }
   };
 
   //Handle clear
   const handleClear = () => {
     setUserInput("");
+    dispatch(clearSearch());
     //Fetch all products again to display them
     dispatch(fetchAllProducts(queryOptions));
   };

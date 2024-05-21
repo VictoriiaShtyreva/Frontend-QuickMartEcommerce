@@ -44,7 +44,7 @@ const LoginPage = () => {
   useEffect(() => {
     if (user) {
       if (user.role === "customer") {
-        navigate(`/user-profile/${user.id}`);
+        navigate(`/users/${user.id}`);
       } else {
         navigate("/admin-dashboard");
       }

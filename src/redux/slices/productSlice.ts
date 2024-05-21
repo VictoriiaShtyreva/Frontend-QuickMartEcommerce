@@ -17,6 +17,7 @@ const initialState: ProductState = {
   loading: false,
   error: null,
   favoriteProducts: [],
+  filteredProducts: [],
 };
 
 const API_BASE_URL = process.env.REACT_APP_API_URL;
@@ -164,23 +165,26 @@ const productSlice = createSlice({
   reducers: {
     sortProductsByPrice: (state, action: PayloadAction<"asc" | "desc">) => {
       if (action.payload === "asc") {
-        state.products.sort((a, b) => a.price - b.price);
+        state.filteredProducts.sort((a, b) => a.price - b.price);
       } else {
-        state.products.sort((a, b) => b.price - a.price);
+        state.filteredProducts.sort((a, b) => b.price - a.price);
       }
     },
     sortProductsByTitle: (state, action: PayloadAction<"asc" | "desc">) => {
       if (action.payload === "asc") {
-        state.products.sort((a, b) => a.title.localeCompare(b.title));
+        state.filteredProducts.sort((a, b) => a.title.localeCompare(b.title));
       } else {
-        state.products.sort((a, b) => b.title.localeCompare(a.title));
+        state.filteredProducts.sort((a, b) => b.title.localeCompare(a.title));
       }
     },
     searchProductByName: (state, action: PayloadAction<string>) => {
-      //Filter products based on the search input
-      state.products = state.products.filter((product) =>
-        product.title.toLowerCase().includes(action.payload.toLowerCase())
+      const searchQuery = action.payload.toLowerCase();
+      state.filteredProducts = state.products.filter((product) =>
+        product.title.toLowerCase().includes(searchQuery)
       );
+    },
+    clearSearch: (state) => {
+      state.filteredProducts = state.products;
     },
     addFavoriteProduct: (
       state: ProductState,
@@ -212,6 +216,7 @@ const productSlice = createSlice({
       return {
         ...state,
         products: action.payload.items,
+        filteredProducts: action.payload.items,
         total: action.payload.totalCount,
         loading: false,
         error: null,
@@ -343,6 +348,7 @@ export const {
   sortProductsByPrice,
   sortProductsByTitle,
   searchProductByName,
+  clearSearch,
   addFavoriteProduct,
   removeFavoriteProduct,
 } = productSlice.actions;

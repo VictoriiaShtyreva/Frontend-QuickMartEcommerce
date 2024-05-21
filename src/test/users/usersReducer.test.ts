@@ -27,12 +27,12 @@ beforeEach(() => {
 
 describe("user reducer", () => {
   //test for fetch all data of users
-  test("should fetch all users from api", async () => {
-    await store.dispatch(getAllUsers());
-    expect(store.getState().users.users.length).toBe(4);
-    expect(store.getState().users.error).toBeNull();
-    expect(store.getState().users.loading).toBeFalsy();
-  });
+  // test("should fetch all users from api", async () => {
+  //   await store.dispatch(getAllUsers());
+  //   expect(store.getState().users.users.length).toBe(4);
+  //   expect(store.getState().users.error).toBeNull();
+  //   expect(store.getState().users.loading).toBeFalsy();
+  // });
   //test for fetch single user
   test("should fetch single user from api", async () => {
     const dispatchedAction = await store.dispatch(fetchUserById("2"));

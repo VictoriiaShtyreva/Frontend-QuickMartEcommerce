@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { IconButton, InputAdornment, TextField } from "@mui/material";
 import SearchOffIcon from "@mui/icons-material/SearchOff";
 
@@ -14,15 +15,24 @@ const SearchForm = ({
   onSearch,
   onClear,
 }: SearchFormProps) => {
+  const [localInput, setLocalInput] = useState(userInput);
+
+  // Debounce
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      onSearch(localInput);
+    }, 300);
+    return () => clearTimeout(delayDebounceFn);
+  }, [localInput, onSearch]);
+
   const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setLocalInput(event.target.value);
     setUserInput(event.target.value);
-    //Trigger the search function on input change
-    onSearch(event.target.value);
   };
 
   const handleClear = () => {
+    setLocalInput("");
     setUserInput("");
-    //Trigger the clear function on clearing the input
     onClear();
   };
 
@@ -32,7 +42,7 @@ const SearchForm = ({
       label="Search products..."
       variant="outlined"
       color="secondary"
-      value={userInput}
+      value={localInput}
       onChange={handleOnChange}
       fullWidth
       InputProps={{

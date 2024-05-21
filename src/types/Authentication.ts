@@ -5,5 +5,4 @@ export type Authentication = {
 
 export type AuthenticationToken = {
   access_token: string;
-  refresh_token: string;
 };
