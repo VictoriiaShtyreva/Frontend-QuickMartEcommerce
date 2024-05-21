@@ -132,13 +132,8 @@ const UserAccount = ({ id }: { id: string }) => {
   return (
     <Container maxWidth="lg" sx={{ minHeight: "100vh" }}>
       <Grid container spacing={2}>
-        <Grid item xs={3}>
-          <Paper
-            sx={{
-              p: 2,
-              boxShadow: 0,
-            }}
-          >
+        <Grid item xs={12} md={3}>
+          <Paper sx={{ p: 2, boxShadow: 0 }}>
             <List>
               <ListItem button onClick={() => setActiveSection("personalInfo")}>
                 <ListItemText primary="Personal Information" />
@@ -150,29 +145,23 @@ const UserAccount = ({ id }: { id: string }) => {
                 <ListItemText primary="Order History" />
               </ListItem>
               <ListItem button onClick={() => setActiveSection("reviews")}>
-                <ListItemText primary="Your reviews" />
+                <ListItemText primary="Your Reviews" />
               </ListItem>
             </List>
           </Paper>
         </Grid>
-        <Grid item xs={9}>
+        <Grid item xs={12} md={9}>
           <Paper sx={{ p: 4, minHeight: "100vh", boxShadow: 0 }}>
             {activeSection === "personalInfo" && (
               <>
                 <Typography variant="h5" gutterBottom>
                   Personal Information
                 </Typography>
-                <StyledBadge
-                  overlap="circular"
-                  anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-                  variant="dot"
-                >
-                  <Avatar
-                    src={user?.avatar as string}
-                    alt={user?.name}
-                    sx={{ width: 250, height: 250, mb: 2 }}
-                  />
-                </StyledBadge>
+                <Avatar
+                  src={user?.avatar as string}
+                  alt={user?.name}
+                  sx={{ width: 250, height: 250, mb: 2 }}
+                />
                 {isAdmin && (
                   <Typography variant="body2">Role: {user?.role}</Typography>
                 )}
