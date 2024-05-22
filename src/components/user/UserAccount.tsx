@@ -11,7 +11,6 @@ import {
   List,
   ListItem,
   ListItemText,
-  Paper,
   Switch,
   TextField,
   Typography,
@@ -130,186 +129,197 @@ const UserAccount = ({ id }: { id: string }) => {
   }, [dispatch]);
 
   return (
-    <Container maxWidth="lg" sx={{ minHeight: "100vh" }}>
+    <Container maxWidth="lg" sx={{ minHeight: "100vh", mt: 2 }}>
       <Grid container spacing={2}>
         <Grid item xs={12} md={3}>
-          <Paper sx={{ p: 2, boxShadow: 0 }}>
-            <List>
-              <ListItem button onClick={() => setActiveSection("personalInfo")}>
-                <ListItemText primary="Personal Information" />
-              </ListItem>
-              <ListItem button onClick={() => setActiveSection("wishlist")}>
-                <ListItemText primary="Wishlist" />
-              </ListItem>
-              <ListItem button onClick={() => setActiveSection("orderHistory")}>
-                <ListItemText primary="Order History" />
-              </ListItem>
-              <ListItem button onClick={() => setActiveSection("reviews")}>
-                <ListItemText primary="Your Reviews" />
-              </ListItem>
-            </List>
-          </Paper>
+          <List>
+            <ListItem button onClick={() => setActiveSection("personalInfo")}>
+              <ListItemText primary="Personal Information" />
+            </ListItem>
+            <ListItem button onClick={() => setActiveSection("password")}>
+              <ListItemText primary="Password" />
+            </ListItem>
+            <ListItem button onClick={() => setActiveSection("wishlist")}>
+              <ListItemText primary="Wishlist" />
+            </ListItem>
+            <ListItem button onClick={() => setActiveSection("orderHistory")}>
+              <ListItemText primary="Order History" />
+            </ListItem>
+            <ListItem button onClick={() => setActiveSection("reviews")}>
+              <ListItemText primary="Your Reviews" />
+            </ListItem>
+          </List>
         </Grid>
         <Grid item xs={12} md={9}>
-          <Paper sx={{ p: 4, minHeight: "100vh", boxShadow: 0 }}>
-            {activeSection === "personalInfo" && (
-              <>
-                <Typography variant="h5" gutterBottom>
-                  Personal Information
-                </Typography>
-                <Avatar
-                  src={user?.avatar as string}
-                  alt={user?.name}
-                  sx={{ width: 250, height: 250, mb: 2 }}
-                />
-                {isAdmin && (
-                  <Typography variant="body2">Role: {user?.role}</Typography>
-                )}
-                <Typography variant="h6">{user?.name}</Typography>
-                <Typography variant="body1">Email: {user?.email}</Typography>
-                <FormControlLabel
-                  control={
-                    <Switch
-                      checked={isEditing}
-                      onChange={() => setIsEditing(!isEditing)}
-                      color="secondary"
-                    />
-                  }
-                  label="Edit Info"
-                />
-                {isEditing ? (
-                  <form onSubmit={handleSubmit}>
-                    <TextField
-                      label="Email"
-                      name="email"
-                      value={updatedUserData.email || ""}
-                      onChange={handleInputChange}
-                      fullWidth
-                      margin="normal"
-                    />
-                    <TextField
-                      label="Name"
-                      name="name"
-                      value={updatedUserData.name || ""}
-                      onChange={handleInputChange}
-                      fullWidth
-                      margin="normal"
-                    />
-                    <TextField
-                      label="New Password"
-                      type="password"
-                      name="newPassword"
-                      value={newPassword}
-                      onChange={handlePasswordChange}
-                      fullWidth
-                      margin="normal"
-                    />
-                    <Button
-                      variant="contained"
-                      component="label"
-                      color="secondary"
-                      fullWidth
-                      sx={{ mt: 2 }}
-                    >
-                      Upload Avatar
-                      <input
-                        type="file"
-                        hidden
-                        accept="image/*"
-                        onChange={handleAvatarChange}
-                      />
-                    </Button>
-                    {avatarFile && (
-                      <Box
-                        sx={{ mt: 2, display: "flex", alignItems: "center" }}
-                      >
-                        <Typography variant="body2" sx={{ mr: 2 }}>
-                          {avatarFile.name}
-                        </Typography>
-                        <IconButton
-                          color="error"
-                          onClick={handleAvatarDelete}
-                          size="small"
-                        >
-                          <DeleteIcon />
-                        </IconButton>
-                      </Box>
-                    )}
-                    <Button
-                      variant="contained"
-                      type="submit"
-                      fullWidth
-                      sx={{ mt: 2 }}
-                    >
-                      Save Changes
-                    </Button>
-                  </form>
-                ) : (
-                  <Typography variant="body2">
-                    Click "Edit Info" to update your details.
+          {activeSection === "personalInfo" && (
+            <>
+              <Typography variant="h5" gutterBottom>
+                Personal Information
+              </Typography>
+              <Avatar
+                src={user?.avatar as string}
+                alt={user?.name}
+                sx={{ width: 250, height: 250, mb: 2 }}
+              />
+              {isAdmin && (
+                <Typography variant="body2">Role: {user?.role}</Typography>
+              )}
+              <Typography variant="h6">{user?.name}</Typography>
+              <Typography variant="body1">Email: {user?.email}</Typography>
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={isEditing}
+                    onChange={() => setIsEditing(!isEditing)}
+                    color="secondary"
+                  />
+                }
+                label="Edit Info"
+              />
+              {isEditing ? (
+                <form onSubmit={handleSubmit}>
+                  <Typography variant="body2" sx={{ mt: 2 }}>
+                    You can upload different image formats like JPG, PNG, and
+                    SVG.
                   </Typography>
-                )}
-              </>
-            )}
-            {activeSection === "wishlist" && (
-              <>
-                <Typography variant="h5" gutterBottom>
-                  Wishlist
+                  <Button
+                    variant="contained"
+                    component="label"
+                    color="secondary"
+                    sx={{ mt: 2 }}
+                  >
+                    Upload Avatar
+                    <input
+                      type="file"
+                      hidden
+                      accept="image/*"
+                      onChange={handleAvatarChange}
+                    />
+                  </Button>
+                  {avatarFile && (
+                    <Box sx={{ mt: 2, display: "flex", alignItems: "center" }}>
+                      <Typography variant="body2" sx={{ mr: 2 }}>
+                        {avatarFile.name}
+                      </Typography>
+                      <IconButton
+                        color="error"
+                        onClick={handleAvatarDelete}
+                        size="small"
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </Box>
+                  )}
+                  <TextField
+                    label="Email"
+                    name="email"
+                    value={updatedUserData.email || ""}
+                    onChange={handleInputChange}
+                    fullWidth
+                    margin="normal"
+                    color="secondary"
+                  />
+                  <TextField
+                    label="Name"
+                    name="name"
+                    value={updatedUserData.name || ""}
+                    onChange={handleInputChange}
+                    fullWidth
+                    margin="normal"
+                    color="secondary"
+                  />
+
+                  <Button variant="contained" type="submit" sx={{ mt: 2 }}>
+                    Save Changes
+                  </Button>
+                </form>
+              ) : (
+                <Typography variant="body2">
+                  Click "Edit Info" to update your details.
                 </Typography>
-                {!isAdmin && (
-                  <Grid item xs={12} sx={{ textAlign: "center" }}>
-                    <Typography variant="h5" sx={{ mt: 4, mb: 2 }}>
-                      Favorite Products
-                    </Typography>
-                    {favoriteProducts.length > 0 ? (
-                      <Grid container spacing={2}>
-                        {favoriteProducts.map((product) => (
-                          <Grid
-                            item
-                            xs={12}
-                            sm={4}
-                            key={product.id}
-                            sx={{ mb: 5, width: "100%", height: "100%" }}
+              )}
+            </>
+          )}
+          {activeSection === "password" && (
+            <>
+              <Typography variant="h5" gutterBottom>
+                Change Password
+              </Typography>
+              <form onSubmit={handleSubmit}>
+                <TextField
+                  label="New Password"
+                  type="password"
+                  name="newPassword"
+                  value={newPassword}
+                  onChange={handlePasswordChange}
+                  fullWidth
+                  margin="normal"
+                  color="secondary"
+                />
+                <Button variant="contained" type="submit" sx={{ mt: 2 }}>
+                  Change Password
+                </Button>
+              </form>
+            </>
+          )}
+          {activeSection === "wishlist" && (
+            <>
+              <Typography variant="h5" gutterBottom>
+                Wishlist
+              </Typography>
+              {!isAdmin && (
+                <Grid item xs={12} sx={{ textAlign: "center" }}>
+                  <Typography variant="h5" sx={{ mt: 4, mb: 2 }}>
+                    Favorite Products
+                  </Typography>
+                  {favoriteProducts.length > 0 ? (
+                    <Grid container spacing={2}>
+                      {favoriteProducts.map((product) => (
+                        <Grid
+                          item
+                          xs={12}
+                          sm={4}
+                          key={product.id}
+                          sx={{ mb: 5, width: "100%", height: "100%" }}
+                        >
+                          <ProductCard product={product} />
+                          <Button
+                            variant="outlined"
+                            startIcon={<DeleteIcon />}
+                            color="error"
+                            onClick={() =>
+                              dispatch(removeFavoriteProduct(product.id))
+                            }
+                            sx={{ mt: 1 }}
                           >
-                            <ProductCard product={product} />
-                            <Button
-                              variant="outlined"
-                              startIcon={<DeleteIcon />}
-                              color="error"
-                              onClick={() =>
-                                dispatch(removeFavoriteProduct(product.id))
-                              }
-                              sx={{ mt: 1 }}
-                            >
-                              Remove
-                            </Button>
-                          </Grid>
-                        ))}
-                      </Grid>
-                    ) : (
-                      <EmptyFavoriteProduct />
-                    )}
-                  </Grid>
-                )}
-              </>
-            )}
-            {activeSection === "orderHistory" && (
-              <>
-                <Typography variant="h5" gutterBottom>
-                  Order History
-                </Typography>
-                <Typography>Soon...</Typography>
-              </>
-            )}
-            {activeSection === "reviews" && (
-              <>
-                <Typography variant="h5" gutterBottom>
-                  Reviews
-                </Typography>
-                <Typography>Soon...</Typography>
-              </>
-            )}
-          </Paper>
+                            Remove
+                          </Button>
+                        </Grid>
+                      ))}
+                    </Grid>
+                  ) : (
+                    <EmptyFavoriteProduct />
+                  )}
+                </Grid>
+              )}
+            </>
+          )}
+          {activeSection === "orderHistory" && (
+            <>
+              <Typography variant="h5" gutterBottom>
+                Order History
+              </Typography>
+              <Typography>Soon...</Typography>
+            </>
+          )}
+          {activeSection === "reviews" && (
+            <>
+              <Typography variant="h5" gutterBottom>
+                Reviews
+              </Typography>
+              <Typography>Soon...</Typography>
+            </>
+          )}
         </Grid>
       </Grid>
     </Container>
