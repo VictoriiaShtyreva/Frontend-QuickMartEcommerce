@@ -41,8 +41,7 @@ import {
 } from "../../redux/slices/usersSlice";
 import { User } from "../../types/User";
 import SearchForm from "../products/SearchForm";
-import UserSortingFilter from "./UserSortingFilter";
-import { toast } from "react-toastify";
+import AdminSortingFilter from "./AdminSortingFilter";
 
 const UserListDashboard = () => {
   const dispatch = useAppDispatch();
@@ -183,7 +182,7 @@ const UserListDashboard = () => {
           />
         </Box>
         <Grid item xs={12} md={4}>
-          <UserSortingFilter sortBy={sortBy} onChange={handleSortChange} />
+          <AdminSortingFilter sortBy={sortBy} onChange={handleSortChange} />
         </Grid>
       </Box>
       {users.length > 0 ? (

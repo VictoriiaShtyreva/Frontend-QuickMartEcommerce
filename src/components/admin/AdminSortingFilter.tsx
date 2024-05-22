@@ -5,7 +5,7 @@ interface SortingFilterProps {
   onChange: (event: SelectChangeEvent) => void;
 }
 
-const UserSortingFilter = ({ sortBy, onChange }: SortingFilterProps) => {
+const AdminSortingFilter = ({ sortBy, onChange }: SortingFilterProps) => {
   return (
     <Box sx={{ marginBottom: 2 }}>
       <Select
@@ -22,4 +22,4 @@ const UserSortingFilter = ({ sortBy, onChange }: SortingFilterProps) => {
   );
 };
 
-export default UserSortingFilter;
+export default AdminSortingFilter;
