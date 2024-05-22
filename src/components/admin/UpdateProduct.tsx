@@ -17,10 +17,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { Controller, useForm } from "react-hook-form";
 
-import {
-  fetchProductById,
-  updateProduct,
-} from "../../redux/slices/productSlice";
+import { updateProduct } from "../../redux/slices/productSlice";
 import { useAppDispatch } from "../../hooks/useAppDispach";
 import { Product, ProductDataForUpdate } from "../../types/Product";
 import { useAppSelector } from "../../hooks/useAppSelector";
@@ -216,6 +213,9 @@ const UpdateProduct = ({ product, onClose }: UpdateProductProps) => {
               />
             </Grid>
             <Grid item xs={12}>
+              <Typography sx={{ mb: 1 }}>
+                Product should have at least 3 images in format png, jpg or svg
+              </Typography>
               <Button
                 variant="contained"
                 color="primary"

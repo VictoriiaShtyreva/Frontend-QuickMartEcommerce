@@ -21,7 +21,8 @@ import { useAppDispatch } from "../../hooks/useAppDispach";
 import { FormValues, NewProduct } from "../../types/Product";
 import { createProduct } from "../../redux/slices/productSlice";
 import { useAppSelector } from "../../hooks/useAppSelector";
-import { Category } from "../../types/Category";
+import { QueryOptions } from "../../types/QueryOptions";
+import { fetchAllCategories } from "../../redux/slices/categorySlice";
 
 interface ProductCreateFormProps {
   open: boolean;
@@ -36,13 +37,21 @@ const ProductCreateForm = ({ open, onClose }: ProductCreateFormProps) => {
     reset,
     formState: { errors },
   } = useForm<FormValues>();
-
-  const categories = useAppSelector<Category[]>(
-    (state) => state.categories.categories
-  );
-  const defaultCategoryId = categories.length > 0 ? categories[0].id : "";
-
+  const categories = useAppSelector((state) => state.categories.categories);
   const [fileInputs, setFileInputs] = useState<File[]>([]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const queryOptions: QueryOptions = {
+        page: 1,
+        pageSize: 50,
+        sortBy: "byName",
+        sortOrder: "Ascending",
+      };
+      await dispatch(fetchAllCategories(queryOptions));
+    };
+    fetchCategories();
+  }, [dispatch]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -61,23 +70,18 @@ const ProductCreateForm = ({ open, onClose }: ProductCreateFormProps) => {
 
   const onSubmit: SubmitHandler<FormValues> = async (data: FormValues) => {
     try {
-      const images: { file: File }[] = [];
-      if (fileInputs.length > 0) {
-        fileInputs.forEach((file) => {
-          images.push({ file });
-        });
-      }
-      // const location = await uploadFilesService(images);
       const newProductData: NewProduct = {
         title: data.title,
         price: data.price,
         categoryId: data.categoryId,
         description: data.description,
-        images: data.images,
+        inventory: data.inventory,
+        images: fileInputs,
       };
       await dispatch(createProduct(newProductData));
       onClose();
       reset();
+      setFileInputs([]);
       toast.success("Product created successfully");
     } catch (error) {
       toast.error("Failed to create product");
@@ -204,9 +208,35 @@ const ProductCreateForm = ({ open, onClose }: ProductCreateFormProps) => {
             </Grid>
             <Grid item xs={12}>
               <Controller
+                name="inventory"
+                control={control}
+                defaultValue={0}
+                rules={{
+                  required: "Inventory is required",
+                  min: {
+                    value: 0,
+                    message: "Inventory should not be less than 0",
+                  },
+                }}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    label="Inventory"
+                    type="number"
+                    error={!!errors.inventory}
+                    helperText={errors.inventory?.message}
+                    fullWidth
+                    required
+                    color="info"
+                  />
+                )}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Controller
                 name="categoryId"
                 control={control}
-                defaultValue={defaultCategoryId}
+                defaultValue={""}
                 rules={{ required: "Category is required" }}
                 render={({ field }) => (
                   <TextField

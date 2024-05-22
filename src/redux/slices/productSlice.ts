@@ -67,12 +67,24 @@ export const createProduct = createAsyncThunk(
   async (newProduct: NewProduct, { rejectWithValue }) => {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.post(URL, newProduct, {
+      const formData = new FormData();
+
+      formData.append("title", newProduct.title);
+      formData.append("price", newProduct.price.toString());
+      formData.append("categoryId", newProduct.categoryId);
+      formData.append("description", newProduct.description);
+      formData.append("inventory", newProduct.inventory.toString());
+      newProduct.images.forEach((image) => {
+        formData.append("Images", image);
+      });
+
+      const response = await axios.post(URL, formData, {
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
         },
       });
+
       return response.data;
     } catch (error: any) {
       toast.error(error.response.data.message);

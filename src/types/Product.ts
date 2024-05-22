@@ -46,7 +46,8 @@ export type NewProduct = {
   price: number;
   description: string;
   categoryId: string;
-  images: Image[];
+  inventory: number;
+  images: File[];
 };
 
 //Define type for form values of product create form component
@@ -54,9 +55,10 @@ export type FormValues = {
   title: string;
   price: number;
   description: string;
+  inventory: number;
   categoryId: string;
   categoryName: string;
-  images: Image[];
+  images: File[];
 };
 
 //Define type for formData in UploadProduct.tsx
