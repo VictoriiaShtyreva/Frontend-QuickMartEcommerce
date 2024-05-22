@@ -118,8 +118,8 @@ const CategoriesListDashboard = () => {
           sx={{ mr: 1 }}
           variant="contained"
           color="primary"
-          onClick={() => {
-            dispatch(deleteCategory(id));
+          onClick={async () => {
+            await dispatch(deleteCategory(id));
             toast.dismiss();
             dispatch(fetchAllCategories(queryOptions));
           }}
@@ -159,9 +159,9 @@ const CategoriesListDashboard = () => {
     setOpenDialog(false);
   };
 
-  const handleCreateOrUpdateCategory = () => {
+  const handleCreateOrUpdateCategory = async () => {
     if (selectedCategory) {
-      dispatch(
+      await dispatch(
         updateCategory({
           id: selectedCategory.id,
           updateData: {
@@ -171,7 +171,7 @@ const CategoriesListDashboard = () => {
         })
       );
     } else {
-      dispatch(
+      await dispatch(
         createCategory({
           name: newCategoryName,
           image: newCategoryImage || undefined,
@@ -299,7 +299,7 @@ const CategoriesListDashboard = () => {
           <Button
             variant="contained"
             component="label"
-            color="secondary"
+            color="success"
             fullWidth
             sx={{ mb: 2 }}
           >
