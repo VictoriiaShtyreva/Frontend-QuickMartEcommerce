@@ -10,6 +10,7 @@ import {
   UpdateProduct,
 } from "../../types/Product";
 import { QueryOptions } from "../../types/QueryOptions";
+import axios from "axios";
 
 const initialState: ProductState = {
   products: [],
@@ -39,18 +40,11 @@ export const fetchAllProducts = createAsyncThunk(
   async (options: QueryOptions, { rejectWithValue }) => {
     try {
       const queryString = createQueryString(options);
-      const response = await fetch(`${URL}?${queryString}`);
-      if (!response.ok) {
-        const errorResponse = await response.json();
-        toast.error(errorResponse.message);
-        return rejectWithValue(errorResponse);
-      }
-      //If there's no HTTP error, parse and return the response body.
-      const data: PaginatedProducts = await response.json();
-      return data;
-    } catch (e) {
-      const error = e as Error;
-      return rejectWithValue(error.message);
+      const response = await axios.get(`${URL}?${queryString}`);
+      return response.data;
+    } catch (error: any) {
+      toast.error(error.response.data.message);
+      return rejectWithValue(error.response.data);
     }
   }
 );
@@ -60,18 +54,11 @@ export const fetchProductById = createAsyncThunk(
   "fetchProductById",
   async (id: string, { rejectWithValue }) => {
     try {
-      const response = await fetch(`${URL}/${id}`);
-      if (!response.ok) {
-        const errorResponse = await response.json();
-        toast.error(errorResponse.message);
-        return rejectWithValue(errorResponse);
-      }
-      //If there's no HTTP error, parse and return the response body.
-      const data: Product = await response.json();
-      return { data, id };
-    } catch (e) {
-      const error = e as Error;
-      return rejectWithValue(error.message);
+      const response = await axios.get(`${URL}/${id}`);
+      return response.data;
+    } catch (error: any) {
+      toast.error(error.response.data.message);
+      return rejectWithValue(error.response.data);
     }
   }
 );
@@ -81,24 +68,17 @@ export const createProduct = createAsyncThunk(
   "createProduct",
   async (newProduct: NewProduct, { rejectWithValue }) => {
     try {
-      const response = await fetch(URL, {
-        method: "POST",
+      const token = localStorage.getItem("token");
+      const response = await axios.post(URL, newProduct, {
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(newProduct),
       });
-      if (!response.ok) {
-        const errorResponse = await response.json();
-        toast.error(errorResponse.message);
-        return rejectWithValue(errorResponse);
-      }
-      //If there's no HTTP error, parse and return the response body.
-      const data: Product = await response.json();
-      return data;
-    } catch (e) {
-      const error = e as Error;
-      return rejectWithValue(error.message);
+      return response.data;
+    } catch (error: any) {
+      toast.error(error.response.data.message);
+      return rejectWithValue(error.response.data);
     }
   }
 );
@@ -108,30 +88,17 @@ export const updateProduct = createAsyncThunk(
   "updateProduct",
   async (newProps: ProductDataForUpdate, { rejectWithValue }) => {
     try {
-      let dataForUpdate: UpdateProduct = { ...newProps.data };
-      if (newProps.images) {
-        dataForUpdate = {
-          ...newProps.data,
-        };
-      }
-      const response = await fetch(`${URL}/${newProps.id}`, {
-        method: "PUT",
+      const token = localStorage.getItem("token");
+      const response = await axios.put(`${URL}/${newProps.id}`, newProps.data, {
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(dataForUpdate),
       });
-      if (!response.ok) {
-        const errorResponse = await response.json();
-        toast.error(errorResponse.message);
-        return rejectWithValue(errorResponse);
-      }
-      //If there's no HTTP error, parse and return the response body.
-      const data: Product = await response.json();
-      return data;
-    } catch (e) {
-      const error = e as Error;
-      return rejectWithValue(error.message);
+      return response.data;
+    } catch (error: any) {
+      toast.error(error.response.data.message);
+      return rejectWithValue(error.response.data);
     }
   }
 );
@@ -141,19 +108,16 @@ export const deleteProduct = createAsyncThunk(
   "deleteProduct",
   async (id: string, { rejectWithValue }) => {
     try {
-      const response = await fetch(`${URL}/${id}`, {
-        method: "DELETE",
+      const token = localStorage.getItem("token");
+      const response = await axios.delete(`${URL}/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
-      if (!response.ok) {
-        const errorResponse = await response.json();
-        toast.error(errorResponse.message);
-        return rejectWithValue(errorResponse);
-      }
-      const data: boolean = await response.json();
-      return data;
-    } catch (e) {
-      const error = e as Error;
-      return rejectWithValue(error.message);
+      return response.data;
+    } catch (error: any) {
+      toast.error(error.response.data.message);
+      return rejectWithValue(error.response.data);
     }
   }
 );

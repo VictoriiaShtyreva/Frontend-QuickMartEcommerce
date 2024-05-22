@@ -6,6 +6,13 @@ import {
   Button,
   Typography,
   SelectChangeEvent,
+  TableContainer,
+  Paper,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 
@@ -19,7 +26,6 @@ import {
   sortProductsByTitle,
 } from "../../redux/slices/productSlice";
 import ProductAdminItem from "./ProductAdminItem";
-import { Product } from "../../types/Product";
 import SearchForm from "../products/SearchForm";
 import ProductCreateForm from "./ProductCreateForm";
 import EmptyProducts from "../products/EmptyProducts";
@@ -28,7 +34,7 @@ import SortingFilter from "../products/SortingFilter";
 
 const ProductListDashboard = () => {
   const dispatch = useAppDispatch();
-  const products = useAppSelector((state) => state.products.products);
+  const products = useAppSelector((state) => state.products.filteredProducts);
   const totalProducts = useAppSelector((state) => state.products.total);
   const [sortBy, setSortBy] = useState<string>("priceAsc");
   //Search by name state
@@ -125,6 +131,7 @@ const ProductListDashboard = () => {
         }}
       >
         <Button
+          sx={{ mb: 2 }}
           variant="contained"
           color="secondary"
           onClick={handleCreateDialogOpen}
@@ -140,29 +147,30 @@ const ProductListDashboard = () => {
             onClear={handleClear}
           />
         </Box>
-      </Box>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          flexDirection: { xs: "column", sm: "row" },
-          p: 2,
-          mt: 2,
-        }}
-      >
         <Grid item xs={12} md={4}>
           <SortingFilter sortBy={sortBy} onChange={handleSortChange} />
         </Grid>
       </Box>
       {products.length > 0 ? (
         <>
-          <Grid container justifyContent={"center"} spacing={2}>
-            {products.map((product: Product) => (
-              <Grid item key={product.id} xs={11} sm={6} md={4} lg={3}>
-                <ProductAdminItem product={product} />
-              </Grid>
-            ))}
-          </Grid>
+          <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 650 }}>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Image</TableCell>
+                  <TableCell>Title</TableCell>
+                  <TableCell>Price</TableCell>
+                  <TableCell>Inventory</TableCell>
+                  <TableCell>Actions</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {products.map((product) => (
+                  <ProductAdminItem key={product.id} product={product} />
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
           <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
             <Pagination
               variant="outlined"

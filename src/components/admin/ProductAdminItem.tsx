@@ -1,11 +1,13 @@
 import { useState } from "react";
 import {
+  Avatar,
   Box,
   Button,
-  Card,
-  CardActions,
-  CardMedia,
+  TableCell,
+  TableRow,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import { toast } from "react-toastify";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -24,6 +26,8 @@ interface ProductCardProps {
 
 const ProductAdminItem = ({ product }: ProductCardProps) => {
   const dispatch = useAppDispatch();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   //State for uploadProduct
   const [openDialog, setOpenDialog] = useState(false);
 
@@ -78,59 +82,51 @@ const ProductAdminItem = ({ product }: ProductCardProps) => {
 
   return (
     <>
-      <Card
+      <TableRow
         key={product.id}
-        sx={{
-          width: "100%",
-          height: "100%",
-          position: "relative",
-        }}
+        sx={{ display: { xs: "block", sm: "table-row" } }}
       >
-        <CardMedia sx={{ height: 200, width: "100%" }} image={firstImageUrl} />
-        <CardActions
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Button
-            sx={{
-              position: "absolute",
-              top: "55%",
-              left: "23%",
-              transform: "translate(-50%, -50%)",
-              zIndex: 1,
-            }}
-            variant="contained"
-            color="info"
-            onClick={handleOpenDialog}
-            startIcon={<EditIcon />}
-          >
-            Update
-          </Button>
-          <Button
-            sx={{
-              position: "absolute",
-              top: "10%",
-              left: "75%",
-              transform: "translate(-50%, -50%)",
-              zIndex: 1,
-            }}
-            variant="contained"
-            color="error"
-            onClick={() => handleDeleteProduct(product.id)}
-            endIcon={<DeleteIcon />}
-          >
-            Delete
-          </Button>
-        </CardActions>
-        <Box sx={{ p: 1 }}>
+        <TableCell>
+          <Avatar variant="rounded" src={firstImageUrl} />
+        </TableCell>
+        <TableCell>
           <Typography variant="body1">{product.title}</Typography>
-          <Typography variant="body1">Price: {product.price}$</Typography>
-        </Box>
-      </Card>
+        </TableCell>
+        <TableCell>
+          <Typography variant="body1">{product.price}$</Typography>
+        </TableCell>
+        <TableCell>
+          <Typography variant="body1">{product.inventory}</Typography>
+        </TableCell>
+        <TableCell>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: isMobile ? "space-between" : "space-around",
+              flexDirection: "column",
+              gap: 1,
+            }}
+          >
+            <Button
+              variant="contained"
+              color="info"
+              onClick={handleOpenDialog}
+              startIcon={<EditIcon />}
+              sx={{ mb: isMobile ? 1 : 0 }}
+            >
+              Update
+            </Button>
+            <Button
+              variant="contained"
+              color="error"
+              onClick={() => handleDeleteProduct(product.id)}
+              startIcon={<DeleteIcon />}
+            >
+              Delete
+            </Button>
+          </Box>
+        </TableCell>
+      </TableRow>
       {openDialog && (
         <UpdateProduct product={product} onClose={handleCloseDialog} />
       )}
