@@ -10,6 +10,8 @@ const initialState: UserState = {
   users: [],
   loading: false,
   error: null,
+  filteredUsers: [],
+  total: 0,
 };
 
 //Fetch data
@@ -177,6 +179,48 @@ export const updateUserPassword = createAsyncThunk<
   }
 });
 
+// Define thunk for updating user role
+export const updateUserRole = createAsyncThunk<
+  User,
+  { id: string; role: string }
+>("user/updateRole", async ({ id, role }, thunkAPI) => {
+  try {
+    const response = await axios.patch(
+      `${URL}/${id}/update-role`,
+      { role },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response.data;
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue(error.response.data);
+  }
+});
+
+// Define thunk for resetting user password
+export const resetUserPassword = createAsyncThunk<
+  void,
+  { id: string; newPassword: string }
+>("user/resetPassword", async ({ id, newPassword }, thunkAPI) => {
+  try {
+    const response = await axios.patch(
+      `${URL}/${id}/reset-password`,
+      JSON.stringify(newPassword),
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response.data;
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue(error.response.data);
+  }
+});
+
 //Define slice for users
 const usersSlice = createSlice({
   name: "users",
@@ -189,13 +233,34 @@ const usersSlice = createSlice({
     saveUserInformation: (state, action: PayloadAction<User>) => {
       state.user = action.payload;
     },
+    sortUsersByName: (state, action: PayloadAction<"asc" | "desc">) => {
+      if (action.payload === "asc") {
+        state.filteredUsers.sort((a, b) => a.name.localeCompare(b.name));
+      } else {
+        state.filteredUsers.sort((a, b) => b.name.localeCompare(a.name));
+      }
+    },
+    searchUsersByName: (state, action: PayloadAction<string>) => {
+      const searchQuery = action.payload.toLowerCase();
+      state.filteredUsers = state.users.filter((user) =>
+        user.name.toLowerCase().includes(searchQuery)
+      );
+    },
+    clearUsersSearch: (state) => {
+      state.filteredUsers = state.users;
+    },
   },
   extraReducers: (builder) => {
     //Fetch all users
     builder.addCase(getAllUsers.fulfilled, (state, action) => {
-      state.loading = false;
-      state.users = action.payload;
-      state.error = null;
+      return {
+        ...state,
+        users: action.payload.items,
+        filteredUsers: action.payload.items,
+        total: action.payload.totalCount,
+        loading: false,
+        error: null,
+      };
     });
     builder.addCase(getAllUsers.pending, (state) => {
       state.loading = true;
@@ -304,9 +369,45 @@ const usersSlice = createSlice({
       state.loading = false;
       state.error = action.payload as string;
     });
+
+    // Update user role
+    builder.addCase(updateUserRole.fulfilled, (state, action) => {
+      state.loading = false;
+      const updatedUser = action.payload;
+      state.users = state.users.map((user) =>
+        user.id === updatedUser.id ? updatedUser : user
+      );
+      state.error = null;
+    });
+    builder.addCase(updateUserRole.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(updateUserRole.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload as string;
+    });
+
+    // Reset user password
+    builder.addCase(resetUserPassword.fulfilled, (state) => {
+      state.loading = false;
+      state.error = null;
+    });
+    builder.addCase(resetUserPassword.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(resetUserPassword.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload as string;
+    });
   },
 });
 
 const userReducer = usersSlice.reducer;
-export const { logout, saveUserInformation } = usersSlice.actions;
+export const {
+  logout,
+  saveUserInformation,
+  sortUsersByName,
+  searchUsersByName,
+  clearUsersSearch,
+} = usersSlice.actions;
 export default userReducer;

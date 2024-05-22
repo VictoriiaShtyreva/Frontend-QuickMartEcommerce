@@ -9,8 +9,15 @@ export type User = {
 export interface UserState {
   user: User | null;
   users: User[];
+  total: number;
   loading: boolean;
   error: string | null;
+  filteredUsers: User[];
+}
+
+export interface PaginatedUsers {
+  items: User[];
+  totalCount: number;
 }
 
 export type UserRegister = {
