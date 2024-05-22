@@ -136,9 +136,6 @@ const UserAccount = ({ id }: { id: string }) => {
                 alt={user?.name}
                 sx={{ width: 250, height: 250, mb: 2 }}
               />
-              {isAdmin && (
-                <Typography variant="body2">Role: {user?.role}</Typography>
-              )}
               <Typography variant="h6">{user?.name}</Typography>
               <Typography variant="body1">Email: {user?.email}</Typography>
               <FormControlLabel

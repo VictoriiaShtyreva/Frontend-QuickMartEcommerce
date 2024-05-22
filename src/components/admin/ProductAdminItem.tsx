@@ -15,16 +15,21 @@ import EditIcon from "@mui/icons-material/Edit";
 
 import { Product } from "../../types/Product";
 import { useAppDispatch } from "../../hooks/useAppDispach";
-import { deleteProduct } from "../../redux/slices/productSlice";
-import UpdateProduct from "./UploadProduct";
+import {
+  deleteProduct,
+  fetchAllProducts,
+} from "../../redux/slices/productSlice";
+import UpdateProduct from "./UpdateProduct";
 import { checkImageUrl } from "../../utils/checkImageUrl";
 import { svgUrl } from "../../utils/svgUrl";
+import { QueryOptions } from "../../types/QueryOptions";
 
 interface ProductCardProps {
   product: Product;
+  queryOptions: QueryOptions;
 }
 
-const ProductAdminItem = ({ product }: ProductCardProps) => {
+const ProductAdminItem = ({ product, queryOptions }: ProductCardProps) => {
   const dispatch = useAppDispatch();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -51,6 +56,7 @@ const ProductAdminItem = ({ product }: ProductCardProps) => {
           onClick={() => {
             dispatch(deleteProduct(id));
             toast.dismiss();
+            dispatch(fetchAllProducts(queryOptions));
           }}
         >
           Yes

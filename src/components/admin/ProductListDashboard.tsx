@@ -166,7 +166,11 @@ const ProductListDashboard = () => {
               </TableHead>
               <TableBody>
                 {products.map((product) => (
-                  <ProductAdminItem key={product.id} product={product} />
+                  <ProductAdminItem
+                    key={product.id}
+                    product={product}
+                    queryOptions={queryOptions}
+                  />
                 ))}
               </TableBody>
             </Table>
