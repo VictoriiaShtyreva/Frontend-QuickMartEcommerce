@@ -7,6 +7,12 @@ export type Image = {
   url: string;
 };
 
+export type ImageState = {
+  images: Image[];
+  loading: boolean;
+  error: string | null;
+};
+
 //Define type for product data
 export type Product = {
   id: string;
@@ -15,6 +21,7 @@ export type Product = {
   description: string;
   images: Image[];
   category: Category;
+  categoryId: string;
   inventory: number;
 };
 
@@ -64,7 +71,7 @@ export type UpdateProduct = {
   price?: number;
   description?: string;
   images?: Image[];
-  categoryId?: number;
+  categoryId?: string;
 };
 
 //Define type for update data of product
@@ -72,10 +79,10 @@ export type ProductDataForUpdate = {
   id: string;
   data: {
     title?: string;
-    price?: number;
     description?: string;
-    categoryId?: number;
-    [key: string]: unknown;
+    price?: number;
+    categoryId?: string;
+    inventory?: number;
   };
-  images?: { file: File }[];
+  images?: File[];
 };

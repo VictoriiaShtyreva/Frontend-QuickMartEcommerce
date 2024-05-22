@@ -1,12 +1,9 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 
-import {
-  Category,
-  CategoryState,
-  PaginatedCategory,
-} from "../../types/Category";
+import { CategoryState, PaginatedCategory } from "../../types/Category";
 import { QueryOptions } from "../../types/QueryOptions";
+import axios from "axios";
 
 const API_BASE_URL = process.env.REACT_APP_API_URL;
 const URL = `${API_BASE_URL}/categories`;
@@ -30,21 +27,17 @@ const createQueryString = (options: QueryOptions) => {
 
 //Define thunk for fetching all categories
 export const fetchAllCategories = createAsyncThunk(
-  "fetchAllCategories",
+  "categories/fetchAll",
   async (options: QueryOptions, { rejectWithValue }) => {
     try {
       const queryString = createQueryString(options);
-      const response = await fetch(`${URL}?${queryString}`);
-      if (!response.ok) {
-        const errorResponse = await response.json();
-        toast.error(errorResponse.message);
-        return rejectWithValue(errorResponse);
-      }
-      const data: PaginatedCategory = await response.json();
-      return data;
-    } catch (e) {
-      const error = e as Error;
-      return rejectWithValue(error.message);
+      const response = await axios.get(`${URL}?${queryString}`);
+      return response.data;
+    } catch (error: any) {
+      toast.error(
+        error.response?.data?.message || "Failed to fetch categories"
+      );
+      return rejectWithValue(error.response?.data);
     }
   }
 );
@@ -54,30 +47,20 @@ const categorySlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder
-      .addCase(fetchAllCategories.fulfilled, (state, action) => {
-        return {
-          ...state,
-          categories: action.payload.items,
-          total: action.payload.totalCount,
-          loading: false,
-          error: null,
-        };
-      })
-      .addCase(fetchAllCategories.pending, (state) => {
-        return {
-          ...state,
-          loading: true,
-          error: null,
-        };
-      })
-      .addCase(fetchAllCategories.rejected, (state, action) => {
-        return {
-          ...state,
-          loading: false,
-          error: action.error.message ?? "error",
-        };
-      });
+    builder.addCase(fetchAllCategories.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    });
+    builder.addCase(fetchAllCategories.fulfilled, (state, action) => {
+      state.loading = false;
+      state.categories = action.payload.items;
+      state.total = action.payload.totalCount;
+      state.error = null;
+    });
+    builder.addCase(fetchAllCategories.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload as string;
+    });
   },
 });
 

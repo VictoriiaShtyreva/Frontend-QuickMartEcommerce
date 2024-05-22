@@ -3,11 +3,9 @@ import { toast } from "react-toastify";
 
 import {
   NewProduct,
-  PaginatedProducts,
   Product,
   ProductDataForUpdate,
   ProductState,
-  UpdateProduct,
 } from "../../types/Product";
 import { QueryOptions } from "../../types/QueryOptions";
 import axios from "axios";
@@ -43,7 +41,7 @@ export const fetchAllProducts = createAsyncThunk(
       const response = await axios.get(`${URL}?${queryString}`);
       return response.data;
     } catch (error: any) {
-      toast.error(error.response.data.message);
+      toast.error(error.response.data.message || "Failed to fetch products");
       return rejectWithValue(error.response.data);
     }
   }
@@ -89,9 +87,22 @@ export const updateProduct = createAsyncThunk(
   async (newProps: ProductDataForUpdate, { rejectWithValue }) => {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.put(`${URL}/${newProps.id}`, newProps.data, {
+      const formData = new FormData();
+      if (newProps.data.title) formData.append("Title", newProps.data.title);
+      if (newProps.data.price)
+        formData.append("Price", newProps.data.price.toString());
+      if (newProps.data.categoryId)
+        formData.append("CategoryId", newProps.data.categoryId.toString());
+      if (newProps.data.inventory)
+        formData.append("Inventory", newProps.data.inventory.toString());
+      if (newProps.images) {
+        newProps.images.forEach((image) => {
+          formData.append("Images", image);
+        });
+      }
+      const response = await axios.patch(`${URL}/${newProps.id}`, formData, {
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
         },
       });
