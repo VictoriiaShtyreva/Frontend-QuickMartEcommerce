@@ -6,6 +6,10 @@ export interface Review {
   content: string;
   createdAt: string;
   updatedAt: string;
+  user?: {
+    name: string;
+    avatar: string;
+  };
 }
 
 export interface ReviewState {

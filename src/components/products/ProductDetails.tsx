@@ -35,9 +35,6 @@ import { createDraftSafeSelector } from "@reduxjs/toolkit";
 import { Product } from "../../types/Product";
 import { RootState } from "../../types/type";
 import { svgUrl } from "../../utils/svgUrl";
-import Review from "../cart/checkout/Review";
-import { fetchUserById } from "../../redux/slices/usersSlice";
-import { User } from "../../types/User";
 
 const ProductDetails = ({ id }: { id: string }) => {
   const dispatch = useAppDispatch();
@@ -198,7 +195,6 @@ const ProductDetails = ({ id }: { id: string }) => {
         </Box>
       </Grid>
       {/* Display reviews */}
-      {/* Display reviews */}
       {product?.reviews && product.reviews.length > 0 && (
         <Grid item xs={12}>
           <Typography variant="h5" component="h2" gutterBottom sx={{ p: 2 }}>
@@ -210,15 +206,25 @@ const ProductDetails = ({ id }: { id: string }) => {
                 <CardContent>
                   <ListItem alignItems="flex-start">
                     <ListItemAvatar>
-                      <Avatar />
+                      <Avatar
+                        src={review.user?.avatar || ""}
+                        alt={review.user?.name || "User"}
+                      />
                     </ListItemAvatar>
                     <ListItemText
                       primary={
                         <Box sx={{ display: "flex", alignItems: "center" }}>
+                          <Typography
+                            variant="body2"
+                            sx={{ fontWeight: "bold", mr: 1 }}
+                          >
+                            {review.user?.name || "User"}
+                          </Typography>
                           <Rating
                             value={review.rating}
                             readOnly
                             precision={0.5}
+                            sx={{ ml: 1 }}
                           />
                           <Typography
                             variant="body2"

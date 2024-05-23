@@ -2,12 +2,7 @@ import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { QueryOptions } from "../../types/QueryOptions";
-import {
-  Review,
-  ReviewState,
-  ReviewCreate,
-  ReviewUpdate,
-} from "../../types/Review";
+import { Review, ReviewState, ReviewCreate } from "../../types/Review";
 
 const API_BASE_URL = process.env.REACT_APP_API_URL;
 const URL = `${API_BASE_URL}/reviews`;

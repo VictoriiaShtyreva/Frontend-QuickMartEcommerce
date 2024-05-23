@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 import {
   Avatar,
-  Badge,
   Box,
   Button,
   Container,
