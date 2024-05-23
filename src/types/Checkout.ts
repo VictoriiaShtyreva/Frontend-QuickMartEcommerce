@@ -16,11 +16,11 @@ export type PaymentDetails = {
   cvv: string;
 };
 
-export type Review = ShoppingCartItem[];
+export type ReviewCheckout = ShoppingCartItem[];
 
 export type CheckoutState = {
   step: number;
   shippingAddress: ShippingAddress;
   paymentDetails: PaymentDetails;
-  review: Review;
+  review: ReviewCheckout;
 };

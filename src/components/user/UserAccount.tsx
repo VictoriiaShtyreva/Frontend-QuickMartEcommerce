@@ -28,6 +28,9 @@ import { useAppSelector } from "../../hooks/useAppSelector";
 import ProductCard from "../products/ProductCard";
 import { removeFavoriteProduct } from "../../redux/slices/productSlice";
 import EmptyFavoriteProduct from "../products/EmptyFavoritesProducts";
+import OrderHistory from "./OrderHistory";
+import { Reviews } from "@mui/icons-material";
+import ReviewHistory from "./ReviewHistory";
 
 const UserAccount = ({ id }: { id: string }) => {
   const dispatch = useAppDispatch();
@@ -276,21 +279,11 @@ const UserAccount = ({ id }: { id: string }) => {
               )}
             </>
           )}
-          {activeSection === "orderHistory" && (
-            <>
-              <Typography variant="h5" gutterBottom>
-                Order History
-              </Typography>
-              <Typography>Soon...</Typography>
-            </>
+          {activeSection === "orderHistory" && user && (
+            <OrderHistory orders={user.orders || []} />
           )}
-          {activeSection === "reviews" && (
-            <>
-              <Typography variant="h5" gutterBottom>
-                Reviews
-              </Typography>
-              <Typography>Soon...</Typography>
-            </>
+          {activeSection === "reviews" && user && (
+            <ReviewHistory reviews={user.reviews || []} />
           )}
         </Grid>
       </Grid>

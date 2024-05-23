@@ -1,9 +1,14 @@
+import { Order } from "./Order";
+import { Review } from "./Review";
+
 export type User = {
   id: string;
   email: string;
   name: string;
   avatar: string | File;
   role: "Admin" | "Customer";
+  orders: Order[];
+  reviews: Review[];
 };
 
 export interface UserState {

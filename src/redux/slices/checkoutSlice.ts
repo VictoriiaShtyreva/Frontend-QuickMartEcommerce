@@ -3,7 +3,7 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import {
   CheckoutState,
   PaymentDetails,
-  Review,
+  ReviewCheckout,
   ShippingAddress,
 } from "../../types/Checkout";
 
@@ -39,7 +39,7 @@ export const checkoutSlice = createSlice({
     updatePaymentDetails: (state, action: PayloadAction<PaymentDetails>) => {
       state.paymentDetails = action.payload;
     },
-    updateReview: (state, action: PayloadAction<Review>) => {
+    updateReview: (state, action: PayloadAction<ReviewCheckout>) => {
       state.review = action.payload;
     },
   },
