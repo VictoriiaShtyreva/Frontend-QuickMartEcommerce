@@ -45,15 +45,18 @@ export const getAllUsers = createAsyncThunk(
   }
 );
 
-//Define thunk for fetching single user
-export const fetchUserById = createAsyncThunk<User, string>(
-  "user/fetchById",
-  async (id, thunkAPI) => {
+export const fetchUserById = createAsyncThunk(
+  "users/fetchById",
+  async (userId: string, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`${URL}/${id}`);
+      const response = await axios.get(`${URL}/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
       return response.data;
     } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return rejectWithValue(error.response.data);
     }
   }
 );
@@ -187,7 +190,7 @@ export const updateUserRole = createAsyncThunk<
   try {
     const response = await axios.patch(
       `${URL}/${id}/update-role`,
-      { role },
+      { newRole: role },
       {
         headers: {
           "Content-Type": "application/json",

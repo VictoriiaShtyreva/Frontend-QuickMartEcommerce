@@ -137,17 +137,19 @@ const UserListDashboard = () => {
     setOpenDialog(false);
   };
 
-  const handleUpdateRole = () => {
+  const handleUpdateRole = async () => {
     if (selectedUser) {
-      dispatch(updateUserRole({ id: selectedUser.id, role: newRole }));
+      await dispatch(updateUserRole({ id: selectedUser.id, role: newRole }));
       handleCloseDialog();
+      dispatch(getAllUsers(queryOptions));
     }
   };
 
-  const handleResetPassword = () => {
+  const handleResetPassword = async () => {
     if (selectedUser) {
-      dispatch(resetUserPassword({ id: selectedUser.id, newPassword }));
+      await dispatch(resetUserPassword({ id: selectedUser.id, newPassword }));
       handleCloseDialog();
+      dispatch(getAllUsers(queryOptions));
     }
   };
 

@@ -109,6 +109,27 @@ export const deleteOrder = createAsyncThunk(
   }
 );
 
+// Define thunk for canceling an order
+export const cancelOrder = createAsyncThunk(
+  "orders/cancel",
+  async (orderId: string, { rejectWithValue }) => {
+    try {
+      const response = await axios.patch(
+        `${URL}/${orderId}/cancel`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data);
+    }
+  }
+);
+
 const orderSlice = createSlice({
   name: "orders",
   initialState,
@@ -195,6 +216,17 @@ const orderSlice = createSlice({
       state.loading = false;
       state.error = action.payload as string;
     });
+
+    // Cancel order
+    builder.addCase(
+      cancelOrder.fulfilled,
+      (state, action: PayloadAction<Order>) => {
+        state.orders = state.orders.map((order) =>
+          order.id === action.payload.id ? action.payload : order
+        );
+        state.filteredOrders = state.orders;
+      }
+    );
   },
 });
 
