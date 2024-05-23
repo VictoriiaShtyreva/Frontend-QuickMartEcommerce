@@ -1,3 +1,5 @@
+import { Product } from "./Product";
+
 //Define type for category of product data
 export type Category = {
   id: string;
@@ -12,6 +14,7 @@ export type CategoryState = {
   total: number;
   loading: boolean;
   error: string | null;
+  productsByCategory: Product[];
 };
 export type NewCategory = {
   name: string;

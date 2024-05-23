@@ -184,6 +184,15 @@ const productSlice = createSlice({
         state.filteredProducts.sort((a, b) => b.title.localeCompare(a.title));
       }
     },
+    filterProductsByCategory: (state, action: PayloadAction<string>) => {
+      if (action.payload === "All") {
+        state.filteredProducts = state.products;
+      } else {
+        state.filteredProducts = state.products.filter(
+          (product) => product.category.name === action.payload
+        );
+      }
+    },
     searchProductByName: (state, action: PayloadAction<string>) => {
       const searchQuery = action.payload.toLowerCase();
       state.filteredProducts = state.products.filter((product) =>
@@ -368,6 +377,7 @@ const productReducer = productSlice.reducer;
 export const {
   sortProductsByPrice,
   sortProductsByTitle,
+  filterProductsByCategory,
   searchProductByName,
   clearSearch,
   addFavoriteProduct,

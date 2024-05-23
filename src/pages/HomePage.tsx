@@ -62,11 +62,11 @@ const Home = () => {
               "typing 2.5s steps(30, end), blink-caret 0.75s step-end infinite",
             "@keyframes typing": {
               from: { width: 0 },
-              to: { width: "60%" },
+              to: { width: "40%" },
             },
             "@keyframes blink-caret": {
               "from, to": { borderColor: "transparent" },
-              "50%": { borderColor: "black" },
+              "30%": { borderColor: "black" },
             },
             borderRight: "0.15em solid black",
           }}

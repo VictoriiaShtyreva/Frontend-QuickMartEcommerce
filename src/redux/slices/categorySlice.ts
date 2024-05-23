@@ -18,6 +18,7 @@ const initialState: CategoryState = {
   loading: false,
   error: null,
   filteredCategories: [],
+  productsByCategory: [],
 };
 
 //Queries
@@ -119,6 +120,22 @@ export const deleteCategory = createAsyncThunk(
   }
 );
 
+// Define thunk for fetching products by category
+export const fetchProductsByCategory = createAsyncThunk(
+  "categories/fetchProductsByCategory",
+  async (categoryId: string, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`${URL}/${categoryId}/products`);
+      return response.data;
+    } catch (error: any) {
+      toast.error(
+        error.response?.data?.message || "Failed to fetch products by category"
+      );
+      return rejectWithValue(error.response?.data);
+    }
+  }
+);
+
 const categorySlice = createSlice({
   name: "categories",
   initialState,
@@ -189,6 +206,20 @@ const categorySlice = createSlice({
         (category) => category.id !== action.payload
       );
       state.error = null;
+    });
+    // Handle fetchProductsByCategory
+    builder.addCase(fetchProductsByCategory.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    });
+    builder.addCase(fetchProductsByCategory.fulfilled, (state, action) => {
+      state.loading = false;
+      state.productsByCategory = action.payload;
+      state.error = null;
+    });
+    builder.addCase(fetchProductsByCategory.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload as string;
     });
   },
 });
