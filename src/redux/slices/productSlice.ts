@@ -17,6 +17,7 @@ const initialState: ProductState = {
   error: null,
   favoriteProducts: [],
   filteredProducts: [],
+  productDetails: {},
 };
 
 const API_BASE_URL = process.env.REACT_APP_API_URL;
@@ -226,15 +227,15 @@ const productSlice = createSlice({
       };
     });
     //Fetch Product by ID
-    builder.addCase(fetchProductById.fulfilled, (state, action) => {
-      const { id } = action.payload;
-      return {
-        ...state,
-        products: state.products.filter((product) => product.id !== id),
-        loading: false,
-        error: null,
-      };
-    });
+    builder.addCase(
+      fetchProductById.fulfilled,
+      (state, action: PayloadAction<Product>) => {
+        const product = action.payload;
+        state.productDetails[product.id] = product;
+        state.loading = false;
+        state.error = null;
+      }
+    );
     builder.addCase(fetchProductById.pending, (state) => {
       return {
         ...state,

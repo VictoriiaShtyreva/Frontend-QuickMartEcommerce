@@ -63,7 +63,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
                 minHeight: 260,
               }}
             >
-              <Chip label={product.title} variant="outlined" />
+              <Chip label={product.title} color="primary" />
               <Typography
                 variant="h6"
                 sx={{

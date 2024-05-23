@@ -38,6 +38,7 @@ export type ProductState = {
   error: string | null;
   favoriteProducts: Product[];
   filteredProducts: Product[];
+  productDetails: { [key: string]: Product };
 };
 
 //Define type for new product

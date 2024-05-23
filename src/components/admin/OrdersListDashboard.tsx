@@ -145,15 +145,16 @@ const OrdersListDashboard = () => {
     setOpenDialog(false);
   };
 
-  const handleUpdateStatus = () => {
+  const handleUpdateStatus = async () => {
     if (selectedOrder) {
-      dispatch(
+      await dispatch(
         updateOrderStatus({
           orderId: selectedOrder.id,
           status: newStatus,
         })
       );
       handleCloseDialog();
+      await dispatch(fetchAllOrders(queryOptions));
     }
   };
 

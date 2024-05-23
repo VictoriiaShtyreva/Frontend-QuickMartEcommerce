@@ -1,10 +1,12 @@
+import { ShippingAddress } from "./Checkout";
+
 export interface Order {
   id: string;
   userId: string;
   status: OrderStatus;
   totalPrice: number;
   orderItems: OrderItem[];
-  shippingAddress?: Address;
+  shippingAddress?: ShippingAddress;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -20,13 +22,13 @@ export interface OrderState {
 export interface OrderCreateDto {
   userId: string;
   orderItems: OrderItemCreateDto[];
-  shippingAddress?: Address;
+  shippingAddress?: ShippingAddress;
 }
 
 export interface OrderUpdateDto {
   status?: OrderStatus;
   orderItems?: OrderItemUpdateDto[];
-  shippingAddress?: Address;
+  shippingAddress?: ShippingAddress;
 }
 
 export interface OrderStatusUpdateDto {
@@ -51,13 +53,6 @@ export interface OrderItemCreateDto {
 export interface OrderItemUpdateDto {
   itemId: string;
   quantity?: number;
-}
-
-export interface Address {
-  addressLine?: string;
-  city?: string;
-  postalCode?: string;
-  country?: string;
 }
 
 export interface ProductSnapshot {

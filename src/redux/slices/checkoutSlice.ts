@@ -10,9 +10,7 @@ import {
 const initialState: CheckoutState = {
   step: 0,
   shippingAddress: {
-    firstName: "",
-    lastName: "",
-    address: "",
+    addressLine: "",
     city: "",
     postalCode: "",
     country: "",

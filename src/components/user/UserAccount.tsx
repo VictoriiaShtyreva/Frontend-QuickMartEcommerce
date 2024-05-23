@@ -29,7 +29,6 @@ import ProductCard from "../products/ProductCard";
 import { removeFavoriteProduct } from "../../redux/slices/productSlice";
 import EmptyFavoriteProduct from "../products/EmptyFavoritesProducts";
 import OrderHistory from "./OrderHistory";
-import { Reviews } from "@mui/icons-material";
 import ReviewHistory from "./ReviewHistory";
 
 const UserAccount = ({ id }: { id: string }) => {

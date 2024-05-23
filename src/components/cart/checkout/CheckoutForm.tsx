@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import {
   Box,
@@ -21,7 +21,6 @@ import { useAppSelector } from "../../../hooks/useAppSelector";
 import {
   setStep,
   updatePaymentDetails,
-  updateReview,
   updateShippingAddress,
 } from "../../../redux/slices/checkoutSlice";
 import PaymentForm from "./PaymentForm";
@@ -30,6 +29,8 @@ import AddressForm from "./AddressForm";
 import { PaymentDetails, ShippingAddress } from "../../../types/Checkout";
 import { emptyCart } from "../../../redux/slices/cartSlice";
 import customTheme from "../../contextAPI/theme/customTheme";
+import { createOrder } from "../../../redux/slices/orderSlice";
+import { fetchUserById } from "../../../redux/slices/usersSlice";
 
 interface CheckoutModalProps {
   isOpen: boolean;
@@ -47,6 +48,7 @@ const CheckoutForm = ({
   const dispatch = useAppDispatch();
   const step = useAppSelector((state) => state.checkout.step);
   const cartItems = useAppSelector((state) => state.cart.items);
+  const userId = useAppSelector((state) => state.users.user?.id);
   const [orderPlaced, setOrderPlaced] = useState(false);
   const [themeMode] = useState<PaletteMode>("light");
 
@@ -58,11 +60,7 @@ const CheckoutForm = ({
   } = useForm();
 
   const handleNext = () => {
-    if (step === 2) {
-      setOrderPlaced(true);
-    } else {
-      dispatch(setStep(step + 1));
-    }
+    dispatch(setStep(step + 1));
   };
 
   const handleBack = () => {
@@ -70,19 +68,42 @@ const CheckoutForm = ({
     setOrderPlaced(false);
   };
 
-  const onSubmit = (data: any) => {
+  const handleReset = () => {
+    setOrderPlaced(false);
+    dispatch(fetchUserById(userId!));
+    reset();
+    dispatch(setStep(0));
+  };
+
+  useEffect(() => {
+    if (!isOpen) {
+      handleReset();
+    }
+  }, [isOpen]);
+
+  const onSubmit = async (data: any) => {
     if (step === 0) {
       dispatch(updateShippingAddress(data));
+      handleNext();
     } else if (step === 1) {
       dispatch(updatePaymentDetails(data));
-    }
-    if (step === 2) {
-      dispatch(updateReview(data));
+      handleNext();
+    } else if (step === 2) {
+      const orderItems = cartItems.map((item) => ({
+        productId: item.id,
+        quantity: item.quantity,
+      }));
+
+      const orderCreateDto = {
+        userId: userId!,
+        orderItems,
+        shippingAddress: data,
+      };
+
+      await dispatch(createOrder(orderCreateDto));
       setOrderPlaced(true);
       dispatch(emptyCart());
-      reset();
     }
-    handleNext();
   };
 
   const steps = ["Shipping address", "Payment details", "Review your order"];
@@ -117,7 +138,7 @@ const CheckoutForm = ({
                   Thank you for your order.
                 </Typography>
                 <Typography variant="subtitle1">
-                  Your order number is #2001539. We have emailed your order
+                  Your order has been placed. We have emailed your order
                   confirmation, and will send you an update when your order has
                   shipped.
                 </Typography>

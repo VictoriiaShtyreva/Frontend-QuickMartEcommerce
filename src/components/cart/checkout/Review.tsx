@@ -44,10 +44,7 @@ const Review = ({ items, shippingAddress, paymentDetails }: ReviewProps) => {
             Shipping
           </Typography>
           <Typography gutterBottom>
-            {shippingAddress.firstName} {shippingAddress.lastName}
-          </Typography>
-          <Typography gutterBottom>
-            {shippingAddress.address}, {shippingAddress.city},
+            {shippingAddress.addressLine}, {shippingAddress.city},
             {shippingAddress.postalCode}, {shippingAddress.country}
           </Typography>
         </Grid>

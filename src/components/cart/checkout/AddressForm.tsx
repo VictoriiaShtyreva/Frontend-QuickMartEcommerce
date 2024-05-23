@@ -21,62 +21,20 @@ const AddressForm = ({ control, errors }: AddressFormProps) => {
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6}>
           <Controller
-            name="firstName"
-            control={control}
-            defaultValue=""
-            rules={{ required: "First name is required" }}
-            render={({ field }) => (
-              <TextField
-                {...field}
-                id="firstName"
-                label="First Name"
-                autoComplete="given-name"
-                variant="standard"
-                fullWidth
-                error={!!errors.firstName}
-                helperText={errors.firstName?.message}
-                color="secondary"
-              />
-            )}
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <Controller
-            name="lastName"
-            control={control}
-            defaultValue=""
-            rules={{ required: "Last name is required" }}
-            render={({ field }) => (
-              <TextField
-                {...field}
-                label="Last Name"
-                id="lastName"
-                fullWidth
-                autoComplete="family-name"
-                variant="standard"
-                error={!!errors.lastName}
-                helperText={errors.lastName?.message}
-                color="secondary"
-              />
-            )}
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <Controller
-            name="address"
+            name="addressLine"
             control={control}
             defaultValue=""
             rules={{ required: "Adress is required" }}
             render={({ field }) => (
               <TextField
                 {...field}
-                id="address"
-                name="address"
+                id="addressLine"
+                name="addressLine"
                 label="Address line"
                 autoComplete="shipping address-line"
                 variant="standard"
                 fullWidth
-                error={!!errors.address}
+                error={!!errors.addressLine}
                 helperText={errors.address?.message}
                 color="secondary"
               />

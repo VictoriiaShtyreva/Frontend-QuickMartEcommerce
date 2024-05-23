@@ -1,9 +1,7 @@
 import { ShoppingCartItem } from "./ShoppingCart";
 
 export type ShippingAddress = {
-  firstName: string;
-  lastName: string;
-  address: string;
+  addressLine: string;
   city: string;
   postalCode: string;
   country: string;
