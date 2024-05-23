@@ -19,13 +19,18 @@
 
 # Frontend project - QuickMart
 
-This repository for the Frontend project aimed at building an e-commerce website as part of the training program at [Integrify's Fullstack Developer program](https://www.integrify.io/program/finland/full-stack). The main purpose of this project is to create a user-friendly website where customers can easily explore, select, and purchase products online. Whether it's clothing, electronics, or any other items, our platform aims to cater to the needs of various shoppers by offering a smooth and intuitive shopping journey. You can explore the live deployment of our frontend e-commerce project by visiting [QuickMart](https://fs17-frontend-project.vercel.app/).
+This repository for the Frontend project aimed at building an e-commerce website as part of the training program at [Integrify's Fullstack Developer program](https://www.integrify.io/program/finland/full-stack). The main purpose of this project is to create a user-friendly website where customers can easily explore, select, and purchase products online. Whether it's clothing, electronics, or any other items, our platform aims to cater to the needs of various shoppers by offering a smooth and intuitive shopping journey. Users can create orders, write and update reviews, and sort products based on different criteria. Admins have the ability to manage orders, users, products, and more, ensuring efficient control over the e-commerce operations. You can explore the live deployment of our frontend e-commerce project by visiting [QuickMartEcommerce](https://fs17-frontend-project.vercel.app/).
+
+## Backend Repository
+
+The backend repository for this project handles the server-side logic, database interactions, and API endpoints required to support the e-commerce functionalities. It is built using ASP.NET Core and follows the Clean Architecture principles to ensure maintainability and scalability.
+
+You can find the backend repository at the following link: [QuickMartEcommerce Backend Repository]()
 
 <details>
   <summary>🔗 Table of Contents</summary>
 
 - [📷 App Screenshots](#-app-screenshots)
-- [📍 API Reference](#-api-reference)
 - [🚀 Getting Started](#-getting-started)
   - [⚙️ Install](#-install)
   - [► Using QuickMart](#-using-quickmart)
@@ -48,10 +53,6 @@ This repository for the Frontend project aimed at building an e-commerce website
 ![App Screenshot](readmeScreenshots/productpage.png)
 ![App Screenshot](readmeScreenshots/shopingcart.png)
 ![App Screenshot](readmeScreenshots/darkmode.png)
-
-## 📍 API Reference
-
-For the development of this project, we utilized the [Platzi API](https://fakeapi.platzi.com/) as a key API reference.
 
 ## 🚀 Getting Started
 
@@ -106,121 +107,128 @@ Tests for this project are written using Jest, with the assistance of [msw](http
 
 ## 📦 Features
 
-|     | Feature                                     | Description                                                                                                                                                                                                                                                                                                                                                                                                      |
-| --- | ------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| ⚙️  | **Architecture**                            | This project is built using React, TypeScript, Redux Toolkit, and React Router Dom, following a structured architecture that includes components, screens, hooks. Context API is utilized for switching between light and dark themes, enhancing user experience and accessibility.                                                                                                                              |
-| 🔩  | **Use Context API to switch theme**         | The project leverages the Palette Mode feature from Material-UI and Context API to seamlessly switch between light and dark modes, providing users with a customizable and visually comfortable browsing experience.                                                                                                                                                                                             |
-| 📄  | **Incorporate scroll-to-top functionality** | The implementation of scroll-to-top functionality is achieved using [GSAP](https://gsap.com/), allowing users to effortlessly navigate back to the top of the page with smooth animations for enhanced user experience.                                                                                                                                                                                          |
-| 🔌  | **Checkout Form**                           | The checkout form functionality is implemented using Redux reducers for logic and Material-UI for styling, ensuring a user-friendly and visually appealing checkout process.                                                                                                                                                                                                                                     |
-| 🧩  | **Empty States**                            | Various empty states are implemented throughout the application, including empty cart, favorite products, error page, and no products found. These states provide clear feedback to users and enhance the overall user experience by guiding them effectively.                                                                                                                                                   |
-| ⚡️ | **Performance & Optimisation**              | Performance and optimization techniques such as lazy loading, [React Hook Form](https://react-hook-form.com/) for validation, optimized data fetching with createAsyncThunk, useCallback, and memo are employed to ensure fast rendering, smooth user interactions, and efficient resource management, resulting in an optimized browsing experience.                                                            |
-| 📦  | **Login user and Admin dashboard**          | The project features user authentication functionality, allowing users to log in and access their user page where they can update their information such as email and name. Additionally, an admin dashboard is available for admins to create, update, and delete products, providing enhanced control over product management. As admin user can login using `email`: "admin@mail.com", `password`: "admin123" |
+|     | Feature                                     | Description                                                                                                                                                                                                                                                                                                                                                                                                          |
+| --- | ------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| ⚙️  | **Architecture**                            | This project is built using React, TypeScript, Redux Toolkit, and React Router Dom, following a structured architecture that includes components, screens, hooks. Context API is utilized for switching between light and dark themes, enhancing user experience and accessibility.                                                                                                                                  |
+| 🔩  | **Use Context API to switch theme**         | The project leverages the Palette Mode feature from Material-UI and Context API to seamlessly switch between light and dark modes, providing users with a customizable and visually comfortable browsing experience.                                                                                                                                                                                                 |
+| 📄  | **Incorporate scroll-to-top functionality** | The implementation of scroll-to-top functionality is achieved using [GSAP](https://gsap.com/), allowing users to effortlessly navigate back to the top of the page with smooth animations for enhanced user experience.                                                                                                                                                                                              |
+| 🔌  | **Checkout Form**                           | The checkout form functionality is implemented using Redux reducers for logic and Material-UI for styling, ensuring a user-friendly and visually appealing checkout process.                                                                                                                                                                                                                                         |
+| 🧩  | **Empty States**                            | Various empty states are implemented throughout the application, including empty cart, favorite products, error page, and no products found. These states provide clear feedback to users and enhance the overall user experience by guiding them effectively.                                                                                                                                                       |
+| ⚡️ | **Performance & Optimisation**              | Performance and optimization techniques such as lazy loading, [React Hook Form](https://react-hook-form.com/) for validation, optimized data fetching with createAsyncThunk, useCallback, and memo are employed to ensure fast rendering, smooth user interactions, and efficient resource management, resulting in an optimized browsing experience.                                                                |
+| 📦  | **Login user and Admin dashboard**          | The project features user authentication functionality, allowing users to log in and access their user page where they can update their information such as email and name. Additionally, an admin dashboard is available for admins to create, update, and delete products, providing enhanced control over product management. As admin user can login using `email`: "alice@example.com", `password`: "alice@123" |
 
 ## 📂 Repository Structure
 
 ```sh
-└── /src
-    ├── App.tsx                           // Main component for rendering the application.
-    ├── App.test.tsx                      // Test file for testing the App component.
-    ├── index.css                         // CSS file for global styles.
-    ├── index.tsx                         // Entry point of the application.
-    ├── react-app-env.d.ts                // Declaration file for TypeScript.
-    ├── reportWebVitals.ts                // File for reporting web vitals.
-    ├── setupTests.ts                     // Setup file for configuring testing environment.
-    ├── components                        // Directory for reusable components.
-    |   ├── admin                         // Components related to admin functionality.
-    |   |    ├── ProductAdminItem.tsx     // Component for rendering individual product items in the admin dashboard.
-    |   |    ├── ProductCreateForm.tsx    // Form component for creating new products in the admin dashboard.
-    |   |    ├── ProductListDashboard.tsx // Component for displaying a list of products in the admin dashboard.
-    |   |    └── UploadProduct.tsx        // Component for uploading product images in the admin dashboard.
-    |   ├── cart                          // Components related to shopping cart functionality.
-    |   |    ├── checkout                 // Components for the checkout process.
-    |   |    |    ├── AddressForm.tsx     // Form component for entering address details during checkout.
-    |   |    |    ├── CheckoutForm.tsx    // Main checkout form component for handling order details.
-    |   |    |    ├── PaymentForm.tsx     // Form component for entering payment details during checkout.
-    |   |    |    └── Review.tsx          // Component for reviewing and confirming the order before checkout.
-    |   |    ├── CartItem.tsx             // Component for rendering individual items in the shopping cart.
-    |   |    ├── CartModal.tsx            // Modal component for add product item to shoping cart.
-    |   |    └── EmptyCart.tsx            // Component for displaying a message when the shopping cart is empty.
-    |   ├── contextAPI                    // Components related to Context API.
-    |   |    ├── theme                    // Components related to theme management.
-    |   |    |    └── customTheme.ts      // Custom theme configuration for the application.
-    |   |    └── ColorThemeContext.tsx    // Context provider for managing the application's color theme.
-    |   ├── footer                        // Footer component for the application.
-    |   |    └── Footer.tsx               // Footer component for the application.
-    |   ├── header                        // Header component for the application.
-    |   |    └── Header.tsx               // Header component for the application.
-    |   ├── products                      // Components related to product management.
-    |   |    ├── CategorySelection.tsx    // Component for selecting product categories.
-    |   |    ├── EmptyFavoritesProducts.tsx // Component for displaying a message when the favorites list is empty.
-    |   |    ├── EmptyProducts.tsx       // Component for displaying a message when no products are found.
-    |   |    ├── ProductCard.tsx         // Component for rendering individual product cards.
-    |   |    ├── ProductDetails.tsx      // Component for displaying detailed information about a product.
-    |   |    ├── ProductList.tsx         // Component for rendering a list of products.
-    |   |    ├── Products.tsx            // Component for managing the display of products.
-    |   |    ├── SearchForm.tsx          // Form component for searching products.
-    |   |    └── SortingFilter.tsx       // Component for filtering and sorting products.
-    |   ├── user                         // Components related to user management.
-    |   |    ├── RegisterUserModal.tsx   // Modal component for user registration.
-    |   |    └── UserAccount.tsx         // Component for managing user account settings.
-    |   ├── ProtectedRoute.tsx           // Higher-order component for protecting routes that require authentication for admin.
-    |   └── ScrollToTopButton.tsx        // Button component for scrolling to the top of the page.
-    ├── hooks                            // Custom hooks for managing state and logic.
-    │   ├── useAppDispach.ts             // Custom hook for accessing the Redux dispatch function.
-    │   └── useAppSelector.ts            // Custom hook for accessing Redux state.
-    ├── images                           // Directory for storing image assets.
-    ├── pages                            // Components representing different pages of the application.
-    │   ├── AboutUs.tsx                  // About Us page component.
-    │   ├── AdminPage.tsx                // Admin dashboard page component.
-    │   ├── CartPage.tsx                 // Shopping cart page component.
-    │   ├── HomePage.tsx                 // Home page component.
-    │   ├── LoadingPage.tsx              // Loading page component.
-    │   ├── LoginPage.tsx                // Login page component.
-    │   ├── NotFoundPage.tsx             // 404 Not Found page component.
-    │   ├── SingleProductPage.tsx        // Single product page component.
-    │   └── UserPage.tsx                 // User profile page component.
-    ├── redux                            // Redux-related files for state management.
-    |   ├── slices                      // Redux slice files for managing specific parts of the state.
-    |   |    ├── cartSlice.ts           // Redux slice for managing the shopping cart state.
-    |   |    ├── categorySlice.ts       // Redux slice for managing the category state.
-    |   |    ├── checkoutSlice.ts       // Redux slice for managing the checkout state.
-    |   |    ├── productSlice.ts        // Redux slice for managing the product state.
-    |   |    └── userSlice.ts           // Redux slice for managing the user state.
-    │   └── store.ts                    // Redux store configuration.
-    ├── test                            // Directory for test files.
-    |   ├── cart                      // Test files for cart-related functionality.
-    |   |    └── cartReducer.test.ts  // Test file for testing the cart reducer.
-    |   ├── categories                // Test files for category-related functionality.
-    |   |    └── categoryReducer.test.ts  // Test file for testing the category reducer.
-    |   ├── mockdata                   // Mock data for testing purposes.
-    |   |    ├── category.ts           // Mock data for categories.
-    |   |    ├── products.ts           // Mock data for products.
-    |   |    ├── shoppingCart.ts       // Mock data for shopping cart.
-    |   |    └── users.ts              // Mock data for users.
-    |   ├── products                   // Test files for product-related functionality.
-    |   |    └── productReducer.test.ts // Test file for testing the product reducer.
-    |   ├── shared                     // Shared test files and utilities.
-    |   |    ├── categoryServer.ts     // Mock server for category data.
-    |   |    ├── productServer.ts      // Mock server for product data.
-    |   |    └── userServer.ts         // Mock server for user data.
-    |   └── users                      // Test files for user-related functionality.
-    |        └── usersReducer.test.ts  // Test file for testing the user reducer.
-    ├── types                          // TypeScript type definitions.
-    │   ├── Authentication.ts          // Type definitions related to authentication.
-    │   ├── Category.ts                // Type definitions related to categories.
-    │   ├── Checkout.ts                // Type definitions related to checkout.
-    │   ├── ColorThemeChange.ts        // Type definitions related to color theme changes.
-    │   ├── File.ts                    // Type definitions related to files.
-    │   ├── Product.ts                 // Type definitions related to products.
-    │   ├── ShoppingCart.ts            // Type definitions related to shopping cart.
-    │   ├── type.ts                    // General type definitions.
-    │   └── User.ts                    // Type definitions related to users.
-    └── utils                          // Utility functions.
-        ├── checkImageUrl.ts           // Function for checking if an image URL is valid.
-        ├── scrollToTop.ts             // Function for scrolling to the top of the page.
-        ├── svgUrl.ts                  // Function for retrieving SVG URLs.
-        ├── uploadFile.ts              // Function for uploading files.
-        └── uploadFilesService.ts      // Service for uploading files.
+src
+   |-- App.test.tsx
+   |-- App.tsx
+   |-- components
+   |   |-- ProtectedRoute.tsx
+   |   |-- ScrollToTopButton.tsx
+   |   |-- admin
+   |   |   |-- AdminDashboard.tsx
+   |   |   |-- AdminSortingFilter.tsx
+   |   |   |-- CategoriesListDashboard.tsx
+   |   |   |-- OrdersListDashboard.tsx
+   |   |   |-- ProductAdminItem.tsx
+   |   |   |-- ProductCreateForm.tsx
+   |   |   |-- ProductListDashboard.tsx
+   |   |   |-- UpdateProduct.tsx
+   |   |   |-- UserListDashboard.tsx
+   |   |-- cart
+   |   |   |-- CartItem.tsx
+   |   |   |-- CartModal.tsx
+   |   |   |-- EmptyCart.tsx
+   |   |   |-- checkout
+   |   |   |   |-- AddressForm.tsx
+   |   |   |   |-- CheckoutForm.tsx
+   |   |   |   |-- PaymentForm.tsx
+   |   |   |   |-- Review.tsx
+   |   |-- contextAPI
+   |   |   |-- ColorThemeContext.tsx
+   |   |   |-- theme
+   |   |   |   |-- customTheme.ts
+   |   |-- footer
+   |   |   |-- Footer.tsx
+   |   |-- header
+   |   |   |-- Header.tsx
+   |   |-- orders
+   |   |   |-- OrdersSorting.tsx
+   |   |-- products
+   |   |   |-- CategorySelection.tsx
+   |   |   |-- EmptyFavoritesProducts.tsx
+   |   |   |-- EmptyProducts.tsx
+   |   |   |-- MostPurchasedProducts.tsx
+   |   |   |-- ProductCard.tsx
+   |   |   |-- ProductDetails.tsx
+   |   |   |-- ProductList.tsx
+   |   |   |-- Products.tsx
+   |   |   |-- SearchForm.tsx
+   |   |   |-- SortingFilter.tsx
+   |   |-- user
+   |   |   |-- OrderHistory.tsx
+   |   |   |-- RegisterUserModal.tsx
+   |   |   |-- ReviewCreateModal.tsx
+   |   |   |-- ReviewEditModal.tsx
+   |   |   |-- ReviewHistory.tsx
+   |   |   |-- UserAccount.tsx
+   |-- hooks
+   |   |-- useAppDispach.ts
+   |   |-- useAppSelector.ts
+   |-- images
+   |   |-- EmptyCart.svg
+   |   |-- EmptyFavoriteProduct.svg
+   |   |-- NoProductsFound.svg
+   |   |-- NotFoundPage.svg
+   |   |-- homepage.jpg
+   |   |-- homepicture.png
+   |   |-- loginpage.png
+   |   |-- logo.svg
+   |-- index.css
+   |-- index.tsx
+   |-- pages
+   |   |-- AboutUs.tsx
+   |   |-- AdminPage.tsx
+   |   |-- CartPage.tsx
+   |   |-- HomePage.tsx
+   |   |-- LoadingPage.tsx
+   |   |-- LoginPage.tsx
+   |   |-- NotFoundPage.tsx
+   |   |-- ShopPage.tsx
+   |   |-- SingleProductPage.tsx
+   |   |-- UserPage.tsx
+   |-- react-app-env.d.ts
+   |-- redux
+   |   |-- slices
+   |   |   |-- cartSlice.ts
+   |   |   |-- categorySlice.ts
+   |   |   |-- checkoutSlice.ts
+   |   |   |-- orderSlice.ts
+   |   |   |-- productImageSlice.ts
+   |   |   |-- productSlice.ts
+   |   |   |-- reviewSlice.ts
+   |   |   |-- usersSlice.ts
+   |   |-- store.ts
+   |-- reportWebVitals.ts
+   |-- setupTests.ts
+   |-- types
+   |   |-- Authentication.ts
+   |   |-- Category.ts
+   |   |-- Checkout.ts
+   |   |-- ColorThemeChange.ts
+   |   |-- Order.ts
+   |   |-- Product.ts
+   |   |-- QueryOptions.ts
+   |   |-- Review.ts
+   |   |-- ShoppingCart.ts
+   |   |-- User.ts
+   |   |-- type.ts
+   |-- utils
+   |   |-- checkImageUrl.ts
+   |   |-- scrollToTop.ts
+   |   |-- svgUrl.ts
+
 ```
 
 ---
