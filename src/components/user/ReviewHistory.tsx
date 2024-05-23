@@ -13,7 +13,10 @@ import {
 import { Review } from "../../types/Review";
 import { Product } from "../../types/Product";
 import { fetchProductById } from "../../redux/slices/productSlice";
-import { fetchReviewsByUserId } from "../../redux/slices/reviewSlice"; // Import fetchReviewsByUserId
+import {
+  deleteReview,
+  fetchReviewsByUserId,
+} from "../../redux/slices/reviewSlice"; // Import fetchReviewsByUserId
 import { useAppSelector } from "../../hooks/useAppSelector";
 import { useAppDispatch } from "../../hooks/useAppDispach";
 import ReviewEditModal from "./ReviewEditModal";
@@ -78,6 +81,7 @@ const ReviewHistory: React.FC<ReviewsProps> = ({ reviews, userId }) => {
     setIsModalOpen(false);
   };
 
+  //Handle Update Review
   const handleReviewUpdate = () => {
     // Refetch reviews after update
     dispatch(fetchReviewsByUserId(userId))
@@ -85,6 +89,19 @@ const ReviewHistory: React.FC<ReviewsProps> = ({ reviews, userId }) => {
       .then((updatedReviews) => {
         setLocalReviews(updatedReviews);
       });
+  };
+
+  //Handle Delete review
+  const handleDeleteReview = async (reviewId: string) => {
+    try {
+      await dispatch(deleteReview(reviewId)).unwrap();
+      // Update local reviews state after deletion
+      setLocalReviews((prevReviews) =>
+        prevReviews.filter((review) => review.id !== reviewId)
+      );
+    } catch (error) {
+      console.error("Failed to delete review:", error);
+    }
   };
 
   return (
@@ -129,6 +146,14 @@ const ReviewHistory: React.FC<ReviewsProps> = ({ reviews, userId }) => {
                   onClick={() => handleEditClick(review)}
                 >
                   Edit
+                </Button>
+                <Button
+                  sx={{ ml: 2 }}
+                  variant="contained"
+                  color="error"
+                  onClick={() => handleDeleteReview(review.id)}
+                >
+                  Delete
                 </Button>
               </Paper>
             );
