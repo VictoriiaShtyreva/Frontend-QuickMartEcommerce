@@ -18,7 +18,7 @@ const EmptyCart = () => {
         </Typography>
         <Grid item textAlign={"center"}>
           <Button color="info" variant="contained" sx={{ mt: 2 }}>
-            <Link to="/">
+            <Link to="/shop">
               <Typography sx={{ color: "primary.contrastText" }}>
                 Discover Products
               </Typography>
