@@ -30,9 +30,7 @@ import { svgUrl } from "../../utils/svgUrl";
 
 const ProductDetails = ({ id }: { id: string }) => {
   const dispatch = useAppDispatch();
-  const product = useAppSelector((state) =>
-    state.products.products.find((product) => product.id === id)
-  );
+  const product = useAppSelector((state) => state.products.productDetails[id]);
   const images = product?.images.map((image) => {
     const imageUrl = checkImageUrl(image.url, svgUrl);
     return imageUrl;

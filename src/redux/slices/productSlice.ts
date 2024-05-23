@@ -18,6 +18,7 @@ const initialState: ProductState = {
   favoriteProducts: [],
   filteredProducts: [],
   productDetails: {},
+  mostPurchasedProducts: [],
 };
 
 const API_BASE_URL = process.env.REACT_APP_API_URL;
@@ -141,6 +142,24 @@ export const deleteProduct = createAsyncThunk(
       return response.data;
     } catch (error: any) {
       toast.error(error.response.data.message);
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+//Define thunk for mostpurchased
+export const fetchMostPurchasedProducts = createAsyncThunk(
+  "products/fetchMostPurchased",
+  async (topNumber: number, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(
+        `${URL}/most-purchased?topNumber=${topNumber}`
+      );
+      return response.data;
+    } catch (error: any) {
+      toast.error(
+        error.response.data.message || "Failed to fetch most purchased products"
+      );
       return rejectWithValue(error.response.data);
     }
   }
@@ -327,6 +346,20 @@ const productSlice = createSlice({
         loading: false,
         error: action.error.message ?? "error",
       };
+    });
+    // Handle fetchMostPurchasedProducts
+    builder.addCase(fetchMostPurchasedProducts.fulfilled, (state, action) => {
+      state.mostPurchasedProducts = action.payload;
+      state.loading = false;
+      state.error = null;
+    });
+    builder.addCase(fetchMostPurchasedProducts.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    });
+    builder.addCase(fetchMostPurchasedProducts.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message ?? "error";
     });
   },
 });
