@@ -1,4 +1,3 @@
-// src/components/MostPurchasedProducts.tsx
 import React, { useEffect } from "react";
 import {
   Box,
@@ -14,6 +13,9 @@ import { useAppDispatch } from "../../hooks/useAppDispach";
 import { useAppSelector } from "../../hooks/useAppSelector";
 import { fetchMostPurchasedProducts } from "../../redux/slices/productSlice";
 import { Link } from "react-router-dom";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 const MostPurchasedProducts = () => {
   const dispatch = useAppDispatch();
@@ -22,18 +24,60 @@ const MostPurchasedProducts = () => {
   );
 
   useEffect(() => {
-    dispatch(fetchMostPurchasedProducts(5)); // Fetch the top 5 most purchased products
+    dispatch(fetchMostPurchasedProducts(10)); // Fetch the top 5 most purchased products
   }, [dispatch]);
+
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 4,
+    slidesToScroll: 1,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 1,
+          infinite: true,
+          dots: true,
+        },
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+          initialSlide: 2,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
+  };
 
   return (
     <Box sx={{ mt: 4, px: 2 }}>
       <Typography variant="h4" gutterBottom sx={{ textAlign: "center" }}>
         Most Purchased Products
       </Typography>
-      <Grid container spacing={2}>
+      <Slider {...settings}>
         {mostPurchasedProducts.map((product) => (
-          <Grid item xs={12} sm={6} md={4} lg={3} key={product.id}>
-            <Card>
+          <Box key={product.id} sx={{ px: 2 }}>
+            <Card
+              sx={{
+                m: 2,
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+                height: "100%",
+              }}
+            >
               <CardMedia
                 component="img"
                 height="200"
@@ -41,15 +85,30 @@ const MostPurchasedProducts = () => {
                 alt={product.title}
               />
               <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
-                  {product.title}
-                </Typography>
-                <Typography variant="body2" color="textSecondary" component="p">
-                  {product.description}
-                </Typography>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "flex-start",
+                    textAlign: "center",
+                    minHeight: 160,
+                  }}
+                >
+                  <Typography gutterBottom variant="h6" component="p">
+                    {product.title}
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    color="textSecondary"
+                    component="p"
+                  >
+                    {product.description}
+                  </Typography>
+                </Box>
               </CardContent>
               <CardActions>
-                <Button color="primary" sx={{ mt: 2, zIndex: 1 }}>
+                <Button color="primary" sx={{ mt: 1 }}>
                   <Link
                     to={`/products/${product.id}`}
                     style={{ textDecoration: "none", color: "inherit" }}
@@ -61,9 +120,9 @@ const MostPurchasedProducts = () => {
                 </Button>
               </CardActions>
             </Card>
-          </Grid>
+          </Box>
         ))}
-      </Grid>
+      </Slider>
     </Box>
   );
 };
