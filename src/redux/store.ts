@@ -5,6 +5,7 @@ import userReducer from "./slices/usersSlice";
 import cartReducer from "./slices/cartSlice";
 import checkoutReducer from "./slices/checkoutSlice";
 import productImageReducer from "./slices/productImageSlice";
+import orderReducer from "./slices/orderSlice";
 
 const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ const store = configureStore({
     cart: cartReducer,
     checkout: checkoutReducer,
     productImages: productImageReducer,
+    orders: orderReducer,
   },
 });
 
