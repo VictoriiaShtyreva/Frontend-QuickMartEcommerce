@@ -12,6 +12,7 @@ const initialState: UserState = {
   error: null,
   filteredUsers: [],
   total: 0,
+  userDetails: {},
 };
 
 //Fetch data
@@ -277,8 +278,10 @@ const usersSlice = createSlice({
     builder.addCase(
       fetchUserById.fulfilled,
       (state, action: PayloadAction<User>) => {
+        const user = action.payload;
+        state.userDetails[user.id] = user;
         state.loading = false;
-        state.user = action.payload;
+        state.error = null;
       }
     );
     builder.addCase(fetchUserById.pending, (state) => {

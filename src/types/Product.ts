@@ -1,4 +1,5 @@
 import { Category } from "./Category";
+import { Review } from "./Review";
 
 // Define type for an image object
 export type Image = {
@@ -23,6 +24,7 @@ export type Product = {
   category: Category;
   categoryId: string;
   inventory: number;
+  reviews: Review[];
 };
 
 export interface PaginatedProducts {

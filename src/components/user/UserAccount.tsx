@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+// src/components/user/UserAccount.tsx
+import React, { useEffect, useState } from "react";
 import {
   Avatar,
   Badge,
@@ -54,12 +55,12 @@ const UserAccount = ({ id }: { id: string }) => {
     }));
   };
 
-  //Handle for change password
+  // Handle for change password
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewPassword(e.target.value);
   };
 
-  //Handle for change avatar
+  // Handle for change avatar
   const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       setAvatarFile(e.target.files[0]);
@@ -70,7 +71,7 @@ const UserAccount = ({ id }: { id: string }) => {
     setAvatarFile(null);
   };
 
-  //Handle form submission to update user data
+  // Handle form submission to update user data
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const updateData: Partial<User> = { id };
@@ -96,7 +97,7 @@ const UserAccount = ({ id }: { id: string }) => {
 
   useEffect(() => {
     dispatch(fetchUserById(id));
-  }, [dispatch]);
+  }, [dispatch, id]);
 
   return (
     <Container maxWidth="lg" sx={{ minHeight: "100vh", mt: 2 }}>
@@ -282,7 +283,7 @@ const UserAccount = ({ id }: { id: string }) => {
             <OrderHistory orders={user.orders || []} />
           )}
           {activeSection === "reviews" && user && (
-            <ReviewHistory reviews={user.reviews || []} />
+            <ReviewHistory reviews={user.reviews || []} userId={user.id} />
           )}
         </Grid>
       </Grid>

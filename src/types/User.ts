@@ -18,6 +18,7 @@ export interface UserState {
   loading: boolean;
   error: string | null;
   filteredUsers: User[];
+  userDetails: { [key: string]: User };
 }
 
 export interface PaginatedUsers {

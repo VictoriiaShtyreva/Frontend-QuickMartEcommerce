@@ -15,6 +15,8 @@ import { cancelOrder } from "../../redux/slices/orderSlice";
 import { fetchUserById } from "../../redux/slices/usersSlice";
 import { useAppSelector } from "../../hooks/useAppSelector";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
+import ReviewCreateModal from "./ReviewCreateModal";
 
 interface OrderHistoryProps {
   orders: Order[];
@@ -27,6 +29,9 @@ const OrderHistory: React.FC<OrderHistoryProps> = ({ orders }) => {
   const [page, setPage] = useState(1);
   const ordersPerPage = 10;
   const totalPages = Math.ceil(orders.length / ordersPerPage);
+  // Modal state
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<string | null>(null);
 
   const handlePageChange = (
     event: React.ChangeEvent<unknown>,
@@ -49,6 +54,17 @@ const OrderHistory: React.FC<OrderHistoryProps> = ({ orders }) => {
       toast.error("Failed to cancel order.");
     }
   };
+
+  const handleCreateReview = (productId: string) => {
+    setSelectedProduct(productId);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedProduct(null);
+  };
+
   return (
     <Box>
       <Typography variant="h5" gutterBottom>
@@ -70,11 +86,13 @@ const OrderHistory: React.FC<OrderHistoryProps> = ({ orders }) => {
                 {order.orderItems.map((item) => (
                   <Grid item xs={12} sm={6} md={4} key={item.id}>
                     <Box display="flex" alignItems="center">
-                      <Avatar
-                        variant="rounded"
-                        src={item.productSnapshot?.imageUrls?.[0]}
-                        sx={{ width: 80, height: 80, mr: 2 }}
-                      />
+                      <Link to={`/products/${item.productSnapshot?.productId}`}>
+                        <Avatar
+                          variant="rounded"
+                          src={item.productSnapshot?.imageUrls?.[0]}
+                          sx={{ width: 80, height: 80, mr: 2 }}
+                        />
+                      </Link>
                       <Box>
                         <Typography variant="body1">
                           {item.productSnapshot?.title}
@@ -85,6 +103,20 @@ const OrderHistory: React.FC<OrderHistoryProps> = ({ orders }) => {
                         <Typography variant="body2">
                           Price: ${item.price.toFixed(2)}
                         </Typography>
+                        {order.status === "Completed" && (
+                          <Button
+                            variant="outlined"
+                            color="secondary"
+                            onClick={() =>
+                              handleCreateReview(
+                                item.productSnapshot?.productId
+                              )
+                            }
+                            sx={{ mt: 2 }}
+                          >
+                            Create Review
+                          </Button>
+                        )}
                       </Box>
                     </Box>
                   </Grid>
@@ -115,6 +147,15 @@ const OrderHistory: React.FC<OrderHistoryProps> = ({ orders }) => {
         </>
       ) : (
         <Typography>No orders found.</Typography>
+      )}
+      {/* Modal for create review */}
+      {selectedProduct && (
+        <ReviewCreateModal
+          open={isModalOpen}
+          handleClose={handleCloseModal}
+          productId={selectedProduct}
+          userId={userId as string}
+        />
       )}
     </Box>
   );

@@ -6,6 +6,14 @@ import {
   Fab,
   Dialog,
   DialogContent,
+  List,
+  Card,
+  CardContent,
+  ListItem,
+  ListItemAvatar,
+  Avatar,
+  ListItemText,
+  Rating,
 } from "@mui/material";
 import Carousel from "react-slick";
 import FavoriteIcon from "@mui/icons-material/Favorite";
@@ -27,6 +35,9 @@ import { createDraftSafeSelector } from "@reduxjs/toolkit";
 import { Product } from "../../types/Product";
 import { RootState } from "../../types/type";
 import { svgUrl } from "../../utils/svgUrl";
+import Review from "../cart/checkout/Review";
+import { fetchUserById } from "../../redux/slices/usersSlice";
+import { User } from "../../types/User";
 
 const ProductDetails = ({ id }: { id: string }) => {
   const dispatch = useAppDispatch();
@@ -186,6 +197,51 @@ const ProductDetails = ({ id }: { id: string }) => {
           )}
         </Box>
       </Grid>
+      {/* Display reviews */}
+      {/* Display reviews */}
+      {product?.reviews && product.reviews.length > 0 && (
+        <Grid item xs={12}>
+          <Typography variant="h5" component="h2" gutterBottom sx={{ p: 2 }}>
+            Customer Reviews
+          </Typography>
+          <List sx={{ p: 2 }}>
+            {product.reviews.map((review) => (
+              <Card key={review.id} sx={{ mb: 2, width: 350 }}>
+                <CardContent>
+                  <ListItem alignItems="flex-start">
+                    <ListItemAvatar>
+                      <Avatar />
+                    </ListItemAvatar>
+                    <ListItemText
+                      primary={
+                        <Box sx={{ display: "flex", alignItems: "center" }}>
+                          <Rating
+                            value={review.rating}
+                            readOnly
+                            precision={0.5}
+                          />
+                          <Typography
+                            variant="body2"
+                            color="textSecondary"
+                            sx={{ ml: 1 }}
+                          >
+                            {new Date(review.createdAt).toLocaleDateString()}
+                          </Typography>
+                        </Box>
+                      }
+                      secondary={
+                        <Typography variant="body2">
+                          {review.content}
+                        </Typography>
+                      }
+                    />
+                  </ListItem>
+                </CardContent>
+              </Card>
+            ))}
+          </List>
+        </Grid>
+      )}
       {/* Display related products */}
       {relatedProducts.length > 0 && (
         <Grid item xs={12}>

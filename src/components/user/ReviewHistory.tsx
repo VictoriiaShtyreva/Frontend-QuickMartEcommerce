@@ -1,4 +1,4 @@
-// src/components/user/Reviews.tsx
+// src/components/user/ReviewHistory.tsx
 import React, { useEffect, useState } from "react";
 import {
   Box,
@@ -8,27 +8,37 @@ import {
   CircularProgress,
   Avatar,
   Pagination,
+  Button,
 } from "@mui/material";
 import { Review } from "../../types/Review";
 import { Product } from "../../types/Product";
 import { fetchProductById } from "../../redux/slices/productSlice";
+import { fetchReviewsByUserId } from "../../redux/slices/reviewSlice"; // Import fetchReviewsByUserId
 import { useAppSelector } from "../../hooks/useAppSelector";
 import { useAppDispatch } from "../../hooks/useAppDispach";
+import ReviewEditModal from "./ReviewEditModal";
+import { Link } from "react-router-dom";
 
 interface ReviewsProps {
   reviews: Review[];
+  userId: string; // Add userId as a prop
 }
 
-const ReviewHistory: React.FC<ReviewsProps> = ({ reviews }) => {
+const ReviewHistory: React.FC<ReviewsProps> = ({ reviews, userId }) => {
   const dispatch = useAppDispatch();
   const productDetails = useAppSelector(
     (state) => state.products.productDetails
   );
   const [loading, setLoading] = useState(true);
-  //Pagination
+  // Pagination
   const [page, setPage] = useState(1);
   const reviewsPerPage = 10;
   const totalPages = Math.ceil(reviews.length / reviewsPerPage);
+  // Modal state
+  const [selectedReview, setSelectedReview] = useState<Review | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  // Local state to store reviews
+  const [localReviews, setLocalReviews] = useState<Review[]>(reviews);
 
   const handlePageChange = (
     event: React.ChangeEvent<unknown>,
@@ -37,7 +47,7 @@ const ReviewHistory: React.FC<ReviewsProps> = ({ reviews }) => {
     setPage(value);
   };
 
-  const paginatedReviews = reviews.slice(
+  const paginatedReviews = localReviews.slice(
     (page - 1) * reviewsPerPage,
     page * reviewsPerPage
   );
@@ -45,7 +55,7 @@ const ReviewHistory: React.FC<ReviewsProps> = ({ reviews }) => {
   useEffect(() => {
     const fetchProductDetails = async () => {
       try {
-        const promises = reviews.map((review) =>
+        const promises = localReviews.map((review) =>
           dispatch(fetchProductById(review.productId)).unwrap()
         );
         await Promise.all(promises);
@@ -55,9 +65,27 @@ const ReviewHistory: React.FC<ReviewsProps> = ({ reviews }) => {
         setLoading(false);
       }
     };
-
     fetchProductDetails();
-  }, [dispatch, reviews]);
+  }, [dispatch, localReviews]);
+
+  const handleEditClick = (review: Review) => {
+    setSelectedReview(review);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedReview(null);
+    setIsModalOpen(false);
+  };
+
+  const handleReviewUpdate = () => {
+    // Refetch reviews after update
+    dispatch(fetchReviewsByUserId(userId))
+      .unwrap()
+      .then((updatedReviews) => {
+        setLocalReviews(updatedReviews);
+      });
+  };
 
   return (
     <Box>
@@ -66,7 +94,7 @@ const ReviewHistory: React.FC<ReviewsProps> = ({ reviews }) => {
       </Typography>
       {loading ? (
         <CircularProgress />
-      ) : reviews.length > 0 ? (
+      ) : localReviews.length > 0 ? (
         <>
           {paginatedReviews.map((review) => {
             const product: Product | undefined =
@@ -75,11 +103,13 @@ const ReviewHistory: React.FC<ReviewsProps> = ({ reviews }) => {
               <Paper key={review.id} sx={{ p: 2, mb: 2 }}>
                 <Box display="flex" alignItems="center">
                   {product?.images?.[0]?.url && (
-                    <Avatar
-                      variant="rounded"
-                      src={product.images[0].url}
-                      sx={{ width: 80, height: 80, mr: 2 }}
-                    />
+                    <Link to={`/products/${product.id}`}>
+                      <Avatar
+                        variant="rounded"
+                        src={product.images[0].url}
+                        sx={{ width: 80, height: 80, mr: 2 }}
+                      />
+                    </Link>
                   )}
                   <Box>
                     <Typography variant="h6">{product?.title}</Typography>
@@ -93,6 +123,13 @@ const ReviewHistory: React.FC<ReviewsProps> = ({ reviews }) => {
                 <Typography variant="body2">
                   Review Date: {new Date(review.createdAt).toLocaleDateString()}
                 </Typography>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={() => handleEditClick(review)}
+                >
+                  Edit
+                </Button>
               </Paper>
             );
           })}
@@ -107,6 +144,14 @@ const ReviewHistory: React.FC<ReviewsProps> = ({ reviews }) => {
         </>
       ) : (
         <Typography>No reviews found.</Typography>
+      )}
+      {selectedReview && (
+        <ReviewEditModal
+          review={selectedReview}
+          open={isModalOpen}
+          handleClose={handleCloseModal}
+          onReviewUpdate={handleReviewUpdate}
+        />
       )}
     </Box>
   );

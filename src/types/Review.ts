@@ -7,3 +7,23 @@ export interface Review {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface ReviewState {
+  reviews: Review[];
+  loading: boolean;
+  error: string | null;
+  total: number;
+}
+
+export interface ReviewCreate {
+  userId: string;
+  productId: string;
+  rating: number;
+  content: string;
+}
+
+export interface ReviewUpdate {
+  userId: string;
+  rating: number;
+  content: string;
+}
