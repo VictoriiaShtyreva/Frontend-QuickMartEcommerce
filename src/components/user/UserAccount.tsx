@@ -32,7 +32,7 @@ import ReviewHistory from "./ReviewHistory";
 
 const UserAccount = ({ id }: { id: string }) => {
   const dispatch = useAppDispatch();
-  const { user } = useAppSelector((state) => state.users);
+  const user = useAppSelector((state) => state.users.user);
   const isAdmin = user?.role === "Admin";
   const favoriteProducts = useAppSelector(
     (state) => state.products.favoriteProducts
@@ -44,6 +44,7 @@ const UserAccount = ({ id }: { id: string }) => {
     ...user,
   });
   const [activeSection, setActiveSection] = useState("personalInfo");
+  const [forceUpdate, setForceUpdate] = useState(false); // New state to trigger re-render
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -53,12 +54,10 @@ const UserAccount = ({ id }: { id: string }) => {
     }));
   };
 
-  // Handle for change password
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewPassword(e.target.value);
   };
 
-  // Handle for change avatar
   const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       setAvatarFile(e.target.files[0]);
@@ -69,21 +68,19 @@ const UserAccount = ({ id }: { id: string }) => {
     setAvatarFile(null);
   };
 
-  // Handle form submission to update user data
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const updateData: Partial<User> = { id };
     if (updatedUserData.name) updateData.name = updatedUserData.name;
     if (updatedUserData.email) updateData.email = updatedUserData.email;
     if (avatarFile) updateData.avatar = avatarFile;
-    // Dispatch update user action and wait for it to complete
+
     await dispatch(updateUser(updateData));
     if (newPassword) {
       await dispatch(updateUserPassword({ id, newPassword }));
     }
-    // Re-fetch user data to update the page
     await dispatch(fetchUserById(id));
-    // Clear form fields
+    setForceUpdate(!forceUpdate); // Toggle state to force re-render
     setUpdatedUserData({ ...user });
     setNewPassword("");
     setAvatarFile(null);

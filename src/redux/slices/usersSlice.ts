@@ -279,6 +279,7 @@ const usersSlice = createSlice({
       (state, action: PayloadAction<User>) => {
         const user = action.payload;
         state.userDetails[user.id] = user;
+        state.user = action.payload;
         state.loading = false;
         state.error = null;
       }
