@@ -44,7 +44,6 @@ const ProductListDashboard = () => {
     { page: 1, limit: 12 }
   );
   const [openCreateDialog, setOpenCreateDialog] = useState(false);
-  const [fetchProductsTrigger, setFetchProductsTrigger] = useState(false);
 
   //Query options
   const queryOptions: QueryOptions = useMemo(() => {

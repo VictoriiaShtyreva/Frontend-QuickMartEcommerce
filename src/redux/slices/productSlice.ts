@@ -311,6 +311,9 @@ const productSlice = createSlice({
         products: state.products.map((item) =>
           item.id === product.id ? product : item
         ),
+        filteredProducts: state.filteredProducts.map((item) =>
+          item.id === product.id ? product : item
+        ),
         loading: false,
         error: null,
       };
