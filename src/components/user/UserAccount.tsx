@@ -59,7 +59,7 @@ const UserAccount = ({ id }: { id: string }) => {
         avatar: user.avatar,
       });
     }
-  }, [user]);
+  }, [user?.avatar, user?.email, user?.name]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -94,10 +94,12 @@ const UserAccount = ({ id }: { id: string }) => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const updateData: Partial<User> = { id };
-    if (updatedUserData.name) updateData.name = updatedUserData.name;
-    if (updatedUserData.email) updateData.email = updatedUserData.email;
-    if (avatarFile) updateData.avatar = avatarFile;
+    const updateData = new FormData();
+    updateData.append("id", id);
+    if (updatedUserData.name) updateData.append("name", updatedUserData.name);
+    if (updatedUserData.email)
+      updateData.append("email", updatedUserData.email);
+    if (avatarFile) updateData.append("avatar", avatarFile);
     await dispatch(updateUser(updateData));
     if (newPassword) {
       await dispatch(updateUserPassword({ id, newPassword }));
