@@ -82,7 +82,7 @@ const UserAccount = ({ id }: { id: string }) => {
       await dispatch(updateUserPassword({ id, newPassword }));
     }
     // Re-fetch user data to update the page
-    dispatch(fetchUserById(id));
+    await dispatch(fetchUserById(id));
     // Clear form fields
     setUpdatedUserData({ ...user });
     setNewPassword("");
