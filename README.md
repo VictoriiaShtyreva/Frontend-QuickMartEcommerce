@@ -19,13 +19,13 @@
 
 # Frontend project - QuickMartEcommerce
 
-This repository for the Frontend project aimed at building an e-commerce website as part of the training program at [Integrify's Fullstack Developer program](https://www.integrify.io/program/finland/full-stack). The main purpose of this project is to create a user-friendly website where customers can easily explore, select, and purchase products online. Whether it's clothing, electronics, or any other items, our platform aims to cater to the needs of various shoppers by offering a smooth and intuitive shopping journey. Users can create orders, write and update reviews into user page, and sort products based on different criteria. Also able to add products into wishlist. Admins have the ability to manage orders, users, products, and more, ensuring efficient control over the e-commerce operations. You can explore the live deployment of our frontend e-commerce project by visiting [QuickMartEcommerce]().
+This repository for the Frontend project aimed at building an e-commerce website as part of the training program at [Integrify's Fullstack Developer program](https://www.integrify.io/program/finland/full-stack). The main purpose of this project is to create a user-friendly website where customers can easily explore, select, and purchase products online. Whether it's clothing, electronics, or any other items, our platform aims to cater to the needs of various shoppers by offering a smooth and intuitive shopping journey. Users can create orders, write and update reviews into user page, and sort products based on different criteria. Also able to add products into wishlist. Admins have the ability to manage orders, users, products, and more, ensuring efficient control over the e-commerce operations. You can explore the live deployment of our frontend e-commerce project by visiting [QuickMartEcommerce](quick-mart-ecommerce.vercel.app).
 
 ## Backend Repository
 
 The backend repository for this project handles the server-side logic, database interactions, and API endpoints required to support the e-commerce functionalities. It is built using ASP.NET Core and follows the Clean Architecture principles to ensure maintainability and scalability.
 
-You can find the backend repository at the following link: [QuickMartEcommerce Backend Repository]()
+You can find the backend repository at the following link: [QuickMartEcommerce Backend Repository](https://github.com/VictoriiaShtyreva/Backend-QuickMartEcommerce)
 
 <details>
   <summary>🔗 Table of Contents</summary>
