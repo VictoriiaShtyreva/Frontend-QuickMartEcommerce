@@ -62,19 +62,19 @@ export const fetchUserById = createAsyncThunk(
   }
 );
 
-export const updateUser = createAsyncThunk<User, FormData>(
+export const updateUser = createAsyncThunk<User, Partial<User>>(
   "user/update",
-  async (formData, thunkAPI) => {
+  async (userData, thunkAPI) => {
     try {
-      const response = await axios.patch(
-        `${URL}/${formData.get("id")}`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      const formData = new FormData();
+      if (userData.name) formData.append("name", userData.name);
+      if (userData.email) formData.append("email", userData.email);
+      if (userData.avatar) formData.append("avatar", userData.avatar as File);
+      const response = await axios.patch(`${URL}/${userData.id}`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
       return response.data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.response.data);

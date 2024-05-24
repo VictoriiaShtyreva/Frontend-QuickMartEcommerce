@@ -41,25 +41,9 @@ const UserAccount = ({ id }: { id: string }) => {
   const [newPassword, setNewPassword] = useState<string>("");
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [updatedUserData, setUpdatedUserData] = useState<Partial<User>>({
-    name: "",
-    email: "",
-    avatar: "",
+    ...user,
   });
   const [activeSection, setActiveSection] = useState("personalInfo");
-
-  useEffect(() => {
-    dispatch(fetchUserById(id));
-  }, [dispatch, id]);
-
-  useEffect(() => {
-    if (user) {
-      setUpdatedUserData({
-        name: user.name,
-        email: user.email,
-        avatar: user.avatar,
-      });
-    }
-  }, [user?.avatar, user?.email, user?.name]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -69,44 +53,46 @@ const UserAccount = ({ id }: { id: string }) => {
     }));
   };
 
+  // Handle for change password
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewPassword(e.target.value);
   };
 
+  // Handle for change avatar
   const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (files && files.length > 0) {
-      setAvatarFile(files[0]);
-      setUpdatedUserData((prevState) => ({
-        ...prevState,
-        avatar: URL.createObjectURL(files[0]),
-      }));
+    if (e.target.files && e.target.files.length > 0) {
+      setAvatarFile(e.target.files[0]);
     }
   };
 
   const handleAvatarDelete = () => {
     setAvatarFile(null);
-    setUpdatedUserData((prevState) => ({
-      ...prevState,
-      avatar: "",
-    }));
   };
 
+  // Handle form submission to update user data
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const updateData = new FormData();
-    updateData.append("id", id);
-    if (updatedUserData.name) updateData.append("name", updatedUserData.name);
-    if (updatedUserData.email)
-      updateData.append("email", updatedUserData.email);
-    if (avatarFile) updateData.append("avatar", avatarFile);
+    const updateData: Partial<User> = { id };
+    if (updatedUserData.name) updateData.name = updatedUserData.name;
+    if (updatedUserData.email) updateData.email = updatedUserData.email;
+    if (avatarFile) updateData.avatar = avatarFile;
+    // Dispatch update user action and wait for it to complete
     await dispatch(updateUser(updateData));
     if (newPassword) {
       await dispatch(updateUserPassword({ id, newPassword }));
     }
-    await dispatch(fetchUserById(id));
+    // Re-fetch user data to update the page
+    dispatch(fetchUserById(id));
+    // Clear form fields
+    setUpdatedUserData({ ...user });
+    setNewPassword("");
+    setAvatarFile(null);
     setIsEditing(false);
   };
+
+  useEffect(() => {
+    dispatch(fetchUserById(id));
+  }, [dispatch, id]);
 
   return (
     <Container maxWidth="lg" sx={{ minHeight: "100vh", mt: 2 }}>
@@ -144,14 +130,12 @@ const UserAccount = ({ id }: { id: string }) => {
                 Personal Information
               </Typography>
               <Avatar
-                src={updatedUserData.avatar as string}
-                alt={updatedUserData.name}
+                src={user?.avatar as string}
+                alt={user?.name}
                 sx={{ width: 250, height: 250, mb: 2 }}
               />
-              <Typography variant="h6">{updatedUserData.name}</Typography>
-              <Typography variant="body1">
-                Email: {updatedUserData.email}
-              </Typography>
+              <Typography variant="h6">{user?.name}</Typography>
+              <Typography variant="body1">Email: {user?.email}</Typography>
               <FormControlLabel
                 control={
                   <Switch
@@ -214,6 +198,7 @@ const UserAccount = ({ id }: { id: string }) => {
                     margin="normal"
                     color="secondary"
                   />
+
                   <Button variant="contained" type="submit" sx={{ mt: 2 }}>
                     Save Changes
                   </Button>
