@@ -28,6 +28,8 @@ export const createNewStore = () => {
       users: userReducer,
       cart: cartReducer,
       checkout: checkoutReducer,
+      productImages: productImageReducer,
+      orders: orderReducer,
     },
   });
 };
