@@ -42,6 +42,7 @@ export type ProductState = {
   filteredProducts: Product[];
   productDetails: { [key: string]: Product };
   mostPurchasedProducts: Product[];
+  product: Product | null;
 };
 
 //Define type for new product

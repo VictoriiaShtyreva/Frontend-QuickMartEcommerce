@@ -20,21 +20,28 @@ const customTheme = (mode: PaletteMode): ThemeOptions => {
           },
         },
       },
+      MuiCard: {
+        styleOverrides: {
+          root: {
+            backgroundColor: mode === "light" ? "#bbdad6" : "#2a3653",
+          },
+        },
+      },
     },
     palette: {
       mode,
       ...(mode === "light"
         ? {
             primary: {
-              main: "#FEFEFE", // Light primary color
+              main: "#48958a", // Light primary color
               contrastText: "#212121", // Text color for light primary
             },
             secondary: {
-              main: "#074a41", // Light secondary color
+              main: "#2d86b8", // Light secondary color (deep blue)
               contrastText: "#fff", // Text color for light secondary
             },
             info: {
-              main: "#2d86b8", // Light info color
+              main: "#5eb4a7", // Light info color (white)
               contrastText: "#212121", // Text color for light info
             },
             text: {
@@ -48,15 +55,15 @@ const customTheme = (mode: PaletteMode): ThemeOptions => {
           }
         : {
             primary: {
-              main: "#121212", // Dark primary color
+              main: "#111934", // Dark primary color
               contrastText: "#fff", // Text color for dark primary
             },
             secondary: {
-              main: "#6076b9", // Dark secondary color
+              main: "#75739d", // Dark secondary color (deep black)
               contrastText: "#fff", // Text color for dark secondary
             },
             info: {
-              main: "#7ab9dd", // Dark info color
+              main: "#6076b9", // Dark info color (deep green)
               contrastText: "#fff", // Text color for dark info
             },
             text: {

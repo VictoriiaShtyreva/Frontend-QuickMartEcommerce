@@ -39,7 +39,7 @@ const SearchForm = ({
   return (
     <TextField
       sx={{ mb: 2 }}
-      label="Search products..."
+      label="Search..."
       variant="outlined"
       color="secondary"
       value={localInput}
@@ -48,10 +48,7 @@ const SearchForm = ({
       InputProps={{
         endAdornment: (
           <InputAdornment position="end">
-            <IconButton
-              onClick={handleClear}
-              aria-label="search products by name"
-            >
+            <IconButton onClick={handleClear} aria-label="search item by name">
               <SearchOffIcon />
             </IconButton>
           </InputAdornment>

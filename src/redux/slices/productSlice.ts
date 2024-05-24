@@ -12,6 +12,7 @@ import axios from "axios";
 
 const initialState: ProductState = {
   products: [],
+  product: null,
   total: 0,
   loading: false,
   error: null,
@@ -262,6 +263,7 @@ const productSlice = createSlice({
         state.productDetails[product.id] = product;
         state.loading = false;
         state.error = null;
+        state.product = product;
       }
     );
     builder.addCase(fetchProductById.pending, (state) => {
