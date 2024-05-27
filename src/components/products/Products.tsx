@@ -21,7 +21,6 @@ import {
   searchProductByName,
   sortProductsByPrice,
   sortProductsByTitle,
-  filterProductsByCategory,
 } from "../../redux/slices/productSlice";
 import SortingFilter from "./SortingFilter";
 import { useAppSelector } from "../../hooks/useAppSelector";

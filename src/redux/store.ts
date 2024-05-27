@@ -6,6 +6,7 @@ import cartReducer from "./slices/cartSlice";
 import checkoutReducer from "./slices/checkoutSlice";
 import productImageReducer from "./slices/productImageSlice";
 import orderReducer from "./slices/orderSlice";
+import reviewReducer from "./slices/reviewSlice";
 
 const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ const store = configureStore({
     checkout: checkoutReducer,
     productImages: productImageReducer,
     orders: orderReducer,
+    review: reviewReducer,
   },
 });
 
@@ -30,6 +32,7 @@ export const createNewStore = () => {
       checkout: checkoutReducer,
       productImages: productImageReducer,
       orders: orderReducer,
+      review: reviewReducer,
     },
   });
 };

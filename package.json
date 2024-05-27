@@ -66,8 +66,9 @@
 		"@babel/preset-react": "^7.23.3",
 		"@testing-library/react": "^14.2.1",
 		"@types/react-slick": "^0.23.13",
+		"@types/uuid": "^9.0.8",
 		"babel-jest": "^29.7.0",
 		"jest": "^27.5.1",
-		"msw": "^2.2.1"
+		"msw": "^2.3.0"
 	}
 }
