@@ -35,7 +35,7 @@ You can find the backend repository at the following link: [QuickMartEcommerce B
   - [⚙️ Install](#-install)
   - [► Using QuickMart](#-using-quickmart)
   - [🧪 Tests](#-tests)
-- [API Endpoints](#api-endpoints)
+- [🏗️ API Endpoints](#-api-endpoints)
 - [📦 Features](#-features)
 - [📂 Repository Structure](#-repository-structure)
 - [🛠 Project Roadmap](#-project-roadmap)
@@ -110,13 +110,15 @@ Use the following command to run tests:
 npm test
 ```
 
-Tests for this project are written using Jest, with the assistance of [msw](https://mswjs.io/) for mocking the server. The project utilizes three mock servers for handling products, categories, and users respectively. The tests are structured to cover various aspects of the application's functionality, including unit tests.
+Tests for this project are written using Jest, with the assistance of [axios-mock-adapter](https://github.com/ctimmerm/axios-mock-adapter) for mocking Axios requests. The project mocks API requests for handling products, categories, and users respectively. The tests are structured to cover various aspects of the application's functionality, including unit tests.
+
+App Screenshot
 
 ![App Screenshot](readmeScreenshots/test.png)
 
 ---
 
-## API Endpoints
+## 🏗️ API Endpoints
 
 All the endpoints of the API are documented and can be tested directly on the generated Swagger page. From there you can view each endpoint URL, their HTTP methods, request body structures and authorization requirements. Access the Swagger page from this [link](https://quick-mart-ecommerce.azurewebsites.net/swagger/index.html).
 

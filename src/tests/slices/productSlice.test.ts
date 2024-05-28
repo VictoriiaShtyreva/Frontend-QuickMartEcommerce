@@ -7,7 +7,7 @@ import {
   deleteProduct,
 } from "../../redux/slices/productSlice";
 import { mockProducts } from "../mocks/mockDataProducts";
-import mockAxios from "../mocks/mock";
+import mockAxios from "../mocks/mockAxios";
 import { QueryOptions } from "../../types/QueryOptions";
 
 // Queries
