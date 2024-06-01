@@ -7,6 +7,8 @@ export interface Order {
   totalPrice: number;
   orderItems: OrderItem[];
   shippingAddress?: ShippingAddress;
+  checkoutUrl: string;
+  stripeSessionId: string;
   createdAt: Date;
   updatedAt: Date;
 }

@@ -2,7 +2,6 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 import {
   CheckoutState,
-  PaymentDetails,
   ReviewCheckout,
   ShippingAddress,
 } from "../../types/Checkout";
@@ -14,12 +13,6 @@ const initialState: CheckoutState = {
     city: "",
     postalCode: "",
     country: "",
-  },
-  paymentDetails: {
-    cardName: "",
-    cardNumber: "",
-    expiryDate: "",
-    cvv: "",
   },
   review: [],
 };
@@ -34,9 +27,6 @@ export const checkoutSlice = createSlice({
     updateShippingAddress: (state, action: PayloadAction<ShippingAddress>) => {
       state.shippingAddress = action.payload;
     },
-    updatePaymentDetails: (state, action: PayloadAction<PaymentDetails>) => {
-      state.paymentDetails = action.payload;
-    },
     updateReview: (state, action: PayloadAction<ReviewCheckout>) => {
       state.review = action.payload;
     },
@@ -45,11 +35,7 @@ export const checkoutSlice = createSlice({
 
 const checkoutReducer = checkoutSlice.reducer;
 
-export const {
-  setStep,
-  updateShippingAddress,
-  updatePaymentDetails,
-  updateReview,
-} = checkoutSlice.actions;
+export const { setStep, updateShippingAddress, updateReview } =
+  checkoutSlice.actions;
 
 export default checkoutReducer;

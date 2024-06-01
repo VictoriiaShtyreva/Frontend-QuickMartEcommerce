@@ -1,5 +1,9 @@
-// src/redux/slices/orderSlice.ts
-import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import {
+  createSlice,
+  createAsyncThunk,
+  PayloadAction,
+  createAction,
+} from "@reduxjs/toolkit";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { QueryOptions } from "../../types/QueryOptions";
@@ -48,14 +52,13 @@ export const fetchAllOrders = createAsyncThunk(
 // Define thunk for creating an order
 export const createOrder = createAsyncThunk(
   "orders/create",
-  async (orderCreateDto: OrderCreateDto, { rejectWithValue }) => {
+  async (orderCreateDto: OrderCreateDto, { rejectWithValue, dispatch }) => {
     try {
       const response = await axios.post(URL, orderCreateDto, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      toast.success("Order created successfully");
       return response.data;
     } catch (error: any) {
       toast.error(error.response?.data?.message || "Failed to create order");
@@ -216,7 +219,6 @@ const orderSlice = createSlice({
       state.loading = false;
       state.error = action.payload as string;
     });
-
     // Cancel order
     builder.addCase(
       cancelOrder.fulfilled,

@@ -38,9 +38,6 @@ const CartPage = () => {
   const shippingAddress = useAppSelector(
     (state) => state.checkout.shippingAddress
   );
-  const paymentDetails = useAppSelector(
-    (state) => state.checkout.paymentDetails
-  );
 
   return (
     <Box
@@ -111,7 +108,6 @@ const CartPage = () => {
         isOpen={openModal}
         onClose={handleCloseModal}
         shippingAddress={shippingAddress}
-        paymentDetails={paymentDetails}
       />
     </Box>
   );

@@ -15,18 +15,17 @@ import {
   Typography,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import { toast } from "react-toastify";
 
 import { useAppDispatch } from "../../../hooks/useAppDispach";
 import { useAppSelector } from "../../../hooks/useAppSelector";
 import {
   setStep,
-  updatePaymentDetails,
   updateShippingAddress,
 } from "../../../redux/slices/checkoutSlice";
-import PaymentForm from "./PaymentForm";
 import Review from "./Review";
 import AddressForm from "./AddressForm";
-import { PaymentDetails, ShippingAddress } from "../../../types/Checkout";
+import { ShippingAddress } from "../../../types/Checkout";
 import { emptyCart } from "../../../redux/slices/cartSlice";
 import customTheme from "../../contextAPI/theme/customTheme";
 import { createOrder } from "../../../redux/slices/orderSlice";
@@ -36,14 +35,12 @@ interface CheckoutModalProps {
   isOpen: boolean;
   onClose: () => void;
   shippingAddress: ShippingAddress;
-  paymentDetails: PaymentDetails;
 }
 
 const CheckoutForm = ({
   isOpen,
   onClose,
   shippingAddress,
-  paymentDetails,
 }: CheckoutModalProps) => {
   const dispatch = useAppDispatch();
   const step = useAppSelector((state) => state.checkout.step);
@@ -86,9 +83,6 @@ const CheckoutForm = ({
       dispatch(updateShippingAddress(data));
       handleNext();
     } else if (step === 1) {
-      dispatch(updatePaymentDetails(data));
-      handleNext();
-    } else if (step === 2) {
       const orderItems = cartItems.map((item) => ({
         productId: item.id,
         quantity: item.quantity,
@@ -100,28 +94,23 @@ const CheckoutForm = ({
         shippingAddress: data,
       };
 
-      await dispatch(createOrder(orderCreateDto));
-      setOrderPlaced(true);
-      dispatch(emptyCart());
+      const response = await dispatch(createOrder(orderCreateDto));
+
+      if (response.payload?.checkoutUrl) {
+        window.location.href = response.payload.checkoutUrl;
+      } else {
+        toast.error("Failed to redirect to checkout. Please try again.");
+      }
     }
   };
-
-  const steps = ["Shipping address", "Payment details", "Review your order"];
+  const steps = ["Shipping address", "Review your order"];
 
   const getStepContent = (step: number) => {
     switch (step) {
       case 0:
         return <AddressForm control={control} errors={errors} />;
       case 1:
-        return <PaymentForm control={control} errors={errors} />;
-      case 2:
-        return (
-          <Review
-            items={cartItems}
-            shippingAddress={shippingAddress}
-            paymentDetails={paymentDetails}
-          />
-        );
+        return <Review items={cartItems} shippingAddress={shippingAddress} />;
       default:
         return null;
     }

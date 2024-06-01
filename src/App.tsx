@@ -9,6 +9,8 @@ import customTheme from "./components/contextAPI/theme/customTheme";
 import store from "./redux/store";
 import ProtectedAdminRoute from "./components/ProtectedRoute";
 import LoadingPage from "./pages/LoadingPage";
+import SuccessPage from "./pages/SuccessPage";
+import CancelPage from "./pages/CancelPage";
 
 // Lazily load components
 const HomePage = lazy(() => import("./pages/HomePage"));
@@ -70,6 +72,8 @@ const App = () => {
                   <Route path="/login" element={<LoginPage />} />
                   <Route path="/users/:id" element={<UserPage />} />
                   <Route path="/shopping-cart" element={<CartPage />} />
+                  <Route path="/success" element={<SuccessPage />} />
+                  <Route path="/cancel" element={<CancelPage />} />
                   <Route
                     path="/admin-dashboard"
                     element={<ProtectedAdminRoute Component={AdminPage} />}
