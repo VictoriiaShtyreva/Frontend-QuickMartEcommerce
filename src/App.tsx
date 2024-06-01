@@ -11,6 +11,8 @@ import ProtectedAdminRoute from "./components/ProtectedRoute";
 import LoadingPage from "./pages/LoadingPage";
 import SuccessPage from "./pages/SuccessPage";
 import CancelPage from "./pages/CancelPage";
+import { useAppDispatch } from "./hooks/useAppDispach";
+import { authenticateUser } from "./redux/slices/usersSlice";
 
 // Lazily load components
 const HomePage = lazy(() => import("./pages/HomePage"));

@@ -2,8 +2,16 @@ import { Button, Grid, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 
 import { ReactComponent as NotFoundPageSVG } from "../images/NotFoundPage.svg";
+import { useAppDispatch } from "../hooks/useAppDispach";
+import { useEffect } from "react";
+import { authenticateUser } from "../redux/slices/usersSlice";
 
 const NotFoundPage = () => {
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(authenticateUser());
+  }, [dispatch]);
+
   return (
     <Grid
       container

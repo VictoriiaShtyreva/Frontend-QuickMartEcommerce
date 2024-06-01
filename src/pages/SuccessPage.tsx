@@ -1,7 +1,15 @@
 import { Box, Typography, Link, Grid, Button } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
+import { useAppDispatch } from "../hooks/useAppDispach";
+import { useEffect } from "react";
+import { authenticateUser } from "../redux/slices/usersSlice";
 
 const SuccessPage = () => {
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(authenticateUser());
+  }, [dispatch]);
+
   return (
     <Box
       sx={{

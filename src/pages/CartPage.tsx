@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Box,
   Typography,
@@ -17,11 +17,16 @@ import { emptyCart } from "../redux/slices/cartSlice";
 import CartItem from "../components/cart/CartItem";
 import EmptyCart from "../components/cart/EmptyCart";
 import CheckoutForm from "../components/cart/checkout/CheckoutForm";
+import { authenticateUser } from "../redux/slices/usersSlice";
 
 const CartPage = () => {
   const dispatch = useAppDispatch();
   const cartItems = useAppSelector((state) => state.cart.items);
   const [openModal, setOpenModal] = useState(false);
+
+  useEffect(() => {
+    dispatch(authenticateUser());
+  }, [dispatch]);
 
   const handleOpenModal = () => {
     setOpenModal(true);

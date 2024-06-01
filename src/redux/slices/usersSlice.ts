@@ -117,9 +117,7 @@ export const authenticateUser = createAsyncThunk(
       const token = localStorage.getItem("token");
       if (!token) throw new Error("No token found");
       const response = await axios.get(profileUrl, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        params: { token },
       });
       return response.data;
     } catch (error: any) {

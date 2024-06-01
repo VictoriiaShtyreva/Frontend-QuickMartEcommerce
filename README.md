@@ -35,7 +35,7 @@ You can find the backend repository at the following link: [QuickMartEcommerce B
   - [⚙️ Install](#-install)
   - [► Using QuickMart](#-using-quickmart)
   - [🧪 Tests](#-tests)
-- [🏗️ API Endpoints](#-api-endpoints)
+- [🏗️ API Endpoints](#️-api-endpoints)
 - [📦 Features](#-features)
 - [📂 Repository Structure](#-repository-structure)
 - [🛠 Project Roadmap](#-project-roadmap)
@@ -120,7 +120,7 @@ App Screenshot
 
 ## 🏗️ API Endpoints
 
-All the endpoints of the API are documented and can be tested directly on the generated Swagger page. From there you can view each endpoint URL, their HTTP methods, request body structures and authorization requirements. Access the Swagger page from this [link](https://quick-mart-ecommerce.azurewebsites.net/swagger/index.html).
+All the endpoints of the API are documented and can be tested directly on the generated Swagger page. From there you can view each endpoint URL, their HTTP methods, request body structures and authorization requirements. Access the Swagger page from this [link](https://quick-mart-ecommerce.azurewebsites.net/index.html).
 
 ## 📦 Features
 
