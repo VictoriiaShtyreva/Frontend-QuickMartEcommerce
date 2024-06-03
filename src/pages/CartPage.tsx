@@ -9,6 +9,11 @@ import {
   TableRow,
   TableCell,
   TableBody,
+  Grid,
+  Card,
+  CardContent,
+  TextField,
+  Divider,
 } from "@mui/material";
 
 import { useAppDispatch } from "../hooks/useAppDispach";
@@ -23,9 +28,28 @@ const CartPage = () => {
   const dispatch = useAppDispatch();
   const cartItems = useAppSelector((state) => state.cart.items);
   const [openModal, setOpenModal] = useState(false);
+  const [deliveryEstimate, setDeliveryEstimate] = useState("");
+
+  const totalSum = cartItems
+    .reduce((total, item) => total + item.quantity * item.price, 0)
+    .toFixed(2);
+
+  const calculateDeliveryEstimate = () => {
+    const today = new Date();
+    const startDelivery = new Date(today);
+    startDelivery.setDate(today.getDate() + 5);
+    const endDelivery = new Date(today);
+    endDelivery.setDate(today.getDate() + 7);
+
+    const start = startDelivery.toLocaleDateString("en-GB");
+    const end = endDelivery.toLocaleDateString("en-GB");
+
+    setDeliveryEstimate(`${start} - ${end}`);
+  };
 
   useEffect(() => {
     dispatch(authenticateUser());
+    calculateDeliveryEstimate();
   }, [dispatch]);
 
   const handleOpenModal = () => {
@@ -45,69 +69,75 @@ const CartPage = () => {
   );
 
   return (
-    <Box
-      sx={{
-        minHeight: "100vh",
-        justifyContent: "space-between",
-        flexDirection: "column",
-        p: 2,
-      }}
-    >
+    <Box sx={{ minHeight: "100vh", p: 2 }}>
       {cartItems.length === 0 ? (
         <EmptyCart />
       ) : (
-        <>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <Typography variant="h4">Shopping Cart</Typography>
-            <Button
-              variant="contained"
-              color="error"
-              onClick={clearCart}
-              sx={{ mb: 2 }}
+        <Grid container spacing={2}>
+          <Grid item xs={12} md={8}>
+            <TableContainer sx={{ overflowX: "auto" }}>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Products</TableCell>
+                    <TableCell>Price</TableCell>
+                    <TableCell>Quantity</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {cartItems.map((item) => (
+                    <CartItem key={item.id} item={item} />
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <Box
+              sx={{ display: "flex", justifyContent: "space-between", mt: 2 }}
             >
-              Clear Cart
-            </Button>
-          </Box>
-          <TableContainer sx={{ overflowX: "auto" }}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Product</TableCell>
-                  <TableCell>Total Price</TableCell>
-                  <TableCell>Quantity</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {cartItems.map((item) => (
-                  <CartItem key={item.id} item={item} />
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <Box
-            sx={{
-              display: "flex",
-              flexWrap: "wrap",
-              justifyContent: "space-around",
-              mt: 2,
-            }}
-          >
-            <Button
-              variant="contained"
-              color="secondary"
-              sx={{ mb: 2 }}
-              onClick={handleOpenModal}
-            >
-              Proceed to checkout
-            </Button>
-          </Box>
-        </>
+              <Typography variant="body1">
+                After 3 orders you will be able to get a coupon for a discount!
+              </Typography>
+              <Button variant="outlined" color="error" onClick={clearCart}>
+                Clear cart
+              </Button>
+            </Box>
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <Card>
+              <CardContent>
+                <TextField
+                  label="Add a promo code"
+                  variant="outlined"
+                  fullWidth
+                  sx={{ mb: 2 }}
+                  color="info"
+                />
+                <Divider sx={{ mb: 2 }} />
+                <Typography variant="h6">Total</Typography>
+                <Typography variant="h5" sx={{ mb: 2 }}>
+                  {totalSum}
+                </Typography>
+                <Button
+                  variant="contained"
+                  color="info"
+                  fullWidth
+                  sx={{ mt: 2 }}
+                  onClick={handleOpenModal}
+                >
+                  Continue to payment
+                </Button>
+              </CardContent>
+            </Card>
+            <Card sx={{ mt: 2 }}>
+              <CardContent>
+                <Typography variant="body2">
+                  Order now and get your products (estimation):
+                </Typography>
+                <Typography variant="body1">{deliveryEstimate}</Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid>
       )}
       <CheckoutForm
         isOpen={openModal}

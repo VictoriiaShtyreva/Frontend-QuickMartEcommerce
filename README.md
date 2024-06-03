@@ -52,6 +52,7 @@ You can find the backend repository at the following link: [QuickMartEcommerce B
 ![App Screenshot](readmeScreenshots/homepage.png)
 ![App Screenshot](readmeScreenshots/shoppage.png)
 ![App Screenshot](readmeScreenshots/productpage.png)
+![App Screenshot](readmeScreenshots/footer.png)
 ![App Screenshot](readmeScreenshots/loginpage.png)
 ![App Screenshot](readmeScreenshots/userpage.png)
 ![App Screenshot](readmeScreenshots/orderhistory.png)
@@ -60,7 +61,9 @@ You can find the backend repository at the following link: [QuickMartEcommerce B
 ![App Screenshot](readmeScreenshots/reviewhistory.png)
 ![App Screenshot](readmeScreenshots/editreview.png)
 ![App Screenshot](readmeScreenshots/shoppingcart.png)
-![App Screenshot](readmeScreenshots/checkout.png)
+![App Screenshot](readmeScreenshots/stripe.png)
+![App Screenshot](readmeScreenshots/successpage.png)
+![App Screenshot](readmeScreenshots/ordermanagement.png)
 ![App Screenshot](readmeScreenshots/adminproducts.png)
 ![App Screenshot](readmeScreenshots/updateproduct.png)
 ![App Screenshot](readmeScreenshots/usermanagement.png)
@@ -75,6 +78,7 @@ Ensure you have the following dependencies installed on your system:
 
 - **TypeScript**: `^4.9.5`
 - **React**: `^18.2.0`
+- **Docker**: `^20.10.0` (or the latest version)
 
 ### ⚙️ Install
 
@@ -102,6 +106,22 @@ Use the following command to run QuickMart:
 
 ```sh
 npm start
+```
+
+### 🐳 Using Docker
+
+To run QuickMart using Docker, follow these steps:
+
+1. Build the Docker image:
+
+```sh
+docker build -t quickmart .
+```
+
+2. Run the Docker container:
+
+```sh
+docker run -p 3000:3000 quickmart
 ```
 
 ### 🧪 Tests
@@ -135,6 +155,7 @@ All the endpoints of the API are documented and can be tested directly on the ge
 | 🧩  | **Empty States**                            | Various empty states are implemented throughout the application, including empty cart, favorite products, error page, and no products found. These states provide clear feedback to users and enhance the overall user experience by guiding them effectively.                                                                                                                                                                                                                                      |
 | ⚡️ | **Performance & Optimisation**              | Performance and optimization techniques such as lazy loading, [React Hook Form](https://react-hook-form.com/) for validation, optimized data fetching with createAsyncThunk, useCallback, and memo are employed to ensure fast rendering, smooth user interactions, and efficient resource management, resulting in an optimized browsing experience.                                                                                                                                               |
 | 📦  | **Login user and Admin dashboard**          | The project features user authentication functionality, allowing users to log in and access their user page where they can update their information such as email and name. Additionally, an admin dashboard is available for admins to create, update, and delete products, providing enhanced control over product management. As user can login using `email`: "carol@example.com", `password`: "carol@123" .As admin user can login using `email`: "alice@example.com", `password`: "alice@123" |
+| 💳  | **Payment using Stripe**                    | Integrated payment functionality using Stripe for secure and reliable transactions. This feature allows users to make payments directly within the application, ensuring a seamless checkout experience.                                                                                                                                                                                                                                                                                            |
 
 ## 📂 Repository Structure
 
@@ -162,7 +183,6 @@ src
    |   |   |-- checkout
    |   |   |   |-- AddressForm.tsx
    |   |   |   |-- CheckoutForm.tsx
-   |   |   |   |-- PaymentForm.tsx
    |   |   |   |-- Review.tsx
    |   |-- contextAPI
    |   |   |-- ColorThemeContext.tsx
@@ -200,15 +220,21 @@ src
    |   |-- EmptyFavoriteProduct.svg
    |   |-- NoProductsFound.svg
    |   |-- NotFoundPage.svg
+   |   |-- cancel.png
    |   |-- homepage.jpg
-   |   |-- homepicture.png
+   |   |-- klarna.png
    |   |-- loginpage.png
    |   |-- logo.svg
+   |   |-- mastercard.png
+   |   |-- stripe.png
+   |   |-- success.png
+   |   |-- visa.jpg
    |-- index.css
    |-- index.tsx
    |-- pages
    |   |-- AboutUs.tsx
    |   |-- AdminPage.tsx
+   |   |-- CancelPage.tsx
    |   |-- CartPage.tsx
    |   |-- HomePage.tsx
    |   |-- LoadingPage.tsx
@@ -216,6 +242,7 @@ src
    |   |-- NotFoundPage.tsx
    |   |-- ShopPage.tsx
    |   |-- SingleProductPage.tsx
+   |   |-- SuccessPage.tsx
    |   |-- UserPage.tsx
    |-- react-app-env.d.ts
    |-- redux
@@ -231,6 +258,20 @@ src
    |   |-- store.ts
    |-- reportWebVitals.ts
    |-- setupTests.ts
+   |-- tests
+   |   |-- mocks
+   |   |   |-- mockAxios.ts
+   |   |   |-- mockDataCategories.ts
+   |   |   |-- mockDataOrders.ts
+   |   |   |-- mockDataProducts.ts
+   |   |   |-- mockDataReviews.ts
+   |   |   |-- mockDataUsers.ts
+   |   |-- slices
+   |   |   |-- categorySlice.test.ts
+   |   |   |-- orderSlice.test.ts
+   |   |   |-- productSlice.test.ts
+   |   |   |-- reviewSlice.test.ts
+   |   |   |-- usersSlice.test.ts
    |-- types
    |   |-- Authentication.ts
    |   |-- Category.ts
