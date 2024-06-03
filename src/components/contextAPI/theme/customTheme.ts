@@ -23,7 +23,7 @@ const customTheme = (mode: PaletteMode): ThemeOptions => {
       MuiCard: {
         styleOverrides: {
           root: {
-            backgroundColor: mode === "light" ? "#92b8ae" : "#2a3653",
+            backgroundColor: mode === "light" ? "#fee9d8" : "#2a3653",
           },
         },
       },
@@ -33,7 +33,7 @@ const customTheme = (mode: PaletteMode): ThemeOptions => {
       ...(mode === "light"
         ? {
             primary: {
-              main: "#7e9d95", // Light primary color
+              main: "#fee9d8", // Light primary color
               contrastText: "#212121", // Text color for light primary
             },
             secondary: {
@@ -41,7 +41,7 @@ const customTheme = (mode: PaletteMode): ThemeOptions => {
               contrastText: "#fff", // Text color for light secondary
             },
             info: {
-              main: "#5eb4a7", // Light info color (white)
+              main: "#9bbff5", // Light info color (white)
               contrastText: "#212121", // Text color for light info
             },
             text: {
@@ -50,7 +50,7 @@ const customTheme = (mode: PaletteMode): ThemeOptions => {
             },
             background: {
               default: "#FEFEFE", // Light background color
-              paper: "#fff", // Light paper background color
+              paper: "#dbd8d8", // Light paper background color
             },
           }
         : {

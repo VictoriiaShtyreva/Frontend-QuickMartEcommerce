@@ -5,8 +5,6 @@ import {
   ListItem,
   ListItemText,
   Paper,
-  Typography,
-  Box,
   Grid,
 } from "@mui/material";
 import ProductListDashboard from "./ProductListDashboard";

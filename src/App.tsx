@@ -11,8 +11,6 @@ import ProtectedAdminRoute from "./components/ProtectedRoute";
 import LoadingPage from "./pages/LoadingPage";
 import SuccessPage from "./pages/SuccessPage";
 import CancelPage from "./pages/CancelPage";
-import { useAppDispatch } from "./hooks/useAppDispach";
-import { authenticateUser } from "./redux/slices/usersSlice";
 
 // Lazily load components
 const HomePage = lazy(() => import("./pages/HomePage"));
@@ -60,6 +58,11 @@ const App = () => {
                 backgroundColor: transitioning
                   ? theme.palette.background.paper
                   : undefined,
+                backgroundImage: `linear-gradient(135deg, #6cbbca 0%, #c8765f 100%),
+                      url("https://images.unsplash.com/photo-1547623641-d2c56c03e2a7?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")`,
+                backgroundBlendMode: "overlay",
+                backgroundSize: "cover",
+                minHeight: "100vh",
               }}
             >
               <h1 style={{ display: "none" }}>Redux Toolkit</h1>

@@ -19,7 +19,7 @@ const SuccessPage = () => {
         alignItems: "center",
         flexDirection: "column",
         p: 2,
-        textAlign: "center", // Ensure center alignment for text on all devices
+        textAlign: "center",
       }}
     >
       <Typography

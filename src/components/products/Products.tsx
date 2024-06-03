@@ -171,41 +171,20 @@ const Products = () => {
 
   return (
     <Container maxWidth="lg" sx={{ minHeight: "100vh" }}>
-      <Grid
-        container
-        spacing={0}
-        direction={{ xs: "column", sm: "row" }}
-        justifyContent="space-between"
-        alignItems="center"
-        style={{ backgroundColor: "#b195cf" }}
-      >
-        <Grid item xs={6} md={8}>
-          <img
-            src={require("../../images/homepicture.png")}
-            width={500}
-            height={400}
-            alt="Good shopping cart"
-          ></img>
-        </Grid>
-        <Grid item xs={6} md={4}>
-          <CardContent sx={{ display: "flex", flexDirection: "column" }}>
-            <Typography variant="h4" gutterBottom>
-              We Help You Make Modern Future
-            </Typography>
-            <Typography variant="body1" mb={2}>
-              All of our products are carefully selected to provide the best
-              choices for our customers. Explore future with us!
-            </Typography>
-            <Grid item xs={12} md={12}>
-              <SearchForm
-                userInput={userInput}
-                setUserInput={setUserInput}
-                onSearch={handleSearch}
-                onClear={handleClear}
-              />
-            </Grid>
-          </CardContent>
-        </Grid>
+      <Grid item xs={8} md={4}>
+        <Typography variant="h5" gutterBottom mt={2}>
+          We Help You Make Modern Future
+        </Typography>
+        <Typography variant="body2" mb={2}>
+          All of our products are carefully selected to provide the best choices
+          for our customers. Explore future with us!
+        </Typography>
+        <SearchForm
+          userInput={userInput}
+          setUserInput={setUserInput}
+          onSearch={handleSearch}
+          onClear={handleClear}
+        />
       </Grid>
       <Grid container spacing={2} flexDirection={"column"}>
         <Box

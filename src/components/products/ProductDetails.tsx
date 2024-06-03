@@ -14,6 +14,7 @@ import {
   Avatar,
   ListItemText,
   Rating,
+  Divider,
 } from "@mui/material";
 import Carousel from "react-slick";
 import FavoriteIcon from "@mui/icons-material/Favorite";
@@ -35,6 +36,7 @@ import { createDraftSafeSelector } from "@reduxjs/toolkit";
 import { Product } from "../../types/Product";
 import { RootState } from "../../types/type";
 import { svgUrl } from "../../utils/svgUrl";
+import { Review } from "../../types/Review";
 
 const ProductDetails = ({ id }: { id: string }) => {
   const dispatch = useAppDispatch();
@@ -45,7 +47,7 @@ const ProductDetails = ({ id }: { id: string }) => {
   });
   const { user } = useAppSelector((state) => state.users);
   const isAdmin = user?.role === "Admin";
-  //Cart state
+
   const [showDialog, setShowDialog] = useState(false);
 
   const handleOpenDialog = () => {
@@ -94,12 +96,10 @@ const ProductDetails = ({ id }: { id: string }) => {
     }
   }, [dispatch, product, id]);
 
-  //For scroll to top, when product detail is cliced in product card of related products
   useEffect(() => {
     scrollToTop();
   }, [id]);
 
-  //Settings for carousel of images
   const settingsImages = {
     dots: true,
     infinite: true,
@@ -108,18 +108,15 @@ const ProductDetails = ({ id }: { id: string }) => {
     slidesToScroll: 1,
   };
 
-  //Get the category of the current product
   const currentProductCategory: string | undefined = product?.category.id;
   const categoryId: string = currentProductCategory ?? "";
 
-  //Define selectors to extract specific data from the Redux store
   const selectProducts = (state: RootState) => state.products.products;
   const selectCurrentProductCategory = (_: RootState, categoryId: string) =>
     categoryId;
   const selectProductId = (_: RootState, __: string, productId: string) =>
     productId;
 
-  //Create a memoized selector function using createDraftSafeSelector to filter related products based on category and excluding the current product
   const selectRelatedProducts = createDraftSafeSelector(
     [selectProducts, selectCurrentProductCategory, selectProductId],
     (products: Product[], categoryId: string, productId: string) =>
@@ -129,10 +126,15 @@ const ProductDetails = ({ id }: { id: string }) => {
       )
   );
 
-  //Retrieve related products from the Redux store using the created selector
   const relatedProducts: Product[] = useAppSelector((state) =>
     selectRelatedProducts(state, categoryId, id)
   );
+
+  const averageRating = (reviews: Review[]) => {
+    if (!reviews || reviews.length === 0) return 0;
+    const total = reviews.reduce((acc, review) => acc + review.rating, 0);
+    return total / reviews.length;
+  };
 
   return (
     <Grid container spacing={2} sx={{ minHeight: "100vh" }}>
@@ -159,14 +161,22 @@ const ProductDetails = ({ id }: { id: string }) => {
           <Typography variant="body2" sx={{ mb: 1 }}>
             {product?.category.name}
           </Typography>
+          <Rating
+            value={averageRating(product?.reviews)}
+            readOnly
+            precision={0.5}
+          />
+          <Typography variant="body2" sx={{ ml: 1 }}>
+            {product?.reviews.length} reviews
+          </Typography>
+          <Typography variant="h6" sx={{ mb: 1 }}>
+            ${product?.price}
+          </Typography>
           <Typography variant="body2" sx={{ mb: 1 }}>
             {product?.description}
           </Typography>
-          <Box sx={{ display: "flex", alignItems: "center", mb: 3 }}>
-            <Typography variant="body1">Price: ${product?.price}</Typography>
-          </Box>
           {!isAdmin && (
-            <Grid item xs={12}>
+            <Grid item xs={12} mt={4}>
               <Box
                 sx={{
                   display: "flex",
@@ -193,77 +203,76 @@ const ProductDetails = ({ id }: { id: string }) => {
             </Grid>
           )}
         </Box>
-      </Grid>
-      {/* Display reviews */}
-      {product?.reviews && product.reviews.length > 0 && (
-        <Grid item xs={12}>
-          <Typography variant="h5" component="h2" gutterBottom sx={{ p: 2 }}>
-            Customer Reviews
-          </Typography>
-          <List sx={{ p: 2 }}>
-            {product.reviews.map((review) => (
-              <Card key={review.id} sx={{ mb: 2, width: 350 }}>
-                <CardContent>
-                  <ListItem alignItems="flex-start">
-                    <ListItemAvatar>
-                      <Avatar
-                        src={review.user?.avatar || ""}
-                        alt={review.user?.name || "User"}
+        <Box sx={{ p: 2 }}>
+          <Typography variant="h6">Customer Reviews</Typography>
+          <Divider sx={{ mb: 2 }} />
+          {product?.reviews && product.reviews.length > 0 ? (
+            <List>
+              {product.reviews.map((review) => (
+                <Card key={review.id} sx={{ mb: 2 }}>
+                  <CardContent>
+                    <ListItem alignItems="flex-start">
+                      <ListItemAvatar>
+                        <Avatar
+                          src={review.user?.avatar || ""}
+                          alt={review.user?.name || "User"}
+                        />
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary={
+                          <Box sx={{ display: "flex", alignItems: "center" }}>
+                            <Typography
+                              variant="body2"
+                              sx={{ fontWeight: "bold", mr: 1 }}
+                            >
+                              {review.user?.name || "User"}
+                            </Typography>
+                            <Rating
+                              value={review.rating}
+                              readOnly
+                              precision={0.5}
+                              sx={{ ml: 1 }}
+                            />
+                            <Typography
+                              variant="body2"
+                              color="textSecondary"
+                              sx={{ ml: 1 }}
+                            >
+                              {new Date(review.createdAt).toLocaleDateString()}
+                            </Typography>
+                          </Box>
+                        }
+                        secondary={
+                          <Typography variant="body2">
+                            {review.content}
+                          </Typography>
+                        }
                       />
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary={
-                        <Box sx={{ display: "flex", alignItems: "center" }}>
-                          <Typography
-                            variant="body2"
-                            sx={{ fontWeight: "bold", mr: 1 }}
-                          >
-                            {review.user?.name || "User"}
-                          </Typography>
-                          <Rating
-                            value={review.rating}
-                            readOnly
-                            precision={0.5}
-                            sx={{ ml: 1 }}
-                          />
-                          <Typography
-                            variant="body2"
-                            color="textSecondary"
-                            sx={{ ml: 1 }}
-                          >
-                            {new Date(review.createdAt).toLocaleDateString()}
-                          </Typography>
-                        </Box>
-                      }
-                      secondary={
-                        <Typography variant="body2">
-                          {review.content}
-                        </Typography>
-                      }
-                    />
-                  </ListItem>
-                </CardContent>
-              </Card>
-            ))}
-          </List>
-        </Grid>
-      )}
-      {/* Display related products */}
+                    </ListItem>
+                  </CardContent>
+                </Card>
+              ))}
+            </List>
+          ) : (
+            <Typography variant="body2">No reviews yet.</Typography>
+          )}
+        </Box>
+      </Grid>
       {relatedProducts.length > 0 && (
         <Grid item xs={12}>
-          <Typography variant="h5" component="h2" gutterBottom sx={{ p: 2 }}>
-            You can also like:
-          </Typography>
-          <Grid container spacing={2} sx={{ p: 2 }}>
-            {relatedProducts.slice(0, 6).map((product) => (
-              <Grid item xs={12} sm={4} key={product.id}>
-                <ProductCard product={product} />
-              </Grid>
-            ))}
-          </Grid>
+          <Box sx={{ p: 2 }}>
+            <Typography variant="h6">Products you may like</Typography>
+            <Divider sx={{ mb: 2 }} />
+            <Grid container spacing={2}>
+              {relatedProducts.slice(0, 3).map((product) => (
+                <Grid item xs={12} sm={4} key={product.id}>
+                  <ProductCard product={product} />
+                </Grid>
+              ))}
+            </Grid>
+          </Box>
         </Grid>
       )}
-      {/* Render CartModal*/}
       <Dialog open={showDialog} onClose={handleCloseDialog}>
         <DialogContent>
           {product && (
