@@ -53,7 +53,7 @@ const Products = () => {
   const totalProducts = useAppSelector((state) => state.products.total);
   const [sortBy, setSortBy] = useState<string>("priceAsc");
   const [pagination, setPagination] = useState<{ page: number; limit: number }>(
-    { page: 1, limit: 12 }
+    { page: 1, limit: 20 }
   );
   const [categoryPagination, setCategoryPagination] = useState<{
     page: number;

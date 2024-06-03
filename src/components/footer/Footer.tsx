@@ -4,15 +4,14 @@ import {
   Container,
   Grid,
   IconButton,
-  Link,
   TextField,
   Typography,
   useTheme,
 } from "@mui/material";
 import DoneIcon from "@mui/icons-material/Done";
-import GitHubIcon from "@mui/icons-material/GitHub";
 import { Facebook, Instagram, Twitter } from "@mui/icons-material";
 import { ReactComponent as LogoSVG } from "../../images/logo.svg";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   const theme = useTheme();
@@ -62,11 +61,9 @@ const Footer = () => {
         <Grid container spacing={4} justifyContent="center" mt={2}>
           <Grid item xs={12} sm={6} md={3}>
             <Box textAlign={{ xs: "center", sm: "left" }}>
-              <LogoSVG />
-              <Typography variant="body2">Company</Typography>
-              <Typography variant="body2">Address line 1</Typography>
-              <Typography variant="body2">Address line 2</Typography>
-              <Typography variant="body2">hello@company.com</Typography>
+              <Link to="/">
+                <LogoSVG />
+              </Link>
             </Box>
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
