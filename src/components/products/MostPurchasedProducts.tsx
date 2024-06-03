@@ -62,7 +62,7 @@ const MostPurchasedProducts = () => {
   };
 
   return (
-    <Box sx={{ mt: 4, px: 2 }}>
+    <Box sx={{ mt: 4, px: 2, mb: 6 }}>
       <Typography variant="h4" gutterBottom sx={{ textAlign: "center" }}>
         Most Purchased Products
       </Typography>
