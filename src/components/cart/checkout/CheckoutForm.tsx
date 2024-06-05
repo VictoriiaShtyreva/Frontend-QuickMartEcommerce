@@ -29,7 +29,6 @@ import { ShippingAddress } from "../../../types/Checkout";
 import { emptyCart } from "../../../redux/slices/cartSlice";
 import customTheme from "../../contextAPI/theme/customTheme";
 import { createOrder } from "../../../redux/slices/orderSlice";
-import { fetchUserById } from "../../../redux/slices/usersSlice";
 
 interface CheckoutModalProps {
   isOpen: boolean;
@@ -67,7 +66,6 @@ const CheckoutForm = ({
 
   const handleReset = () => {
     setOrderPlaced(false);
-    dispatch(fetchUserById(userId!));
     reset();
     dispatch(setStep(0));
   };
@@ -95,7 +93,7 @@ const CheckoutForm = ({
       };
 
       const response = await dispatch(createOrder(orderCreateDto));
-
+      emptyCart();
       if (response.payload?.checkoutUrl) {
         window.location.href = response.payload.checkoutUrl;
       } else {
@@ -103,6 +101,7 @@ const CheckoutForm = ({
       }
     }
   };
+
   const steps = ["Shipping address", "Review your order"];
 
   const getStepContent = (step: number) => {

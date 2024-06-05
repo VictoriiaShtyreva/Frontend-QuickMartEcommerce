@@ -230,6 +230,7 @@ const usersSlice = createSlice({
     logout: (state) => {
       state.user = null;
       delete axios.defaults.headers.common["Authorization"];
+      localStorage.clear();
     },
     saveUserInformation: (state, action: PayloadAction<User>) => {
       state.user = action.payload;

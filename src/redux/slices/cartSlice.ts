@@ -10,6 +10,10 @@ const saveToLocalStorage = (state: ShoppingCartState) => {
   localStorage.setItem("cart", JSON.stringify(state.items));
 };
 
+const removeFromLocalStorage = (state: ShoppingCartState) => {
+  localStorage.clear();
+};
+
 export const cartSlice = createSlice({
   name: "cart",
   initialState,
@@ -52,7 +56,7 @@ export const cartSlice = createSlice({
     },
     emptyCart: (state) => {
       state.items = [];
-      saveToLocalStorage(state);
+      removeFromLocalStorage(state);
     },
   },
 });
